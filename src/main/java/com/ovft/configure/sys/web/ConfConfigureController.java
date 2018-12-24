@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.web;
 
+import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ConfConfigureController {
     public void api(HttpServletRequest request, HttpServletResponse response)  {
 
         try {
-            String xml = "<xml><isPlay>true</isPlay><animationID>1</animationID><musicID>1</musicID></xml>";
+            String xml = "<xml><isPlay>true</isPlay><animationID>"+GlobalUtils.animationID+"</animationID><musicID>"+ GlobalUtils.musicID +"</musicID></xml>";
             response.getWriter().write(xml);
         }catch (Exception e){
             e.printStackTrace();

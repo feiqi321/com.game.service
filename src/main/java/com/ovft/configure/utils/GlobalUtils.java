@@ -7,4 +7,8 @@ public class GlobalUtils {
 
     public  static int event = -1;
 
+    public static int animationID = 1;
+
+    public static int musicID = 1;
+
 }
