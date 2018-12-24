@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovft.configure.sys.dao.EventConfigMapper" >
+
+    <select id="selectByEvent" parameterType="com.ovft.configure.sys.bean.EventConfigDTO" resultType="com.ovft.configure.sys.bean.EventConfigDTO">
+        SELECT id,event,event_time as eventTime
+        FROM event_conf
+        where event = #{event} limit 1
+    </select>
+
+
+
+
+</mapper>

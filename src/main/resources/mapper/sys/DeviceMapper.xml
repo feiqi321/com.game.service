@@ -6,7 +6,7 @@
     <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
         SELECT id,open_id as openId,device_id as deviceId
         FROM device
-        where open_id = #{openId}
+        where open_id = #{openId} limit 1
     </select>
 
 
