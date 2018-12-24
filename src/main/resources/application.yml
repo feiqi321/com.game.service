@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: alpha
 
 #Mybatis配置
 mybatis:
@@ -11,7 +11,3 @@ mybatis:
 
 logging:
   config: classpath:logback-spring.xml
-
-
-
-

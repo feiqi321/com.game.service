@@ -5,14 +5,16 @@
 .logs
 .classpath
 .project
-.settings      
- ##filter databfile、sln file##
+.settings
+launch.json
+
+##filter databfile、sln file##
 *.md
 *.iml
 *.mdb  
 *.ldb  
-*.sln    
-*.iml
+*.sln
+
 ##class file##
 *.com  
 *.class  
