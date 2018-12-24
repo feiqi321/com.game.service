@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: alpha
+
+#Mybatis配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.ovft.configure.sys.bean
+
+logging:
+  config: classpath:logback-spring.xml
+
+
+
+
