@@ -3,9 +3,11 @@ package com.ovft.configure.sys.web;
 import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.service.IDeviceService;
+import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +32,30 @@ public class EventController {
         logger.info("世界时间触发");
         WebResult result = new WebResult();
         try {
+            if (GlobalUtils.event != -1){
+                result.setCode("501");
+                result.setMsg("世界事件已经开始 ");
+                return result;
+            }
             iDeviceService.startEvent();
+            result.setCode("200");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
+    /**
+     *  世界时间触发
+     *
+     * @return
+     */
+    @PostMapping(value = "/stopEvent")
+    public WebResult stopEvent()  {
+        logger.info("世界时间终止");
+        WebResult result = new WebResult();
+        try {
+            GlobalUtils.event = -1;
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();
@@ -49,11 +74,13 @@ public class EventController {
         WebResult result = new WebResult();
         try {
             int event = iDeviceService.queryEvent();
+            result.setData(event);
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();
         }
         return  result;
     }
+
 
 }
