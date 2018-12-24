@@ -11,4 +11,8 @@ public interface IDeviceService {
 
     public void saveOrUpdate(DeviceDTO deviceDTO);
 
+    public void startEvent();
+
+    public int queryEvent();
+
 }

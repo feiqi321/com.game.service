@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ovft.configure.sys.dao.ConfAccountMapper" >
+<mapper namespace="com.ovft.configure.sys.dao.DeviceMapper" >
 
     <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
         SELECT id,open_id as openId,device_id as deviceId
