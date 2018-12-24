@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovft.configure.sys.dao.DeviceColorMapper" >
+
+    <select id="findByDeviceId" parameterType="com.ovft.configure.sys.bean.DeviceColorDTO" resultType="com.ovft.configure.sys.bean.DeviceColorDTO">
+        SELECT id,device_id as deviceId,color
+        FROM device_color
+        where device_id = #{deviceId} limit 1
+    </select>
+
+</mapper>
