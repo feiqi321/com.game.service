@@ -1,6 +1,7 @@
 ##ignore this file##
 /target/ 
 .idea
+.git
 .logs
 .classpath
 .project
