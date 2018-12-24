@@ -1,15 +1,12 @@
 package com.ovft.configure.sys.web;
 
 import com.ovft.configure.http.result.WebResult;
-import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

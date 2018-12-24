@@ -58,6 +58,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = 0;//开始
             TimeUnit.MINUTES.sleep(8);
             GlobalUtils.event = 1;//下雪
+            EventWebSocket.sendInfo(GlobalUtils.event+"");
             TimeUnit.MINUTES.sleep(5);
             GlobalUtils.event = 0;//恢复
             TimeUnit.MINUTES.sleep(8);
@@ -70,7 +71,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = 0;//恢复
             TimeUnit.MINUTES.sleep(5);
             GlobalUtils.event = -1;//游戏结束
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;
         }
