@@ -4,7 +4,7 @@ config:
     version: 1.0.0
 
 server:
-  port: 8820
+  port: 8830
 
 
 logging:

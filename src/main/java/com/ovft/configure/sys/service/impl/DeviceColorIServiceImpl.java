@@ -4,7 +4,6 @@ import com.ovft.configure.sys.bean.CollectDTO;
 import com.ovft.configure.sys.bean.DeviceColorDTO;
 import com.ovft.configure.sys.dao.CollectMapper;
 import com.ovft.configure.sys.dao.DeviceColorMapper;
-import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.service.IDeviceColorService;
 import org.springframework.stereotype.Service;
 

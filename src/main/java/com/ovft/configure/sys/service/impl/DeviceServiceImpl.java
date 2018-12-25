@@ -43,7 +43,6 @@ public class DeviceServiceImpl implements IDeviceService {
     @Async
     public void startEvent(){
         this.executeAsyncTask();
-        System.out.println("111");
     }
 
 
@@ -53,25 +52,43 @@ public class DeviceServiceImpl implements IDeviceService {
 
     }
 
-    public void executeAsyncTask(){
+    public String executeAsyncTask(){
         try {
             GlobalUtils.event = 0;//开始
             TimeUnit.MINUTES.sleep(1);
+            if (GlobalUtils.event == -1){
+                return null;
+            }
             GlobalUtils.event = 1;//下雪
             EventWebSocket.sendInfo("1");
             TimeUnit.MINUTES.sleep(1);
+            if (GlobalUtils.event == -1){
+                return null;
+            }
             GlobalUtils.event = 0;//恢复
             EventWebSocket.sendInfo("10");
             TimeUnit.MINUTES.sleep(1);
+            if (GlobalUtils.event == -1){
+                return null;
+            }
             GlobalUtils.event = 2;//地震
             EventWebSocket.sendInfo("2");
             TimeUnit.MINUTES.sleep(1);
+            if (GlobalUtils.event == -1){
+                return null;
+            }
             GlobalUtils.event = 0;//恢复
             EventWebSocket.sendInfo("20");
             TimeUnit.MINUTES.sleep(1);
+            if (GlobalUtils.event == -1){
+                return null;
+            }
             GlobalUtils.event = 3;//怪兽袭击
             EventWebSocket.sendInfo("3");
             TimeUnit.MINUTES.sleep(1);
+            if (GlobalUtils.event == -1){
+                return null;
+            }
             GlobalUtils.event = 0;//恢复
             EventWebSocket.sendInfo("30");
             TimeUnit.MINUTES.sleep(1);
@@ -80,6 +97,7 @@ public class DeviceServiceImpl implements IDeviceService {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;
         }
+        return null;
     }
 
 }
