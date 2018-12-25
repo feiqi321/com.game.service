@@ -1,7 +1,9 @@
 package com.ovft.configure.sys.web;
 
 import com.ovft.configure.http.result.WebResult;
+import com.ovft.configure.sys.bean.EventConfigDTO;
 import com.ovft.configure.sys.service.IDeviceService;
+import com.ovft.configure.sys.service.IEventService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,8 @@ public class EventController {
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
     @Autowired
     private IDeviceService iDeviceService;
+    @Autowired
+    private IEventService iEventService;
     /**
      *  世界时间触发
      *
@@ -72,6 +76,25 @@ public class EventController {
         try {
             int event = iDeviceService.queryEvent();
             result.setData(event);
+            result.setCode("200");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
+    /**
+     *  查询事件对应的时间
+     *
+     * @return
+     */
+    @PostMapping(value = "/selectByEvent")
+    public WebResult selectByEvent(EventConfigDTO dto)  {
+        logger.info("查询事件对应的时间");
+        WebResult result = new WebResult();
+        try {
+            EventConfigDTO eventConfigDTO = iEventService.selectByEvent(dto);
+            result.setData(eventConfigDTO);
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();

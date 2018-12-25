@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovft.configure.sys.dao.CollectMapper" >
+
+    <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
+        SELECT id,open_id as openId,color1,color2,color3,status
+        FROM collect
+        where open_id = #{openId} and status = 0 order by id desc limit 1
+    </select>
+
+    <select id="listAllByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
+        SELECT id,open_id as openId,color1,color2,color3,status
+        FROM collect
+        where open_id = #{openId} order by id
+    </select>
+
+
+    <insert id="save" parameterType="com.ovft.configure.sys.bean.CollectDTO">
+        <selectKey resultType="java.lang.Integer" keyProperty="id"
+                   order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO collect
+        (
+        open_id,color1,color2,color3,status,create_time,update_time
+        )
+        VALUES
+        (
+        #{openId},#{color1},#{color2},#{color3},#{status},now(),now()
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ovft.configure.sys.bean.CollectDTO" flushCache="true">
+        UPDATE
+        collect
+        SET
+        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status}
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

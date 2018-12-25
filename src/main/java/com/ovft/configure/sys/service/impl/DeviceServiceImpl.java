@@ -56,20 +56,25 @@ public class DeviceServiceImpl implements IDeviceService {
     public void executeAsyncTask(){
         try {
             GlobalUtils.event = 0;//开始
-            TimeUnit.MINUTES.sleep(8);
+            TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = 1;//下雪
-            EventWebSocket.sendInfo(GlobalUtils.event+"");
-            TimeUnit.MINUTES.sleep(5);
+            EventWebSocket.sendInfo("1");
+            TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = 0;//恢复
-            TimeUnit.MINUTES.sleep(8);
-            GlobalUtils.event = 2;//恢复
-            TimeUnit.MINUTES.sleep(4);
+            EventWebSocket.sendInfo("10");
+            TimeUnit.MINUTES.sleep(1);
+            GlobalUtils.event = 2;//地震
+            EventWebSocket.sendInfo("2");
+            TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = 0;//恢复
-            TimeUnit.MINUTES.sleep(5);
+            EventWebSocket.sendInfo("20");
+            TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = 3;//怪兽袭击
-            TimeUnit.MINUTES.sleep(5);
+            EventWebSocket.sendInfo("3");
+            TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = 0;//恢复
-            TimeUnit.MINUTES.sleep(5);
+            EventWebSocket.sendInfo("30");
+            TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = -1;//游戏结束
         } catch (Exception e) {
             logger.error(e.getMessage());

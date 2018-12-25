@@ -25,7 +25,7 @@ public class DeviceController {
      * @return
      */
     @PostMapping(value = "/query")
-    public WebResult api(@RequestBody DeviceDTO deviceDTO)  {
+    public WebResult query(@RequestBody DeviceDTO deviceDTO)  {
         logger.info("手环绑定查询{}",deviceDTO.getOpenId());
         WebResult result = new WebResult();
         try {
