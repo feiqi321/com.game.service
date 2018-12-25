@@ -11,7 +11,7 @@ public class DeviceColorDTO implements Serializable {
 
     private String deviceId;
 
-    private String color;
+    private int color;
 
     public int getId() {
         return id;
@@ -29,11 +29,11 @@ public class DeviceColorDTO implements Serializable {
         this.deviceId = deviceId;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 }

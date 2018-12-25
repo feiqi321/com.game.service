@@ -9,6 +9,8 @@ public class CollectDTO implements Serializable {
 
     private  int id;
 
+    private String deviceId;
+
     private String openId;
 
     private int color1;
@@ -25,6 +27,14 @@ public class CollectDTO implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getOpenId() {

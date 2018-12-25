@@ -6,7 +6,13 @@
     <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
         SELECT id,open_id as openId,color1,color2,color3,status
         FROM collect
-        where open_id = #{openId} order by id desc limit 1
+        where open_id = #{openId} and status = 0 order by id desc limit 1
+    </select>
+
+    <select id="listAllByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
+        SELECT id,open_id as openId,color1,color2,color3,status
+        FROM collect
+        where open_id = #{openId} order by id
     </select>
 
 
