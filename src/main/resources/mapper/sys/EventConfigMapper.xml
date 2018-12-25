@@ -6,7 +6,7 @@
     <select id="selectByEvent" parameterType="com.ovft.configure.sys.bean.EventConfigDTO" resultType="com.ovft.configure.sys.bean.EventConfigDTO">
         SELECT id,event,event_time as eventTime
         FROM event_conf
-        where event = #{event} limit 1
+        where event = #{event} order by id desc limit 1
     </select>
 
 

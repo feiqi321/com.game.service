@@ -24,13 +24,13 @@ public class DeviceColorController {
     private IDeviceColorService iDeviceColorService;
 
     /**
-     *  手环设备绑定查询
+     *  设备资源颜色查询
      *
      * @return
      */
     @PostMapping(value = "/findByDeviceId")
     public WebResult findByDeviceId(@RequestBody DeviceColorDTO deviceColorDTO)  {
-        logger.info("设备资源眼颜色查询{}",deviceColorDTO.getDeviceId());
+        logger.info("设备资源颜色查询{}",deviceColorDTO.getDeviceId());
         WebResult result = new WebResult();
         try {
             DeviceColorDTO resultDto = iDeviceColorService.findByDeviceId(deviceColorDTO);

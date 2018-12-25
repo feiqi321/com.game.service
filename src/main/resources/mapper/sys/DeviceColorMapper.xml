@@ -6,7 +6,7 @@
     <select id="findByDeviceId" parameterType="com.ovft.configure.sys.bean.DeviceColorDTO" resultType="com.ovft.configure.sys.bean.DeviceColorDTO">
         SELECT id,device_id as deviceId,color
         FROM device_color
-        where device_id = #{deviceId} limit 1
+        where device_id = #{deviceId} order by id desc limit 1
     </select>
 
 </mapper>
