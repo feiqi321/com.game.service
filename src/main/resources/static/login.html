@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>登陆控制台</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+        <script src="jquery-3.3.1.min.js"></script>
+        <script src="js.cookie.js"></script>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <script src="bootstrap.min.js"></script>
+
+        <style>
+            body,html{
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .container{
+                margin: 0 auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                width: 90%;
+                height: 100%;
+            }
+        </style>
+
+        <script>
+            function login(){
+                $.post(
+                    "http://localhost:8820/game/manager/login",
+                    {
+                        username:$("#username").val(),
+                        pwd:$("#pwd").val()
+                    },
+                    function(result){
+                        if(result.code == "200"){
+                            Cookies.set('token', result.data.token);
+                            location.href = "index.html";
+                        }else{
+                            $("#loginError").fadeIn().fadeOut();
+                        }
+                    },
+                    "json"
+                );
+            }
+        </script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="label_username">账号</span>
+                    </div>
+                    <input type="text" class="form-control" id="username" aria-describedby="label_username" autofocus>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="label_pwd">密码</span>
+                    </div>
+                    <input type="password" class="form-control" id="pwd" aria-describedby="label_pwd">
+                </div>
+                <div id="loginError" class="alert alert-danger collapse" role="alert">
+                    登陆失败
+                </div>
+                <button type="button" class="btn btn-outline-primary" onclick="login()">登陆</button>
+            </div>
+        </div>
+    </body>
+</html>
