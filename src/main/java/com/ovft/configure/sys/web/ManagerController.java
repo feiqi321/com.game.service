@@ -7,12 +7,14 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import com.ovft.configure.http.result.WebResult;
+import com.ovft.configure.sys.bean.WxConf;
 import com.ovft.configure.sys.service.IManagerService;
 
+import com.ovft.configure.utils.GlobalUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * ManagerController
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/game/manager")
 public class ManagerController {
+    private static final Logger logger = LoggerFactory.getLogger(ManagerController.class);
     @Autowired
     private IManagerService iManagerService;
 
@@ -40,5 +43,29 @@ public class ManagerController {
         }
         return result;
     }
-    
+
+    /**
+     *  第一次进入系统
+     *
+     * @return
+     */
+    @PostMapping(value = "/access")
+    public WebResult startEvent(@RequestBody WxConf wxConf)  {
+        logger.info("第一次进入系统");
+        WebResult result = new WebResult();
+        try {
+            WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode());
+            if (resultDto==null){
+                result.setCode("502");
+                result.setMsg("获取微信数据失败");
+            }else {
+                result.setData(resultDto);
+                result.setCode("200");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
 }
