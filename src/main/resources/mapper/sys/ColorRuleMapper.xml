@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovft.configure.sys.dao.ColorRuleMapper" >
+
+    <select id="findRule" parameterType="com.ovft.configure.sys.bean.ColorRuleDTO" resultType="com.ovft.configure.sys.bean.ColorRuleDTO">
+        select id,color1,color2,color3,scores,url from color_rule where color1 = #{color1} and color2=#{color2} and color = #{color3} limit 1
+    </select>
+
+
+</mapper>

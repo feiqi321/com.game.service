@@ -18,4 +18,6 @@ public interface IDeviceColorService {
 
     public int confirm(CollectDTO collectDTO);
 
+    public void view(CollectDTO collectDTO);
+
 }

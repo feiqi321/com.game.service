@@ -4,13 +4,13 @@
 <mapper namespace="com.ovft.configure.sys.dao.CollectMapper" >
 
     <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status
+        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores
         FROM collect
         where open_id = #{openId} and status = 0 order by id desc limit 1
     </select>
 
     <select id="listAllByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status
+        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores
         FROM collect
         where open_id = #{openId} order by id
     </select>
@@ -39,5 +39,19 @@
         WHERE id = #{id}
     </update>
 
+    <update id="complete" parameterType="com.ovft.configure.sys.bean.CollectDTO" flushCache="true">
+        UPDATE
+        collect
+        SET
+        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},scores = #{scores},url=#{url}
+        WHERE id = #{id}
+    </update>
 
+    <update id="view" parameterType="com.ovft.configure.sys.bean.CollectDTO" flushCache="true">
+        UPDATE
+        collect
+        SET
+        view_status = 1
+        WHERE open_id = #{openId}
+    </update>
 </mapper>

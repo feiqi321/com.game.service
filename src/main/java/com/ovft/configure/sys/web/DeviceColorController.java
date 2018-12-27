@@ -40,6 +40,8 @@ public class DeviceColorController {
             result.setData(resultDto);
             result.setCode("200");
         }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
             e.printStackTrace();
         }
         return  result;
@@ -64,6 +66,8 @@ public class DeviceColorController {
                 result.setData(deviceColorDTO);
             }
         }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
             e.printStackTrace();
         }
         return  result;
@@ -87,13 +91,15 @@ public class DeviceColorController {
                 result.setMsg("收集失败");
             }
         }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
             e.printStackTrace();
         }
         return  result;
     }
 
     /**
-     *  收集资源确认
+     *  展示个人收集的信息
      *
      * @return
      */
@@ -106,6 +112,28 @@ public class DeviceColorController {
             result.setCode("200");
             result.setData(list);
         }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
+    /**
+     *  阅览所有的手机列表
+     *
+     * @return
+     */
+    @PostMapping(value = "/view")
+    public WebResult view(@RequestBody CollectDTO collectDTO)  {
+        logger.info("展示个人收集的信息{}",collectDTO.getOpenId());
+        WebResult result = new WebResult();
+        try {
+            iDeviceColorService.view(collectDTO);
+            result.setCode("200");
+        }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
             e.printStackTrace();
         }
         return  result;

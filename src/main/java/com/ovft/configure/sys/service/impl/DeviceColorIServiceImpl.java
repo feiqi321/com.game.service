@@ -1,13 +1,7 @@
 package com.ovft.configure.sys.service.impl;
 
-import com.ovft.configure.sys.bean.CollectDTO;
-import com.ovft.configure.sys.bean.DeviceColorDTO;
-import com.ovft.configure.sys.bean.DeviceDTO;
-import com.ovft.configure.sys.bean.EventConfigDTO;
-import com.ovft.configure.sys.dao.CollectMapper;
-import com.ovft.configure.sys.dao.DeviceColorMapper;
-import com.ovft.configure.sys.dao.DeviceMapper;
-import com.ovft.configure.sys.dao.EventConfigMapper;
+import com.ovft.configure.sys.bean.*;
+import com.ovft.configure.sys.dao.*;
 import com.ovft.configure.sys.service.IDeviceColorService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.springframework.stereotype.Service;
@@ -28,6 +22,8 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
     private EventConfigMapper eventConfigMapper;
     @Resource
     private DeviceMapper deviceMapper;
+    @Resource
+    private ColorRuleMapper colorRuleMapper;
 
     @Override
     public DeviceColorDTO findByDeviceId(DeviceColorDTO deviceColorDTO){
@@ -124,7 +120,14 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         }else if (resultCollect.getColor2() > 0 && resultCollect.getColor3()==0){
             resultCollect.setColor3(resultColor.getColor());
             resultCollect.setStatus(1);
-            collectMapper.update(resultCollect);
+            ColorRuleDTO colorRuleDTO = new ColorRuleDTO();
+            colorRuleDTO.setColor1(resultCollect.getColor1());
+            colorRuleDTO.setColor2(resultCollect.getColor2());
+            colorRuleDTO.setColor3(resultColor.getColor());
+            colorRuleDTO = colorRuleMapper.findRule(colorRuleDTO);
+            resultCollect.setScores(colorRuleDTO.getScores());
+            resultCollect.setUrl(colorRuleDTO.getUrl());
+            collectMapper.complete(resultCollect);
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
@@ -155,6 +158,11 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
     public List<CollectDTO> listAllByOpenId(CollectDTO collectDTO){
         List<CollectDTO> list = collectMapper.listAllByOpenId(collectDTO);
         return list;
+    }
+
+    @Override
+    public void view(CollectDTO collectDTO){
+        collectMapper.view(collectDTO);
     }
 
 }

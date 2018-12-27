@@ -34,9 +34,9 @@ public class TaskServiceImpl implements TaskService {
             TaskDTO resultDTO = new TaskDTO();
             BeanUtils.copyProperties(temp,resultDTO);
             if (StringUtils.isNotEmpty(temp.getOpenId())){
-                resultDTO.setStatus(1);
+                resultDTO.setStatus(1);//已经领了奖励积分
             }else{
-                resultDTO.setStatus(0);
+                resultDTO.setStatus(0);//还没领奖励积分
             }
             CollectDTO collectDTO= new CollectDTO();
             collectDTO.setOpenId(taskDTO.getOpenId());

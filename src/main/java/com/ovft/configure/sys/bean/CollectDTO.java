@@ -26,6 +26,26 @@ public class CollectDTO implements Serializable {
     private int scores;
 
     private int hands;
+    //0 未阅览 1已经阅览
+    private int viewStatus;
+
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getViewStatus() {
+        return viewStatus;
+    }
+
+    public void setViewStatus(int viewStatus) {
+        this.viewStatus = viewStatus;
+    }
 
     public int getHands() {
         return hands;

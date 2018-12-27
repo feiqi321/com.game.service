@@ -19,4 +19,8 @@ public interface CollectMapper {
 
     public void update(CollectDTO collectDTO);
 
+    public void complete(CollectDTO collectDTO);
+
+    public void view(CollectDTO collectDTO);
+
 }
