@@ -21,6 +21,16 @@ public class CollectDTO implements Serializable {
     //0收集中  1完成收集
     private int status;
 
+    private int length;
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
     public int getId() {
         return id;
     }

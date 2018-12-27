@@ -14,7 +14,7 @@ public interface IDeviceColorService {
 
     public List<CollectDTO> listAllByOpenId(CollectDTO collectDTO);
 
-    public int collect(CollectDTO collectDTO);
+    public DeviceColorDTO collect(CollectDTO collectDTO);
 
     public int confirm(CollectDTO collectDTO);
 

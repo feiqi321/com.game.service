@@ -55,12 +55,13 @@ public class DeviceColorController {
         logger.info("收集资源判断{}{}",collectDTO.getDeviceId(),collectDTO.getOpenId());
         WebResult result = new WebResult();
         try {
-            int flag = iDeviceColorService.collect(collectDTO);
-            if (flag==1) {
-                result.setCode("200");
-            }else{
+            DeviceColorDTO deviceColorDTO = iDeviceColorService.collect(collectDTO);
+            if (deviceColorDTO == null) {
                 result.setCode("502");
-                result.setMsg("不能重复相同能量");
+                result.setMsg("不能收集此能量");
+            }else{
+                result.setCode("200");
+                result.setData(deviceColorDTO);
             }
         }catch (Exception e){
             e.printStackTrace();

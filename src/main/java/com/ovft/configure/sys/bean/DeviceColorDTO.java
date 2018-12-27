@@ -13,6 +13,26 @@ public class DeviceColorDTO implements Serializable {
 
     private int color;
 
+    private String url;
+    //收集持续时间
+    private int continuTime;
+
+    public int getContinuTime() {
+        return continuTime;
+    }
+
+    public void setContinuTime(int continuTime) {
+        this.continuTime = continuTime;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public int getId() {
         return id;
     }
