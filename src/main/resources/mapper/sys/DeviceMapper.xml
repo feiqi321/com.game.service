@@ -4,7 +4,7 @@
 <mapper namespace="com.ovft.configure.sys.dao.DeviceMapper" >
 
     <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
-        SELECT id,open_id as openId,device_id as deviceId
+        SELECT id,open_id as openId,device_id as deviceId,scores
         FROM device
         where open_id = #{openId} order by id desc limit 1
     </select>
@@ -17,11 +17,11 @@
         </selectKey>
         INSERT INTO device
         (
-        open_id,device_id,create_time,update_time
+        open_id,device_id,scores,create_time,update_time
         )
         VALUES
         (
-        #{openId},#{deviceId},now(),now()
+        #{openId},#{deviceId},0,now(),now()
         )
     </insert>
 
@@ -33,5 +33,11 @@
         WHERE open_id = #{openId}
     </update>
 
-
+    <update id="addScore" parameterType="com.ovft.configure.sys.bean.DeviceDTO" flushCache="true">
+        UPDATE
+        device
+        SET
+        scores=scores+#{scores}
+        WHERE open_id = #{openId}
+    </update>
 </mapper>

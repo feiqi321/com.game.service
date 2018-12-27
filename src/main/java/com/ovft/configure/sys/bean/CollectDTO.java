@@ -23,6 +23,26 @@ public class CollectDTO implements Serializable {
 
     private int length;
 
+    private int scores;
+
+    private int hands;
+
+    public int getHands() {
+        return hands;
+    }
+
+    public void setHands(int hands) {
+        this.hands = hands;
+    }
+
+    public int getScores() {
+        return scores;
+    }
+
+    public void setScores(int scores) {
+        this.scores = scores;
+    }
+
     public int getLength() {
         return length;
     }
