@@ -11,6 +11,7 @@ import com.ovft.configure.sys.dao.WxConfMapper;
 import com.ovft.configure.sys.service.IManagerService;
 
 import com.ovft.configure.utils.HttpClient;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,10 @@ public class ManagerServiceImpl implements IManagerService{
             DeviceDTO temp = deviceMapper.selectByOpenId(dto);
             wxConf.setDeviceId(temp.getDeviceId());
             wxConf.setOpenId(resultStr);
+            if (temp == null || StringUtils.isEmpty(temp.getOpenId())){
+                deviceMapper.save(dto);
+            }
+
         }
         return wxConf;
 

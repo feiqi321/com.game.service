@@ -37,7 +37,9 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         DeviceColorDTO resultColor = deviceColorMapper.findByDeviceId(deviceColorDTO);
         CollectDTO resultCollect = collectMapper.findByOpenId(collectDTO);
         //判断还没有收集过此能量
-        if (!(resultColor.getColor()==resultCollect.getColor1() || resultColor.getColor()==resultCollect.getColor2())){
+        if (resultCollect!=null && (resultColor.getColor()==resultCollect.getColor1() || resultColor.getColor()==resultCollect.getColor2())){
+            result = null;
+        }else{
             if (GlobalUtils.event == 1){//下雪
                     EventConfigDTO eventConfigDTO = new EventConfigDTO();
                     eventConfigDTO.setEvent(2);
@@ -76,8 +78,6 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     result.setUrl(resultColor.getUrl());
                     result.setContinuTime(eventConfigDTO.getEventTime());
             }
-        }else{
-            result = null;
         }
 
         return result;
@@ -90,21 +90,22 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         deviceColorDTO.setDeviceId(collectDTO.getDeviceId());
         DeviceColorDTO resultColor = deviceColorMapper.findByDeviceId(deviceColorDTO);
         CollectDTO resultCollect = collectMapper.findByOpenId(collectDTO);
-        if (resultCollect.getColor1()==0){
+        if (resultCollect !=null && resultCollect.getColor1()==0){
             resultCollect.setColor1(resultColor.getColor());
             resultCollect.setStatus(0);
-            collectMapper.update(resultCollect);
 
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 deviceDTO.setScores(50);
                 deviceMapper.addScore(deviceDTO);
+                resultCollect.setHands(resultCollect.getHands()+1);
             }
-        }else if (resultCollect.getColor1() > 0 && resultCollect.getColor2()==0){
+            collectMapper.update(resultCollect);
+        }else if (resultCollect !=null && resultCollect.getColor1() > 0 && resultCollect.getColor2()==0){
             resultCollect.setColor2(resultColor.getColor());
             resultCollect.setStatus(0);
-            collectMapper.update(resultCollect);
+
 
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
@@ -115,9 +116,11 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     deviceDTO.setScores(50);
                 }
                 deviceMapper.addScore(deviceDTO);
+                resultCollect.setHands(resultCollect.getHands()+1);
             }
+            collectMapper.update(resultCollect);
 
-        }else if (resultCollect.getColor2() > 0 && resultCollect.getColor3()==0){
+        }else if (resultCollect !=null && resultCollect.getColor2() > 0 && resultCollect.getColor3()==0){
             resultCollect.setColor3(resultColor.getColor());
             resultCollect.setStatus(1);
             ColorRuleDTO colorRuleDTO = new ColorRuleDTO();
@@ -125,31 +128,41 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             colorRuleDTO.setColor2(resultCollect.getColor2());
             colorRuleDTO.setColor3(resultColor.getColor());
             colorRuleDTO = colorRuleMapper.findRule(colorRuleDTO);
-            resultCollect.setScores(colorRuleDTO.getScores());
-            resultCollect.setUrl(colorRuleDTO.getUrl());
-            collectMapper.complete(resultCollect);
-            if (collectDTO.getLength()==0) {
-                DeviceDTO deviceDTO = new DeviceDTO();
-                deviceDTO.setOpenId(collectDTO.getOpenId());
-                if (resultCollect.getHands() == 2) {
-                    deviceDTO.setScores(150);
-                } else if(resultCollect.getHands() == 1){
-                    deviceDTO.setScores(100);
-                }else{
-                    deviceDTO.setScores(50);
+            if(colorRuleDTO == null){
+                flag = 0;
+            }else {
+                resultCollect.setScores(colorRuleDTO.getScores());
+                resultCollect.setUrl(colorRuleDTO.getUrl());
+
+                if (collectDTO.getLength() == 0) {
+                    DeviceDTO deviceDTO = new DeviceDTO();
+                    deviceDTO.setOpenId(collectDTO.getOpenId());
+                    if (resultCollect.getHands() == 2) {//已经2次手环在
+                        deviceDTO.setScores(150);
+                    } else if (resultCollect.getHands() == 1) {//已经1次手环在
+                        deviceDTO.setScores(100);
+                    } else {//已经0次手环在
+                        deviceDTO.setScores(50);
+                    }
+                    resultCollect.setHands(resultCollect.getHands() + 1);
+                    deviceMapper.addScore(deviceDTO);
                 }
-                deviceMapper.addScore(deviceDTO);
+                collectMapper.complete(resultCollect);
             }
         }else{
+            resultCollect = new CollectDTO();
+            resultCollect.setOpenId(collectDTO.getOpenId());
             resultCollect.setColor1(resultColor.getColor());
             resultCollect.setStatus(0);
-            collectMapper.save(resultCollect);
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 deviceDTO.setScores(50);
                 deviceMapper.addScore(deviceDTO);
+                resultCollect.setHands(1);
+                resultCollect.setViewStatus(2);//沒有完成收集
             }
+            collectMapper.save(resultCollect);
         }
 
         return flag;

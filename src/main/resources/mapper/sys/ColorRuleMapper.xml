@@ -4,7 +4,7 @@
 <mapper namespace="com.ovft.configure.sys.dao.ColorRuleMapper" >
 
     <select id="findRule" parameterType="com.ovft.configure.sys.bean.ColorRuleDTO" resultType="com.ovft.configure.sys.bean.ColorRuleDTO">
-        select id,color1,color2,color3,scores,url from color_rule where color1 = #{color1} and color2=#{color2} and color = #{color3} limit 1
+        select id,color1,color2,color3,scores,url from color_rule where color1 = #{color1} and color2=#{color2} and color3 = #{color3} limit 1
     </select>
 
 

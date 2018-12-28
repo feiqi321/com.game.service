@@ -3,16 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ovft.configure.sys.dao.CollectMapper" >
 
-    <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores
+    <select id="findByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
+        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores,hands
         FROM collect
         where open_id = #{openId} and status = 0 order by id desc limit 1
     </select>
 
     <select id="listAllByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores
+        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores,hands
         FROM collect
-        where open_id = #{openId} order by id
+        where open_id = #{openId} and status not in (2)order by id
     </select>
 
 
@@ -23,11 +23,11 @@
         </selectKey>
         INSERT INTO collect
         (
-        open_id,color1,color2,color3,status,create_time,update_time
+        open_id,color1,color2,color3,status,hands,view_status,create_time,update_time
         )
         VALUES
         (
-        #{openId},#{color1},#{color2},#{color3},#{status},now(),now()
+        #{openId},#{color1},#{color2},#{color3},#{status},#{hands},#{viewStatus},now(),now()
         )
     </insert>
 
@@ -35,7 +35,7 @@
         UPDATE
         collect
         SET
-        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status}
+        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},hands = #{hands}
         WHERE id = #{id}
     </update>
 
@@ -43,7 +43,7 @@
         UPDATE
         collect
         SET
-        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},scores = #{scores},url=#{url}
+        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},scores = #{scores},url=#{url},hands = #{hands},view_status=0
         WHERE id = #{id}
     </update>
 
