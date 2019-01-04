@@ -56,5 +56,46 @@ public class DeviceController {
         return  result;
     }
 
+    /**
+     *  领取奖励
+     *
+     * @return
+     */
+    @PostMapping(value = "/addScores")
+    public WebResult addScores(@RequestBody DeviceDTO deviceDTO)  {
+        logger.info("领取奖励{}-{}",deviceDTO.getOpenId(),deviceDTO.getScores());
+        WebResult result = new WebResult();
+        try {
+            iDeviceService.saveOrUpdate(deviceDTO);
+            result.setCode("200");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
+    /**
+     *  判断是否是资源或者是自己的手环
+     *
+     * @return
+     */
+    @PostMapping(value = "/checkDevice")
+    public WebResult checkDevice(@RequestBody DeviceDTO deviceDTO)  {
+        logger.info("判断是否是资源或者是自己的手环{}-{}",deviceDTO.getOpenId(),deviceDTO.getDeviceId());
+        WebResult result = new WebResult();
+        try {
+            int flag = iDeviceService.checkDevice(deviceDTO);
+            if (flag == 1) {
+                result.setCode("200");
+            }else{
+                result.setCode("506");
+                result.setMsg("非指定资源或手环");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  result;
+    }
+
 
 }

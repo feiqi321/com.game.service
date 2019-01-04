@@ -41,13 +41,13 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             result = null;
         }else{
             if (GlobalUtils.event == 1){//下雪
-                    EventConfigDTO eventConfigDTO = new EventConfigDTO();
-                    eventConfigDTO.setEvent(2);
-                    eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
-                    result.setDeviceId(collectDTO.getDeviceId());
-                    result.setColor(resultColor.getColor());
-                    result.setUrl(resultColor.getUrl());
-                    result.setContinuTime(eventConfigDTO.getEventTime());
+                EventConfigDTO eventConfigDTO = new EventConfigDTO();
+                eventConfigDTO.setEvent(2);
+                eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
+                result.setDeviceId(collectDTO.getDeviceId());
+                result.setColor(resultColor.getColor());
+                result.setUrl(resultColor.getUrl());
+                result.setContinuTime(eventConfigDTO.getEventTime());
 
             }else if (GlobalUtils.event == 2){//地震
                 if (resultColor.getColor() == 4){//绿色能量不能收集
@@ -62,21 +62,21 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     result.setContinuTime(eventConfigDTO.getEventTime());
                 }
             }else if (GlobalUtils.event == 3){//怪兽袭击
-                    EventConfigDTO eventConfigDTO = new EventConfigDTO();
-                    eventConfigDTO.setEvent(2);
-                    eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
-                    result.setDeviceId(collectDTO.getDeviceId());
-                    result.setColor(resultColor.getColor());
-                    result.setUrl(resultColor.getUrl());
-                    result.setContinuTime(eventConfigDTO.getEventTime());
+                EventConfigDTO eventConfigDTO = new EventConfigDTO();
+                eventConfigDTO.setEvent(2);
+                eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
+                result.setDeviceId(collectDTO.getDeviceId());
+                result.setColor(resultColor.getColor());
+                result.setUrl(resultColor.getUrl());
+                result.setContinuTime(eventConfigDTO.getEventTime());
             }else{//沒有事件发生
-                    EventConfigDTO eventConfigDTO = new EventConfigDTO();
-                    eventConfigDTO.setEvent(1);
-                    eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
-                    result.setDeviceId(collectDTO.getDeviceId());
-                    result.setColor(resultColor.getColor());
-                    result.setUrl(resultColor.getUrl());
-                    result.setContinuTime(eventConfigDTO.getEventTime());
+                EventConfigDTO eventConfigDTO = new EventConfigDTO();
+                eventConfigDTO.setEvent(1);
+                eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
+                result.setDeviceId(collectDTO.getDeviceId());
+                result.setColor(resultColor.getColor());
+                result.setUrl(resultColor.getUrl());
+                result.setContinuTime(eventConfigDTO.getEventTime());
             }
         }
 
@@ -131,12 +131,13 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             if(colorRuleDTO == null){
                 flag = 0;
             }else {
+                DeviceDTO deviceDTO = new DeviceDTO();
                 resultCollect.setScores(colorRuleDTO.getScores());
                 resultCollect.setUrl(colorRuleDTO.getUrl());
                 resultCollect.setUrl2(colorRuleDTO.getUrl2());
 
                 if (collectDTO.getLength() == 0) {
-                    DeviceDTO deviceDTO = new DeviceDTO();
+
                     deviceDTO.setOpenId(collectDTO.getOpenId());
                     if (resultCollect.getHands() == 2) {//已经2次手环在
                         deviceDTO.setScores(150);
@@ -149,6 +150,8 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     deviceMapper.addScore(deviceDTO);
                 }
                 collectMapper.complete(resultCollect);
+                deviceDTO.setScores(colorRuleDTO.getScores());
+                deviceMapper.addScore(deviceDTO);
             }
         }else{
             resultCollect = new CollectDTO();

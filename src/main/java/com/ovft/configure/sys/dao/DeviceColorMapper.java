@@ -1,6 +1,7 @@
 package com.ovft.configure.sys.dao;
 
 import com.ovft.configure.sys.bean.DeviceColorDTO;
+import com.ovft.configure.sys.bean.DeviceDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,5 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface DeviceColorMapper {
 
     public DeviceColorDTO findByDeviceId(DeviceColorDTO deviceColorDTO);
+
 
 }

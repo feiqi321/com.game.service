@@ -17,4 +17,6 @@ public interface DeviceMapper {
 
     public void addScore(DeviceDTO dto);
 
+    public int checkDevice(DeviceDTO dto);
+
 }

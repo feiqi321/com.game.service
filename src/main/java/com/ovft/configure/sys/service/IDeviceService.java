@@ -15,4 +15,8 @@ public interface IDeviceService {
 
     public int queryEvent();
 
+    public int checkDevice(DeviceDTO deviceDTO);
+
+    public void addScores(DeviceDTO deviceDTO);
+
 }

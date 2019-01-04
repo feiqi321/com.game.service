@@ -15,6 +15,16 @@ public class DeviceDTO implements Serializable {
 
     private int scores;
 
+    private int type;//1蓝牙资源  2手环
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public int getScores() {
         return scores;
     }

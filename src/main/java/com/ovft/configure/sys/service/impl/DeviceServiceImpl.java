@@ -1,6 +1,8 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.sys.bean.DeviceColorDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
+import com.ovft.configure.sys.dao.DeviceColorMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.utils.GlobalUtils;
@@ -21,6 +23,8 @@ public class DeviceServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
     @Resource
     private DeviceMapper deviceMapper;
+    @Resource
+    private DeviceColorMapper deviceColorMapper;
 
     @Override
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO){
@@ -39,6 +43,31 @@ public class DeviceServiceImpl implements IDeviceService {
         }
 
     }
+
+    @Override
+    public void addScores(DeviceDTO deviceDTO){
+        deviceMapper.addScore(deviceDTO);
+    }
+
+    @Override
+    public int checkDevice(DeviceDTO deviceDTO){
+        int flag = 0;//不是蓝牙资源或者手环
+        if (deviceDTO.getType()==1){////1蓝牙资源  2手环
+            DeviceColorDTO deviceColorDTO = new DeviceColorDTO();
+            deviceColorDTO.setDeviceId(deviceDTO.getDeviceId());
+            DeviceColorDTO temp = deviceColorMapper.findByDeviceId(deviceColorDTO);
+            if (temp ==null || temp.getDeviceId()==null || temp.getDeviceId().equals("")){
+                flag = 0;
+            }else {
+                flag = 1; //是蓝牙资源
+            }
+        }else if (deviceDTO.getType()==2){
+            flag = deviceMapper.checkDevice(deviceDTO);
+        }
+
+        return flag;
+    }
+
     @Override
     @Async
     public void startEvent(){

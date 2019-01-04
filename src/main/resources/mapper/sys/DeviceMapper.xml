@@ -40,4 +40,10 @@
         scores=scores+#{scores}
         WHERE open_id = #{openId}
     </update>
+
+    <select id="checkDevice" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="java.lang.Integer">
+        SELECT count(id)
+        FROM device
+        where open_id = #{openId} and device_id = #{deviceId}
+    </select>
 </mapper>
