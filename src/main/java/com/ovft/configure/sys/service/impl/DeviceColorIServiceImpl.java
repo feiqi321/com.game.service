@@ -133,6 +133,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }else {
                 resultCollect.setScores(colorRuleDTO.getScores());
                 resultCollect.setUrl(colorRuleDTO.getUrl());
+                resultCollect.setUrl2(colorRuleDTO.getUrl2());
 
                 if (collectDTO.getLength() == 0) {
                     DeviceDTO deviceDTO = new DeviceDTO();

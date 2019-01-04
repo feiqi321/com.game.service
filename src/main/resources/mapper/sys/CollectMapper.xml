@@ -4,13 +4,13 @@
 <mapper namespace="com.ovft.configure.sys.dao.CollectMapper" >
 
     <select id="findByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores,hands
+        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
         FROM collect
         where open_id = #{openId} and status = 0 order by id desc limit 1
     </select>
 
     <select id="listAllByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,scores,hands
+        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
         FROM collect
         where open_id = #{openId} and status not in (2)order by id
     </select>
@@ -43,7 +43,7 @@
         UPDATE
         collect
         SET
-        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},scores = #{scores},url=#{url},hands = #{hands},view_status=0
+        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},scores = #{scores},url=#{url},url2=#{url2},hands = #{hands},view_status=0
         WHERE id = #{id}
     </update>
 
