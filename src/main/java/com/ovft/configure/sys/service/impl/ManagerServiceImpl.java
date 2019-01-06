@@ -3,8 +3,10 @@ package com.ovft.configure.sys.service.impl;
 import javax.annotation.Resource;
 
 import com.ovfintech.common.json.JsonUtil;
+import com.ovft.configure.sys.bean.DeviceColorDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.bean.WxConf;
+import com.ovft.configure.sys.dao.DeviceColorMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.dao.ManagerMapper;
 import com.ovft.configure.sys.dao.WxConfMapper;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * ManagerServiceImpl
@@ -30,6 +33,8 @@ public class ManagerServiceImpl implements IManagerService{
     private WxConfMapper wxConfMapper;
     @Resource
     private DeviceMapper deviceMapper;
+    @Resource
+    private DeviceColorMapper deviceColorMapper;
 
     @Override
     public boolean login(String username, String pwd) {
@@ -61,6 +66,8 @@ public class ManagerServiceImpl implements IManagerService{
             if (temp == null || StringUtils.isEmpty(temp.getOpenId())){
                 deviceMapper.save(dto);
             }
+            List<DeviceColorDTO> list =  deviceColorMapper.findAllColor();
+            wxConf.setList(list);
 
         }
         return wxConf;

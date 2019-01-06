@@ -151,7 +151,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 }
                 collectMapper.complete(resultCollect);
                 deviceDTO.setScores(colorRuleDTO.getScores());
-                deviceMapper.addScore(deviceDTO);
+                deviceMapper.addScore(deviceDTO);//自动领取规则对应的积分
             }
         }else{
             resultCollect = new CollectDTO();

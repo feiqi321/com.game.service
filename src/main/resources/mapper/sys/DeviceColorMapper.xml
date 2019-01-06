@@ -9,4 +9,9 @@
         where device_id = #{deviceId} order by id desc limit 1
     </select>
 
+    <select id="findAllColor"  resultType="com.ovft.configure.sys.bean.DeviceColorDTO">
+        SELECT id,device_id as deviceId,color,url
+        FROM device_color
+    </select>
+
 </mapper>

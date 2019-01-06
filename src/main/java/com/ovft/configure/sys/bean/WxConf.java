@@ -1,6 +1,7 @@
 package com.ovft.configure.sys.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by looyer on 2018/12/27.
@@ -18,6 +19,16 @@ public class WxConf implements Serializable {
     private String deviceId;
 
     private String openId;
+
+    private List<DeviceColorDTO> list;
+
+    public List<DeviceColorDTO> getList() {
+        return list;
+    }
+
+    public void setList(List<DeviceColorDTO> list) {
+        this.list = list;
+    }
 
     public String getOpenId() {
         return openId;
