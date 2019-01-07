@@ -37,6 +37,15 @@
         UPDATE
         device
         SET
+        total_scores = scores+#{scores},
+        scores=scores+#{scores}
+        WHERE open_id = #{openId} and game_id = #{gameId}
+    </update>
+
+    <update id="addDestroyScore" parameterType="com.ovft.configure.sys.bean.DeviceDTO" flushCache="true">
+        UPDATE
+        device
+        SET
         scores=scores+#{scores}
         WHERE open_id = #{openId} and game_id = #{gameId}
     </update>

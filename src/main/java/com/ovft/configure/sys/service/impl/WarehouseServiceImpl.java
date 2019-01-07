@@ -95,7 +95,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         deviceDTO.setOpenId(buildDTO.getOpenId());
         deviceDTO.setGameId(buildDTO.getGameId());
         deviceDTO.setScores(buildDTO.getDestroyPrice());
-        deviceMapper.addScore(deviceDTO);
+        deviceMapper.addDestroyScore(deviceDTO);
     }
 
 }

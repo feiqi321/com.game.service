@@ -17,7 +17,17 @@ public class DeviceDTO implements Serializable {
 
     private int scores;
 
+    private int totalScores;
+
     private int type;//1蓝牙资源  2手环
+
+    public int getTotalScores() {
+        return totalScores;
+    }
+
+    public void setTotalScores(int totalScores) {
+        this.totalScores = totalScores;
+    }
 
     public String getGameId() {
         return gameId;
