@@ -14,18 +14,18 @@
     </select>
 
     <select id="findWareById"  resultType="com.ovft.configure.sys.bean.Warehouse" parameterType="com.ovft.configure.sys.bean.Warehouse">
-        SELECT open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
+        SELECT id,open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse where id = #{id}
     </select>
 
     <select id="findAllMyWareHouse" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
-        SELECT open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
+        SELECT id,open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse
         where open_id = #{openId} and game_id = #{gameId} and type=#{type}
     </select>
 
     <select id="findExsit" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
-        SELECT open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
+        SELECT id,open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse
         where open_id = #{openId} and game_id = #{gameId} and shop_id = #{shopId} limit 1
     </select>
@@ -38,11 +38,11 @@
         </selectKey>
         INSERT INTO warehouse
         (
-        open_id,game_id,price,destroy_price,num,url1,url2,url3,type
+        open_id,game_id,price,destroy_price,num,url1,url2,url3,type,shop_id
         )
         VALUES
         (
-        #{openId},#{gameId},#{price},#{destroyPrice},#{num},#{url1},#{url2},#{url3},#{type}
+        #{openId},#{gameId},#{price},#{destroyPrice},#{num},#{url1},#{url2},#{url3},#{type},#{shopId}
         )
     </insert>
 
@@ -50,7 +50,7 @@
         UPDATE
         warehouse
         SET
-        num = # {num}
+        num = #{num}
         WHERE id = #{id}
     </update>
 

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface WarehouseService {
 
-    public List<Shop> findAllShop();
+    public List<Shop> findAllShop(Shop shop);
 
     public List<Warehouse> findAllMyWareHouse(Warehouse warehouse);
 

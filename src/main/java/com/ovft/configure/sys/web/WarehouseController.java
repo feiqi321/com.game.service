@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,11 +33,11 @@ public class WarehouseController {
      * @return
      */
     @PostMapping(value = "/findAllShop")
-    public WebResult findAllShop()  {
+    public WebResult findAllShop(@RequestBody Shop shop)  {
         logger.info("查询商店所有商品");
         WebResult result = new WebResult();
         try {
-            List<Shop> list = warehouseService.findAllShop();
+            List<Shop> list = warehouseService.findAllShop(shop);
             result.setData(list);
             result.setCode("200");
         }catch (Exception e){
@@ -53,7 +54,7 @@ public class WarehouseController {
      * @return
      */
     @PostMapping(value = "/findAllMyWareHouse")
-    public WebResult findAllMyWareHouse(Warehouse warehouse)  {
+    public WebResult findAllMyWareHouse(@RequestBody Warehouse warehouse)  {
         logger.info("查询用户拥有的商品");
         WebResult result = new WebResult();
         try {
@@ -74,7 +75,7 @@ public class WarehouseController {
      * @return
      */
     @PostMapping(value = "/buyProduct")
-    public WebResult buyProduct(Warehouse warehouse)  {
+    public WebResult buyProduct(@RequestBody Warehouse warehouse)  {
         logger.info("购买");
         WebResult result = new WebResult();
         try {
@@ -101,7 +102,7 @@ public class WarehouseController {
      * @return
      */
     @PostMapping(value = "/build")
-    public WebResult build(BuildDTO buildDTO)  {
+    public WebResult build(@RequestBody BuildDTO buildDTO)  {
         logger.info("建造");
         WebResult result = new WebResult();
         try {
@@ -131,7 +132,7 @@ public class WarehouseController {
      * @return
      */
     @PostMapping(value = "/destroy")
-    public WebResult destroy(BuildDTO buildDTO)  {
+    public WebResult destroy(@RequestBody BuildDTO buildDTO)  {
         logger.info("拆除");
         WebResult result = new WebResult();
         try {
@@ -152,7 +153,7 @@ public class WarehouseController {
      * @return
      */
     @PostMapping(value = "/findMyBuild")
-    public WebResult findMyBuild(BuildDTO buildDTO)  {
+    public WebResult findMyBuild(@RequestBody BuildDTO buildDTO)  {
         logger.info("获取自己所有的已经建造的建筑");
         WebResult result = new WebResult();
         try {

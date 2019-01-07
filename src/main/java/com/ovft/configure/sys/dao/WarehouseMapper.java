@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface WarehouseMapper {
 
-    public List<Shop> findAllShop();
+    public List<Shop> findAllShop(Shop shop);
 
     public List<Warehouse> findAllMyWareHouse(Warehouse warehouse);
 

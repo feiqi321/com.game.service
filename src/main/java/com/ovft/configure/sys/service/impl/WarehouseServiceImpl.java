@@ -9,6 +9,7 @@ import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.dao.WarehouseMapper;
 import com.ovft.configure.sys.service.WarehouseService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by looyer on 2019/1/7.
  */
+@Service
 public class WarehouseServiceImpl implements WarehouseService {
 
     @Resource
@@ -25,8 +27,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Resource
     private BuildMapper buildMapper;
 
-    public List<Shop> findAllShop(){
-        return warehouseMapper.findAllShop();
+    public List<Shop> findAllShop(Shop shop){
+        return warehouseMapper.findAllShop(shop);
     }
 
     public List<Warehouse> findAllMyWareHouse(Warehouse warehouse){
@@ -48,6 +50,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         if (tempResult ==null || StringUtils.isEmpty(tempResult.getOpenId())){
             warehouse.setDestroyPrice(shop.getDestroyPrice());
             warehouse.setPrice(shop.getPrice());
+            warehouse.setType(shop.getType());
             warehouse.setUrl1(shop.getUrl1());
             warehouse.setUrl2(shop.getUrl2());
             warehouse.setUrl3(shop.getUrl3());
@@ -76,7 +79,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             buildDTO.setUrl(tempResult.getUrl3());
             buildDTO.setDestroyPrice(tempResult.getDestroyPrice());
             buildMapper.save(buildDTO);
-            temp.setNum(temp.getNum()-1);
+            temp.setNum(tempResult.getNum()-1);
             warehouseMapper.update(temp);
             return 1;
         }
