@@ -1,8 +1,10 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.sys.bean.BuildDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.bean.Shop;
 import com.ovft.configure.sys.bean.Warehouse;
+import com.ovft.configure.sys.dao.BuildMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.dao.WarehouseMapper;
 import com.ovft.configure.sys.service.WarehouseService;
@@ -20,6 +22,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     private WarehouseMapper warehouseMapper;
     @Resource
     private DeviceMapper deviceMapper;
+    @Resource
+    private BuildMapper buildMapper;
 
     public List<Shop> findAllShop(){
         return warehouseMapper.findAllShop();
@@ -52,9 +56,43 @@ public class WarehouseServiceImpl implements WarehouseService {
             tempResult.setNum(tempResult.getNum()+warehouse.getNum());
             warehouseMapper.update(tempResult);
         }
+        deviceDTO.setScores(-shop.getPrice());
+        deviceMapper.addScore(deviceDTO);
         return 1;
 
 
+    }
+
+
+    public int build(BuildDTO buildDTO){
+        Warehouse temp = new Warehouse();
+        temp.setId(buildDTO.getWareId());
+        Warehouse tempResult = warehouseMapper.findWareById(temp);
+        if (tempResult ==null || StringUtils.isEmpty(tempResult.getOpenId())){
+            return 9;//建筑不存在
+        }else if (tempResult.getNum()<=0){
+            return 8;//数量不足
+        }else{
+            buildDTO.setUrl(tempResult.getUrl3());
+            buildDTO.setDestroyPrice(tempResult.getDestroyPrice());
+            buildMapper.save(buildDTO);
+            temp.setNum(temp.getNum()-1);
+            warehouseMapper.update(temp);
+            return 1;
+        }
+    }
+
+    public List<BuildDTO> findMyBuild(BuildDTO buildDTO){
+        return buildMapper.findMyBuild(buildDTO);
+    }
+
+    public void destroy(BuildDTO buildDTO){
+        buildMapper.del(buildDTO);
+        DeviceDTO deviceDTO = new DeviceDTO();
+        deviceDTO.setOpenId(buildDTO.getOpenId());
+        deviceDTO.setGameId(buildDTO.getGameId());
+        deviceDTO.setScores(buildDTO.getDestroyPrice());
+        deviceMapper.addScore(deviceDTO);
     }
 
 }

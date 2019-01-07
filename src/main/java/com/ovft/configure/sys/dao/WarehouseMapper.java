@@ -24,4 +24,7 @@ public interface WarehouseMapper {
 
     public void update(Warehouse warehouse);
 
+    public Warehouse findWareById(Warehouse warehouse);
+
+
 }

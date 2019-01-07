@@ -13,6 +13,11 @@
         FROM shop where id = #{id}
     </select>
 
+    <select id="findWareById"  resultType="com.ovft.configure.sys.bean.Warehouse" parameterType="com.ovft.configure.sys.bean.Warehouse">
+        SELECT open_id as openId,game_id as gameId,price,destroy_price as destroyPrice,num,url1,url2,url3
+        FROM warehouse where id = #{id}
+    </select>
+
     <select id="findAllMyWareHouse" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
         SELECT open_id as openId,game_id as gameId,price,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse

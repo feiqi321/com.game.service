@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovft.configure.sys.dao.BuildMapper" >
+
+    <select id="findMyBuild"  resultType="com.ovft.configure.sys.bean.BuildDTO" parameterType="com.ovft.configure.sys.bean.BuildDTO">
+        SELECT id,open_id as openId,destroy_price as destroyPrice,game_id as gameId,ware_id as wareId,posi,url
+        FROM build
+    </select>
+
+    <insert id="save" parameterType="com.ovft.configure.sys.bean.BuildDTO">
+        <selectKey resultType="java.lang.Integer" keyProperty="id"
+                   order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO build
+        (
+        open_id,game_id,destroy_price,ware_id,posi,url
+        )
+        VALUES
+        (
+        #{openId},#{gameId},#{destroyPrice},#{wareId},#{posi},#{url}
+        )
+    </insert>
+
+    <delete id="del" parameterType="com.ovft.configure.sys.bean.Warehouse" flushCache="true">
+        delete from build where id = #{id}
+    </delete>
+
+
+</mapper>
