@@ -19,6 +19,16 @@ public class Shop implements Serializable {
 
     private String url3;
 
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public int getId() {
         return id;
     }

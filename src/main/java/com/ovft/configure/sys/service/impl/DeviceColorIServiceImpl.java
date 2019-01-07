@@ -47,9 +47,11 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 result.setDeviceId(collectDTO.getDeviceId());
                 result.setColor(resultColor.getColor());
                 result.setUrl(resultColor.getUrl());
+                result.setEvent(1);
                 result.setContinuTime(eventConfigDTO.getEventTime());
 
             }else if (GlobalUtils.event == 2){//地震
+                result.setEvent(2);
                 if (resultColor.getColor() == 4){//绿色能量不能收集
                     result = null;
                 }else{//在30cm外
@@ -62,6 +64,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     result.setContinuTime(eventConfigDTO.getEventTime());
                 }
             }else if (GlobalUtils.event == 3){//怪兽袭击
+                result.setEvent(3);
                 EventConfigDTO eventConfigDTO = new EventConfigDTO();
                 eventConfigDTO.setEvent(2);
                 eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
@@ -70,6 +73,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 result.setUrl(resultColor.getUrl());
                 result.setContinuTime(eventConfigDTO.getEventTime());
             }else{//沒有事件发生
+                result.setEvent(0);
                 EventConfigDTO eventConfigDTO = new EventConfigDTO();
                 eventConfigDTO.setEvent(1);
                 eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);

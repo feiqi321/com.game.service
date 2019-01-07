@@ -4,28 +4,28 @@
 <mapper namespace="com.ovft.configure.sys.dao.WarehouseMapper" >
 
     <select id="findAllShop"  resultType="com.ovft.configure.sys.bean.Shop">
-        SELECT id,price,destroy_price as destroyPrice,url1,url2,url3
-        FROM shop
+        SELECT id,price,type,destroy_price as destroyPrice,url1,url2,url3
+        FROM shop where type=#{type}
     </select>
 
     <select id="findById"  resultType="com.ovft.configure.sys.bean.Shop" parameterType="com.ovft.configure.sys.bean.Shop">
-        SELECT id,price,destroy_price as destroyPrice,url1,url2,url3
+        SELECT id,price,type,destroy_price as destroyPrice,url1,url2,url3
         FROM shop where id = #{id}
     </select>
 
     <select id="findWareById"  resultType="com.ovft.configure.sys.bean.Warehouse" parameterType="com.ovft.configure.sys.bean.Warehouse">
-        SELECT open_id as openId,game_id as gameId,price,destroy_price as destroyPrice,num,url1,url2,url3
+        SELECT open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse where id = #{id}
     </select>
 
     <select id="findAllMyWareHouse" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
-        SELECT open_id as openId,game_id as gameId,price,destroy_price as destroyPrice,num,url1,url2,url3
+        SELECT open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse
-        where open_id = #{openId} and game_id = #{gameId}
+        where open_id = #{openId} and game_id = #{gameId} and type=#{type}
     </select>
 
     <select id="findExsit" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
-        SELECT open_id as openId,game_id as gameId,price,destroy_price as destroyPrice,num,url1,url2,url3
+        SELECT open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse
         where open_id = #{openId} and game_id = #{gameId} and shop_id = #{shopId} limit 1
     </select>
@@ -38,11 +38,11 @@
         </selectKey>
         INSERT INTO warehouse
         (
-        open_id,game_id,price,destroy_price,num,url1,url2,url3
+        open_id,game_id,price,destroy_price,num,url1,url2,url3,type
         )
         VALUES
         (
-        #{openId},#{gameId},#{price},#{destroyPrice},#{num},#{url1},#{url2},#{url3}
+        #{openId},#{gameId},#{price},#{destroyPrice},#{num},#{url1},#{url2},#{url3},#{type}
         )
     </insert>
 

@@ -17,6 +17,16 @@ public class DeviceColorDTO implements Serializable {
     //收集持续时间
     private int continuTime;
 
+    private int event;
+
+    public int getEvent() {
+        return event;
+    }
+
+    public void setEvent(int event) {
+        this.event = event;
+    }
+
     public int getContinuTime() {
         return continuTime;
     }
