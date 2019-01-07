@@ -4,6 +4,7 @@ import com.ovft.configure.sys.bean.DeviceColorDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.dao.DeviceColorMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
+import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,8 @@ public class DeviceServiceImpl implements IDeviceService {
     private DeviceMapper deviceMapper;
     @Resource
     private DeviceColorMapper deviceColorMapper;
+    @Resource
+    private GameService gameService;
 
     @Override
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO){
@@ -122,6 +125,8 @@ public class DeviceServiceImpl implements IDeviceService {
             EventWebSocket.sendInfo("30");
             TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = -1;//游戏结束
+
+            gameService.endGame();//将游戏的状态设置为1 ，已结束
         } catch (Exception e) {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;

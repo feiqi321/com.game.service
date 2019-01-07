@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovft.configure.sys.dao.WarehouseMapper" >
+
+    <select id="findAllShop"  resultType="com.ovft.configure.sys.bean.Shop">
+        SELECT id,price,destroy_price as destroyPrice,url1,url2,url3
+        FROM shop
+    </select>
+
+    <select id="findById"  resultType="com.ovft.configure.sys.bean.Shop" parameterType="com.ovft.configure.sys.bean.Shop">
+        SELECT id,price,destroy_price as destroyPrice,url1,url2,url3
+        FROM shop where id = #{id}
+    </select>
+
+    <select id="findAllMyWareHouse" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
+        SELECT open_id as openId,game_id as gameId,price,destroy_price as destroyPrice,num,url1,url2,url3
+        FROM warehouse
+        where open_id = #{openId} and game_id = #{gameId}
+    </select>
+
+    <select id="findExsit" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
+        SELECT open_id as openId,game_id as gameId,price,destroy_price as destroyPrice,num,url1,url2,url3
+        FROM warehouse
+        where open_id = #{openId} and game_id = #{gameId} and shop_id = #{shopId} limit 1
+    </select>
+
+
+    <insert id="save" parameterType="com.ovft.configure.sys.bean.Warehouse">
+        <selectKey resultType="java.lang.Integer" keyProperty="id"
+                   order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO warehouse
+        (
+        open_id,game_id,price,destroy_price,num,url1,url2,url3
+        )
+        VALUES
+        (
+        #{openId},#{gameId},#{price},#{destroyPrice},#{num},#{url1},#{url2},#{url3}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ovft.configure.sys.bean.Warehouse" flushCache="true">
+        UPDATE
+        warehouse
+        SET
+        num = # {num}
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

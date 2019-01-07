@@ -11,11 +11,21 @@ public class DeviceDTO implements Serializable {
 
     private String openId;
 
+    private String gameId;
+
     private String deviceId;
 
     private int scores;
 
     private int type;//1蓝牙资源  2手环
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+    }
 
     public int getType() {
         return type;

@@ -58,14 +58,19 @@ public class ManagerServiceImpl implements IManagerService{
             wxConf = null;
         }else{
             String resultStr = result.get("openid");
+            logger.info("resultStr:"+resultStr);
             DeviceDTO dto = new DeviceDTO();
             dto.setOpenId(resultStr);
             DeviceDTO temp = deviceMapper.selectByOpenId(dto);
-            wxConf.setDeviceId(temp.getDeviceId());
             wxConf.setOpenId(resultStr);
+            logger.info("1111");
             if (temp == null || StringUtils.isEmpty(temp.getOpenId())){
                 deviceMapper.save(dto);
+                wxConf.setDeviceId("");
+            }else{
+                wxConf.setDeviceId(temp.getDeviceId());
             }
+            logger.info("222");
             List<DeviceColorDTO> list =  deviceColorMapper.findAllColor();
             wxConf.setList(list);
 

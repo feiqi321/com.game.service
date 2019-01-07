@@ -4,9 +4,9 @@
 <mapper namespace="com.ovft.configure.sys.dao.DeviceMapper" >
 
     <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
-        SELECT id,open_id as openId,device_id as deviceId,scores
+        SELECT id,open_id as openId,device_id as deviceId,scores,game_id as gameId
         FROM device
-        where open_id = #{openId} order by id desc limit 1
+        where open_id = #{openId} and game_id = #{gameId} order by id desc limit 1
     </select>
 
 
@@ -38,7 +38,7 @@
         device
         SET
         scores=scores+#{scores}
-        WHERE open_id = #{openId}
+        WHERE open_id = #{openId} and game_id = #{gameId}
     </update>
 
     <select id="checkDevice" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="java.lang.Integer">
