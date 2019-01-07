@@ -13,11 +13,21 @@ public class TaskDTO implements Serializable {
 
     private String openId;
 
+    private String gameId;
+
     private int taskNum;
 
     private int  scores;
 
     private int status;
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+    }
 
     public int getMyNum() {
         return myNum;

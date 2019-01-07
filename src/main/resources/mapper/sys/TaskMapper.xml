@@ -5,7 +5,7 @@
 
     <select id="findByTask" parameterType="com.ovft.configure.sys.bean.TaskDTO" resultType="com.ovft.configure.sys.bean.TaskDTO">
         select m.id,m.open_id,t.task_num,t.scores
-        from (select * from myTask where open_id = #{openId}) m RIGHT JOIN task t on m.task_id=t.id
+        from (select * from myTask where open_id = #{openId} and game_id = #{gameId}) m RIGHT JOIN task t on m.task_id=t.id
     </select>
 
 

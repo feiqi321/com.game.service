@@ -98,6 +98,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 deviceDTO.setScores(50);
+                deviceDTO.setGameId(collectDTO.getGameId());
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(resultCollect.getHands()+1);
             }
@@ -115,6 +116,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 } else {
                     deviceDTO.setScores(50);
                 }
+                deviceDTO.setGameId(collectDTO.getGameId());
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(resultCollect.getHands()+1);
             }
@@ -147,10 +149,12 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                         deviceDTO.setScores(50);
                     }
                     resultCollect.setHands(resultCollect.getHands() + 1);
+                    deviceDTO.setGameId(collectDTO.getGameId());
                     deviceMapper.addScore(deviceDTO);
                 }
                 collectMapper.complete(resultCollect);
                 deviceDTO.setScores(colorRuleDTO.getScores());
+                deviceDTO.setGameId(collectDTO.getGameId());
                 deviceMapper.addScore(deviceDTO);//自动领取规则对应的积分
             }
         }else{
@@ -161,6 +165,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
+                deviceDTO.setGameId(collectDTO.getGameId());
                 deviceDTO.setScores(50);
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(1);

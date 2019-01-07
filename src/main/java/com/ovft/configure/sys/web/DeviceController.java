@@ -66,7 +66,7 @@ public class DeviceController {
         logger.info("领取奖励{}-{}",deviceDTO.getOpenId(),deviceDTO.getScores());
         WebResult result = new WebResult();
         try {
-            iDeviceService.saveOrUpdate(deviceDTO);
+            iDeviceService.addScores(deviceDTO);
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();

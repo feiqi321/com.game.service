@@ -13,6 +13,8 @@ public class CollectDTO implements Serializable {
 
     private String openId;
 
+    private String gameId;
+
     private int color1;
 
     private int color2;
@@ -32,6 +34,14 @@ public class CollectDTO implements Serializable {
     private String url;
 
     private String url2;
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+    }
 
     public String getUrl2() {
         return url2;

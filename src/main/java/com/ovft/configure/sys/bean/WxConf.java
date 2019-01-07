@@ -20,7 +20,17 @@ public class WxConf implements Serializable {
 
     private String openId;
 
+    private String gameId;
+
     private List<DeviceColorDTO> list;
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+    }
 
     public List<DeviceColorDTO> getList() {
         return list;

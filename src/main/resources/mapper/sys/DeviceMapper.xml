@@ -17,11 +17,11 @@
         </selectKey>
         INSERT INTO device
         (
-        open_id,device_id,scores,create_time,update_time
+        open_id,device_id,scores,game_id,create_time,update_time
         )
         VALUES
         (
-        #{openId},#{deviceId},0,now(),now()
+        #{openId},#{deviceId},0,#{gameId},now(),now()
         )
     </insert>
 
@@ -30,7 +30,7 @@
         device
         SET
         device_id=#{deviceId}
-        WHERE open_id = #{openId}
+        WHERE open_id = #{openId} and game_id=#{gameId}
     </update>
 
     <update id="addScore" parameterType="com.ovft.configure.sys.bean.DeviceDTO" flushCache="true">
@@ -44,6 +44,6 @@
     <select id="checkDevice" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="java.lang.Integer">
         SELECT count(id)
         FROM device
-        where open_id = #{openId} and device_id = #{deviceId}
+        where open_id = #{openId} and device_id = #{deviceId} and game_id = #{gameId}
     </select>
 </mapper>

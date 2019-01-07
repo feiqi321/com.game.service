@@ -6,13 +6,13 @@
     <select id="findByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
         SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
         FROM collect
-        where open_id = #{openId} and status = 0 order by id desc limit 1
+        where open_id = #{openId} and game_id =#{gameId} and status = 0 order by id desc limit 1
     </select>
 
     <select id="listAllByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
         SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
         FROM collect
-        where open_id = #{openId} and status not in (2)order by id
+        where open_id = #{openId} and game_id =#{gameId} and status not in (2)order by id
     </select>
 
 
@@ -23,11 +23,11 @@
         </selectKey>
         INSERT INTO collect
         (
-        open_id,color1,color2,color3,status,hands,view_status,create_time,update_time
+        open_id,game_id,color1,color2,color3,status,hands,view_status,create_time,update_time
         )
         VALUES
         (
-        #{openId},#{color1},#{color2},#{color3},#{status},#{hands},#{viewStatus},now(),now()
+        #{openId},#{gameId},#{color1},#{color2},#{color3},#{status},#{hands},#{viewStatus},now(),now()
         )
     </insert>
 
@@ -52,6 +52,6 @@
         collect
         SET
         view_status = 1
-        WHERE open_id = #{openId}
+        WHERE open_id = #{openId} and game_id =#{gameId}
     </update>
 </mapper>

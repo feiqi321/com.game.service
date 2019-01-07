@@ -11,6 +11,7 @@ import com.ovft.configure.sys.bean.WxConf;
 import com.ovft.configure.sys.service.IManagerService;
 
 import com.ovft.configure.utils.GlobalUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,14 @@ public class ManagerController {
         logger.info("第一次进入系统");
         WebResult result = new WebResult();
         try {
+            String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
+            if(StringUtils.isEmpty(gameId)){
+                result.setCode("500");
+                result.setMsg("游戏还未开始");
+                return result;
+            }
             WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode());
+            resultDto.setGameId(gameId);
             if (resultDto==null){
                 result.setCode("502");
                 result.setMsg("获取微信数据失败");
