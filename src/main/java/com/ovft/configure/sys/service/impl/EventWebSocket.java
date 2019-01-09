@@ -125,6 +125,8 @@ public class EventWebSocket {
         }else if (blood>0 && blood<=attackDTO.getAttack()){
             GlobalUtils.mapCache.put("blood",0);
             attackService.attack(attackDTO);
+            GlobalUtils.animationID = 5;
+            GlobalUtils.musicID = 5;
             for (EventWebSocket item : webSocketSet) {
                 try {
                     item.sendMessage("99");

@@ -137,35 +137,47 @@ public class DeviceServiceImpl implements IDeviceService {
     public String executeAsyncTask(){
         try {
             GlobalUtils.event = 0;//开始
+            GlobalUtils.animationID = 1;
+            GlobalUtils.musicID = 1;
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
             }
             GlobalUtils.event = 1;//下雪
             EventWebSocket.sendInfo("1");
+            GlobalUtils.animationID = 2;
+            GlobalUtils.musicID = 2;
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
             }
             GlobalUtils.event = 0;//恢复
+            GlobalUtils.animationID = 1;
+            GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("10");
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
             }
             GlobalUtils.event = 2;//地震
+            GlobalUtils.animationID = 3;
+            GlobalUtils.musicID = 3;
             EventWebSocket.sendInfo("2");
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
             }
             GlobalUtils.event = 0;//恢复
+            GlobalUtils.animationID = 1;
+            GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("20");
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
             }
             GlobalUtils.event = 3;//怪兽袭击
+            GlobalUtils.animationID = 4;
+            GlobalUtils.musicID = 4;
             EventWebSocket.sendInfo("3");
             this.notice();
             TimeUnit.MINUTES.sleep(1);
@@ -176,7 +188,8 @@ public class DeviceServiceImpl implements IDeviceService {
             EventWebSocket.sendInfo("30");
             TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = -1;//游戏结束
-
+            GlobalUtils.animationID = 6;
+            GlobalUtils.musicID = 6;
             gameService.endGame();//将游戏的状态设置为1 ，已结束
         } catch (Exception e) {
             logger.error(e.getMessage());
