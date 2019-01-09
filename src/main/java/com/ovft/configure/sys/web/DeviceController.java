@@ -1,12 +1,15 @@
 package com.ovft.configure.sys.web;
 
 import com.ovft.configure.http.result.WebResult;
+import com.ovft.configure.sys.bean.CollectingDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by looyer on 2018/12/24.
@@ -97,5 +100,23 @@ public class DeviceController {
         return  result;
     }
 
+    /**
+     *  查询正在收集中的颜色资源
+     *
+     * @return
+     */
+    @PostMapping(value = "/collecting")
+    public WebResult collecting(@RequestBody DeviceDTO deviceDTO)  {
+        logger.info("判断是否是资源或者是自己的手环{}-{}",deviceDTO.getOpenId(),deviceDTO.getGameId());
+        WebResult result = new WebResult();
+        try {
+            List<CollectingDTO> list = iDeviceService.collecting(deviceDTO);
+            result.setCode("200");
+            result.setData(list);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  result;
+    }
 
 }

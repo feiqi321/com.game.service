@@ -1,7 +1,10 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.sys.bean.CollectDTO;
+import com.ovft.configure.sys.bean.CollectingDTO;
 import com.ovft.configure.sys.bean.DeviceColorDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
+import com.ovft.configure.sys.dao.CollectMapper;
 import com.ovft.configure.sys.dao.DeviceColorMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.service.GameService;
@@ -15,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,6 +34,8 @@ public class DeviceServiceImpl implements IDeviceService {
     private DeviceColorMapper deviceColorMapper;
     @Resource
     private GameService gameService;
+    @Resource
+    private CollectMapper collectMapper;
 
     @Override
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO){
@@ -70,6 +77,48 @@ public class DeviceServiceImpl implements IDeviceService {
         }
 
         return flag;
+    }
+
+    public List<CollectingDTO> collecting(DeviceDTO deviceDTO){
+        List<CollectingDTO> list = new ArrayList<CollectingDTO>();
+        CollectDTO collectDTO = new CollectDTO();
+        collectDTO.setOpenId(deviceDTO.getOpenId());
+        collectDTO.setGameId(deviceDTO.getGameId());
+        CollectDTO resultCollect = collectMapper.findByOpenId(collectDTO);
+        if (resultCollect.getColor1()==0){
+            CollectingDTO collectingDTO = new CollectingDTO();
+            collectingDTO.setType(1);
+            collectingDTO.setStatus(0);
+            list.add(collectingDTO);
+        }else{
+            CollectingDTO collectingDTO = new CollectingDTO();
+            collectingDTO.setType(resultCollect.getColor1());
+            collectingDTO.setStatus(1);
+            list.add(collectingDTO);
+        }
+        if (resultCollect.getColor2()==0){
+            CollectingDTO collectingDTO = new CollectingDTO();
+            collectingDTO.setType(1);
+            collectingDTO.setStatus(0);
+            list.add(collectingDTO);
+        }else{
+            CollectingDTO collectingDTO = new CollectingDTO();
+            collectingDTO.setType(resultCollect.getColor2());
+            collectingDTO.setStatus(1);
+            list.add(collectingDTO);
+        }
+        if (resultCollect.getColor3()==0){
+            CollectingDTO collectingDTO = new CollectingDTO();
+            collectingDTO.setType(1);
+            collectingDTO.setStatus(0);
+            list.add(collectingDTO);
+        }else{
+            CollectingDTO collectingDTO = new CollectingDTO();
+            collectingDTO.setType(resultCollect.getColor3());
+            collectingDTO.setStatus(1);
+            list.add(collectingDTO);
+        }
+        return list;
     }
 
     @Override
@@ -139,6 +188,8 @@ public class DeviceServiceImpl implements IDeviceService {
     @Async
     public void notice(){
         int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
+        //int total = 100;
+
         try {
             for (int i=0 ; i<100;i++) {
                 TimeUnit.SECONDS.sleep(2);
