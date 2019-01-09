@@ -1,12 +1,12 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.sys.bean.AttackDTO;
+import com.ovft.configure.sys.dao.AttackMapper;
 import com.ovft.configure.utils.GlobalUtils;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.annotation.Resource;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -26,6 +26,9 @@ public class EventWebSocket {
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
+
+    @Resource
+    private AttackMapper attackMapper;
 
     /**
      * 连接建立成功调用的方法*/
@@ -60,34 +63,36 @@ public class EventWebSocket {
     public void onMessage(String message, Session session) {
         System.out.println("来自客户端的消息:" + message);
 
-        //群发消息
-        for (EventWebSocket item : webSocketSet) {
-            try {
-                item.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        String[] userinfo = message.split(",");
+        String openId = userinfo[0];
+        String gameId = userinfo[1];
+        String attack = userinfo[3];
+        AttackDTO attackDTO = new AttackDTO();
+        attackDTO.setOpenId(openId);
+        attackDTO.setGameId(gameId);
+        attackDTO.setAttack(Integer.parseInt(attack));
+
+
     }
 
     /**
      * 发生错误时调用
-     @OnError
      */
-     public void onError(Session session, Throwable error) {
-         System.out.println("发生错误");
-         error.printStackTrace();
-     }
+    @OnError
+    public void onError(Session session, Throwable error) {
+        System.out.println("发生错误");
+        error.printStackTrace();
+    }
 
 
-     public void sendMessage(String message) throws IOException {
+    public void sendMessage(String message) throws IOException {
         this.session.getBasicRemote().sendText(message);
-     }
+    }
 
 
-     /**
-      * 群发自定义消息
-      * */
+    /**
+     * 群发自定义消息
+     * */
     public static void sendInfo(String message) throws IOException {
         for (EventWebSocket item : webSocketSet) {
             try {
@@ -108,6 +113,26 @@ public class EventWebSocket {
 
     public static synchronized void subOnlineCount() {
         EventWebSocket.onlineCount--;
+    }
+
+    public synchronized void attack(AttackDTO attackDTO){
+        int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood")==null?"0":GlobalUtils.mapCache.get("blood").toString());
+        if (blood>0 && blood>attackDTO.getAttack()) {
+            GlobalUtils.mapCache.put("blood",blood-attackDTO.getAttack());
+            attackMapper.attack(attackDTO);
+        }else if (blood>0 && blood<=attackDTO.getAttack()){
+            GlobalUtils.mapCache.put("blood",0);
+            attackMapper.attack(attackDTO);
+            for (EventWebSocket item : webSocketSet) {
+                try {
+                    item.sendMessage("99");
+                } catch (IOException e) {
+                    continue;
+                }
+            }
+        }else{
+            GlobalUtils.mapCache.put("blood",0);
+        }
     }
 
 }

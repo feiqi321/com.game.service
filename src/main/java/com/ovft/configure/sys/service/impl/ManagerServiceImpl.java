@@ -3,15 +3,14 @@ package com.ovft.configure.sys.service.impl;
 import javax.annotation.Resource;
 
 import com.ovfintech.common.json.JsonUtil;
+import com.ovft.configure.sys.bean.BossDTO;
 import com.ovft.configure.sys.bean.DeviceColorDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.bean.WxConf;
-import com.ovft.configure.sys.dao.DeviceColorMapper;
-import com.ovft.configure.sys.dao.DeviceMapper;
-import com.ovft.configure.sys.dao.ManagerMapper;
-import com.ovft.configure.sys.dao.WxConfMapper;
+import com.ovft.configure.sys.dao.*;
 import com.ovft.configure.sys.service.IManagerService;
 
+import com.ovft.configure.utils.GlobalUtils;
 import com.ovft.configure.utils.HttpClient;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -35,6 +34,8 @@ public class ManagerServiceImpl implements IManagerService{
     private DeviceMapper deviceMapper;
     @Resource
     private DeviceColorMapper deviceColorMapper;
+    @Resource
+    private BossMapper bossMapper;
 
     @Override
     public boolean login(String username, String pwd) {
@@ -73,6 +74,10 @@ public class ManagerServiceImpl implements IManagerService{
             logger.info("222");
             List<DeviceColorDTO> list =  deviceColorMapper.findAllColor();
             wxConf.setList(list);
+
+            BossDTO bossDTO = bossMapper.findBoss();
+            GlobalUtils.mapCache.put("blood",bossDTO.getBlood());
+            GlobalUtils.mapCache.put("totalBlood",bossDTO.getBlood());
 
         }
         return wxConf;

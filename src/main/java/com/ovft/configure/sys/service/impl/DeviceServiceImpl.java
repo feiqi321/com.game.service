@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -117,6 +118,7 @@ public class DeviceServiceImpl implements IDeviceService {
             }
             GlobalUtils.event = 3;//怪兽袭击
             EventWebSocket.sendInfo("3");
+            this.notice();
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
@@ -132,6 +134,25 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = -1;
         }
         return null;
+    }
+
+    @Async
+    public void notice(){
+        int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
+        try {
+            for (int i=0 ; i<100;i++) {
+                TimeUnit.SECONDS.sleep(2);
+                int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood") == null ? "0" : GlobalUtils.mapCache.get("blood").toString());
+                if (blood <= 0){
+                    break;
+                }
+                BigDecimal percent = new BigDecimal(blood*100).divide(new BigDecimal(total),BigDecimal.ROUND_HALF_DOWN,0);
+                EventWebSocket.sendInfo("98@"+percent);
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            GlobalUtils.event = -1;
+        }
     }
 
 }
