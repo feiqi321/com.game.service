@@ -62,11 +62,11 @@ public class ManagerController {
                 return result;
             }
             WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode(),gameId);
-            resultDto.setGameId(gameId);
             if (resultDto==null){
                 result.setCode("502");
                 result.setMsg("获取微信数据失败");
             }else {
+                resultDto.setGameId(gameId);
                 result.setData(resultDto);
                 result.setCode("200");
             }
