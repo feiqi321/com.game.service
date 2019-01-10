@@ -9,6 +9,8 @@ public class TaskDTO implements Serializable {
 
     private int id;
 
+    private int taskId;
+
     private int myNum;
 
     private String openId;
@@ -30,6 +32,14 @@ public class TaskDTO implements Serializable {
     private int type;//1小任务  2总任务
 
     private int totalStatus;
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
 
     public int getTotalStatus() {
         return totalStatus;

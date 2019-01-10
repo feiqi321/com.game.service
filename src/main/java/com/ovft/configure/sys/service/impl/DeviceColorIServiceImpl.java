@@ -194,6 +194,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
     @Override
     public List<CollectDTO> listAllByOpenId(CollectDTO collectDTO){
         List<CollectDTO> list = collectMapper.listAllByOpenId(collectDTO);
+        collectMapper.view(collectDTO);
         return list;
     }
 

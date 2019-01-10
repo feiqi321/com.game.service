@@ -4,9 +4,27 @@
 <mapper namespace="com.ovft.configure.sys.dao.TaskMapper" >
 
     <select id="findByTask" parameterType="com.ovft.configure.sys.bean.TaskDTO" resultType="com.ovft.configure.sys.bean.TaskDTO">
-        select m.id,m.open_id as openId,m.game_id as gameId,t.task_num,t.scores,t.type
+        select m.id,m.open_id as openId,m.game_id as gameId,t.task_num as taskNum,t.scores,t.type
         from (select * from myTask where open_id = #{openId} and game_id = #{gameId}) m RIGHT JOIN task t on m.task_id=t.id
     </select>
 
+    <select id="getReward" parameterType="com.ovft.configure.sys.bean.TaskDTO" resultType="com.ovft.configure.sys.bean.TaskDTO">
+        select id,task_num as taskNum,type,scores from task where type = #{type} limit 1
+    </select>
+
+    <insert id="save" parameterType="com.ovft.configure.sys.bean.TaskDTO">
+        <selectKey resultType="java.lang.Integer" keyProperty="id"
+                   order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO mytask
+        (
+        open_id,game_id,task_id,create_time
+        )
+        VALUES
+        (
+        #{openId},#{gameId},#{taskId},now()
+        )
+    </insert>
 
 </mapper>

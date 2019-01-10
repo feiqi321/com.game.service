@@ -46,5 +46,24 @@ public class TaskController {
         return  result;
     }
 
+    /**
+     *  获取任务奖励
+     *
+     * @return
+     */
+    @PostMapping(value = "/reward")
+    public WebResult reward(@RequestBody TaskDTO taskDTO)  {
+        logger.info("获取任务奖励");
+        WebResult result = new WebResult();
+        try {
+            result = taskService.reward(taskDTO);
+        }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
+            logger.error(e.getMessage());
+        }
+        return  result;
+    }
+
 
 }

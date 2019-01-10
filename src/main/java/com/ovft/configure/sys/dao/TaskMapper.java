@@ -13,4 +13,8 @@ public interface TaskMapper {
 
     public List<TaskDTO> findByTask(TaskDTO taskDTO);
 
+    public TaskDTO getReward(TaskDTO taskDTO);
+
+    public void save(TaskDTO taskDTO);
+
 }
