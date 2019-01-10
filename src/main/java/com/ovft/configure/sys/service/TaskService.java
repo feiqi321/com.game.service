@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface TaskService {
 
-    public List<TaskDTO> findByTask(TaskDTO taskDTO);
+    public TaskDTO findByTask(TaskDTO taskDTO);
 
 }

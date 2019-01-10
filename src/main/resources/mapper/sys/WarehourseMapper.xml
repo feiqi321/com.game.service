@@ -21,7 +21,7 @@
     <select id="findAllMyWareHouse" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">
         SELECT id,open_id as openId,game_id as gameId,price,type,destroy_price as destroyPrice,num,url1,url2,url3
         FROM warehouse
-        where open_id = #{openId} and game_id = #{gameId} and type=#{type}
+        where open_id = #{openId} and game_id = #{gameId} and type=#{type} and num>=1
     </select>
 
     <select id="findExsit" parameterType="com.ovft.configure.sys.bean.Warehouse" resultType="com.ovft.configure.sys.bean.Warehouse">

@@ -21,6 +21,56 @@ public class TaskDTO implements Serializable {
 
     private int status;
 
+    private int firstNum;
+
+    private int totalNum;
+
+    private int totalScores;
+
+    private int type;//1小任务  2总任务
+
+    private int totalStatus;
+
+    public int getTotalStatus() {
+        return totalStatus;
+    }
+
+    public void setTotalStatus(int totalStatus) {
+        this.totalStatus = totalStatus;
+    }
+
+    public int getFirstNum() {
+        return firstNum;
+    }
+
+    public void setFirstNum(int firstNum) {
+        this.firstNum = firstNum;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getTotalNum() {
+        return totalNum;
+    }
+
+    public void setTotalNum(int totalNum) {
+        this.totalNum = totalNum;
+    }
+
+    public int getTotalScores() {
+        return totalScores;
+    }
+
+    public void setTotalScores(int totalScores) {
+        this.totalScores = totalScores;
+    }
+
     public String getGameId() {
         return gameId;
     }

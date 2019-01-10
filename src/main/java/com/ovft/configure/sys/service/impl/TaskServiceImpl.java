@@ -25,27 +25,38 @@ public class TaskServiceImpl implements TaskService {
     private CollectMapper collectMapper;
 
     @Override
-    public List<TaskDTO> findByTask(TaskDTO taskDTO){
+    public TaskDTO findByTask(TaskDTO taskDTO){
 
-        List<TaskDTO> resultList = new ArrayList<TaskDTO>();
+        TaskDTO resultDTO = new TaskDTO();
+        BeanUtils.copyProperties(taskDTO,resultDTO);
         List<TaskDTO> list = taskMapper.findByTask(taskDTO);
         for (int i=0;i<list.size();i++){
             TaskDTO temp = list.get(i);
-            TaskDTO resultDTO = new TaskDTO();
-            BeanUtils.copyProperties(temp,resultDTO);
-            if (StringUtils.isNotEmpty(temp.getOpenId())){
-                resultDTO.setStatus(1);//已经领了奖励积分
-            }else{
-                resultDTO.setStatus(0);//还没领奖励积分
-            }
-            CollectDTO collectDTO= new CollectDTO();
-            collectDTO.setOpenId(taskDTO.getOpenId());
-            List<CollectDTO> myCollect =collectMapper.listAllByOpenId(collectDTO);
-            resultDTO.setMyNum(myCollect.size());
-            resultList.add(resultDTO);
-        }
 
-        return resultList;
+            if (temp.getType()==1 && StringUtils.isNotEmpty(temp.getOpenId())){
+                resultDTO.setFirstNum(temp.getTaskNum());
+                resultDTO.setStatus(1);//小任务已经领了奖励积分
+            }else if (temp.getType()==1 && StringUtils.isEmpty(temp.getOpenId())){
+                resultDTO.setFirstNum(temp.getTaskNum());
+                resultDTO.setStatus(0);//小任务还没领奖励积分
+            }else if (temp.getType()==2 && StringUtils.isNotEmpty(temp.getOpenId())){
+                resultDTO.setTotalNum(temp.getTaskNum());
+                resultDTO.setTotalStatus(1);//总任务已经领奖励积分
+            }else if (temp.getType()==2 && StringUtils.isEmpty(temp.getOpenId())){
+                resultDTO.setTotalNum(temp.getTaskNum());
+                resultDTO.setTotalStatus(0);//总任务还没领奖励积分
+            }else{
+                resultDTO.setTotalStatus(0);
+                resultDTO.setStatus(0);
+            }
+
+        }
+        CollectDTO collectDTO= new CollectDTO();
+        collectDTO.setOpenId(taskDTO.getOpenId());
+        collectDTO.setGameId(taskDTO.getGameId());
+        List<CollectDTO> myCollect =collectMapper.listAllByOpenId(collectDTO);
+        resultDTO.setMyNum(myCollect.size());
+        return resultDTO;
 
     }
 

@@ -35,8 +35,8 @@ public class TaskController {
         logger.info("查询事件对应的时间");
         WebResult result = new WebResult();
         try {
-            List<TaskDTO> resultTasks = taskService.findByTask(taskDTO);
-            result.setData(resultTasks);
+            TaskDTO resultDTO = taskService.findByTask(taskDTO);
+            result.setData(resultDTO);
             result.setCode("200");
         }catch (Exception e){
             result.setCode("500");
