@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.*;
 import com.ovft.configure.sys.dao.*;
 import com.ovft.configure.sys.service.IDeviceColorService;
@@ -88,8 +89,8 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
     }
 
     @Override
-    public int confirm(CollectDTO collectDTO){
-        int flag = 1;
+    public WebResult confirm(CollectDTO collectDTO){
+        WebResult result = new WebResult();
         DeviceColorDTO deviceColorDTO = new DeviceColorDTO();
         deviceColorDTO.setDeviceId(collectDTO.getDeviceId());
         DeviceColorDTO resultColor = deviceColorMapper.findByDeviceId(deviceColorDTO);
@@ -106,6 +107,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(resultCollect.getHands()+1);
             }
+            resultCollect.setGameId(collectDTO.getGameId());
             collectMapper.update(resultCollect);
         }else if (resultCollect !=null && resultCollect.getColor1() > 0 && resultCollect.getColor2()==0){
             resultCollect.setColor2(resultColor.getColor());
@@ -124,6 +126,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(resultCollect.getHands()+1);
             }
+            resultCollect.setGameId(collectDTO.getGameId());
             collectMapper.update(resultCollect);
 
         }else if (resultCollect !=null && resultCollect.getColor2() > 0 && resultCollect.getColor3()==0){
@@ -135,16 +138,17 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             colorRuleDTO.setColor3(resultColor.getColor());
             colorRuleDTO = colorRuleMapper.findRule(colorRuleDTO);
             if(colorRuleDTO == null){
-                flag = 0;
+                result.setCode("502");
+                result.setMsg("收集失败");
+                return result;
             }else {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 resultCollect.setScores(colorRuleDTO.getScores());
                 resultCollect.setUrl(colorRuleDTO.getUrl());
                 resultCollect.setUrl2(colorRuleDTO.getUrl2());
-
+                deviceDTO.setOpenId(collectDTO.getOpenId());
                 if (collectDTO.getLength() == 0) {
 
-                    deviceDTO.setOpenId(collectDTO.getOpenId());
                     if (resultCollect.getHands() == 2) {//已经2次手环在
                         deviceDTO.setScores(150);
                     } else if (resultCollect.getHands() == 1) {//已经1次手环在
@@ -156,6 +160,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     deviceDTO.setGameId(collectDTO.getGameId());
                     deviceMapper.addScore(deviceDTO);
                 }
+                resultCollect.setGameId(collectDTO.getGameId());
                 collectMapper.complete(resultCollect);
                 deviceDTO.setScores(colorRuleDTO.getScores());
                 deviceDTO.setGameId(collectDTO.getGameId());
@@ -165,6 +170,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             resultCollect = new CollectDTO();
             resultCollect.setOpenId(collectDTO.getOpenId());
             resultCollect.setColor1(resultColor.getColor());
+            resultCollect.setGameId(collectDTO.getGameId());
             resultCollect.setStatus(0);
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
@@ -177,8 +183,13 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }
             collectMapper.save(resultCollect);
         }
-
-        return flag;
+        DeviceDTO resultQuery = new DeviceDTO();
+        resultQuery.setOpenId(collectDTO.getOpenId());
+        resultQuery.setGameId(collectDTO.getGameId());
+        DeviceDTO resultDevice = deviceMapper.selectByOpenId(resultQuery);
+        result.setCode("200");
+        result.setData(resultDevice);
+        return result;
     }
     @Override
     public List<CollectDTO> listAllByOpenId(CollectDTO collectDTO){

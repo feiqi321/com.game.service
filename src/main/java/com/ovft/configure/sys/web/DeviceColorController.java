@@ -83,13 +83,8 @@ public class DeviceColorController {
         logger.info("收集资源确认{}{}",collectDTO.getDeviceId(),collectDTO.getOpenId());
         WebResult result = new WebResult();
         try {
-            int flag = iDeviceColorService.confirm(collectDTO);
-            if (flag==1) {
-                result.setCode("200");
-            }else{
-                result.setCode("502");
-                result.setMsg("收集失败");
-            }
+            result = iDeviceColorService.confirm(collectDTO);
+
         }catch (Exception e){
             result.setCode("500");
             result.setMsg(e.getMessage());

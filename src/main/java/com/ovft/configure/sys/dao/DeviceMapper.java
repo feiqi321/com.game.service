@@ -17,6 +17,9 @@ public interface DeviceMapper {
 
     public void addScore(DeviceDTO dto);
 
+    public void reduce(DeviceDTO dto);
+
+
     public void addDestroyScore(DeviceDTO dto);
 
     public int checkDevice(DeviceDTO dto);

@@ -56,12 +56,12 @@ public class ManagerController {
         WebResult result = new WebResult();
         try {
             String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
-            /*if(StringUtils.isEmpty(gameId)){
+            if(StringUtils.isEmpty(gameId)){
                 result.setCode("500");
                 result.setMsg("游戏还未开始");
                 return result;
-            }*/
-            WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode());
+            }
+            WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode(),gameId);
             resultDto.setGameId(gameId);
             if (resultDto==null){
                 result.setCode("502");

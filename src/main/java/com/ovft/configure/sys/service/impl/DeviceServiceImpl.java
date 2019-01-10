@@ -47,7 +47,7 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public void saveOrUpdate(DeviceDTO deviceDTO){
         DeviceDTO temp = deviceMapper.selectByOpenId(deviceDTO);
-        if (temp != null && StringUtils.isNotEmpty(temp.getDeviceId())){
+        if (temp != null && StringUtils.isNotEmpty(temp.getOpenId())){
             deviceMapper.update(deviceDTO);
         }else{
             deviceMapper.save(deviceDTO);
@@ -85,34 +85,19 @@ public class DeviceServiceImpl implements IDeviceService {
         collectDTO.setOpenId(deviceDTO.getOpenId());
         collectDTO.setGameId(deviceDTO.getGameId());
         CollectDTO resultCollect = collectMapper.findByOpenId(collectDTO);
-        if (resultCollect.getColor1()==0){
-            CollectingDTO collectingDTO = new CollectingDTO();
-            collectingDTO.setType(1);
-            collectingDTO.setStatus(0);
-            list.add(collectingDTO);
-        }else{
+        if (resultCollect !=null && resultCollect.getColor1()!=0){
             CollectingDTO collectingDTO = new CollectingDTO();
             collectingDTO.setType(resultCollect.getColor1());
             collectingDTO.setStatus(1);
             list.add(collectingDTO);
         }
-        if (resultCollect.getColor2()==0){
-            CollectingDTO collectingDTO = new CollectingDTO();
-            collectingDTO.setType(1);
-            collectingDTO.setStatus(0);
-            list.add(collectingDTO);
-        }else{
+        if (resultCollect !=null && resultCollect.getColor2()!=0){
             CollectingDTO collectingDTO = new CollectingDTO();
             collectingDTO.setType(resultCollect.getColor2());
             collectingDTO.setStatus(1);
             list.add(collectingDTO);
         }
-        if (resultCollect.getColor3()==0){
-            CollectingDTO collectingDTO = new CollectingDTO();
-            collectingDTO.setType(1);
-            collectingDTO.setStatus(0);
-            list.add(collectingDTO);
-        }else{
+        if (resultCollect !=null && resultCollect.getColor3()!=0){
             CollectingDTO collectingDTO = new CollectingDTO();
             collectingDTO.setType(resultCollect.getColor3());
             collectingDTO.setStatus(1);
@@ -190,7 +175,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
-            gameService.endGame();//将游戏的状态设置为1 ，已结束
+            //gameService.endGame();//将游戏的状态设置为1 ，已结束
         } catch (Exception e) {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;

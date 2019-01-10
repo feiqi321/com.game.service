@@ -29,7 +29,7 @@ public class DeviceController {
      */
     @PostMapping(value = "/query")
     public WebResult query(@RequestBody DeviceDTO deviceDTO)  {
-        logger.info("手环绑定查询{}",deviceDTO.getOpenId());
+        logger.info("手环绑定查询{}-{}",deviceDTO.getOpenId(),deviceDTO.getGameId());
         WebResult result = new WebResult();
         try {
             DeviceDTO resultDto = iDeviceService.findByOpenId(deviceDTO);

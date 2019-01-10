@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.service;
 
+import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.CollectDTO;
 import com.ovft.configure.sys.bean.DeviceColorDTO;
 
@@ -16,7 +17,7 @@ public interface IDeviceColorService {
 
     public DeviceColorDTO collect(CollectDTO collectDTO);
 
-    public int confirm(CollectDTO collectDTO);
+    public WebResult confirm(CollectDTO collectDTO);
 
     public void view(CollectDTO collectDTO);
 

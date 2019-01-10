@@ -13,7 +13,7 @@ public interface IManagerService {
      * @param openCode
      * @return
      */
-    public WxConf queryOpenId(String openCode);
+    public WxConf queryOpenId(String openCode,String gameId);
 
 
 }

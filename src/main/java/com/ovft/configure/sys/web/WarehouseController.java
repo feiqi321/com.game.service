@@ -79,13 +79,7 @@ public class WarehouseController {
         logger.info("购买");
         WebResult result = new WebResult();
         try {
-            int flag = warehouseService.buyProduct(warehouse);
-            if (flag==9){
-                result.setMsg("积分不够,购买失败");
-                result.setCode("200");
-                return result;
-            }
-            result.setCode("200");
+            result = warehouseService.buyProduct(warehouse);
         }catch (Exception e){
             result.setCode("500");
             result.setMsg(e.getMessage());
@@ -136,9 +130,7 @@ public class WarehouseController {
         logger.info("拆除");
         WebResult result = new WebResult();
         try {
-            warehouseService.destroy(buildDTO);
-
-            result.setCode("200");
+            result = warehouseService.destroy(buildDTO);
         }catch (Exception e){
             result.setCode("500");
             result.setMsg(e.getMessage());

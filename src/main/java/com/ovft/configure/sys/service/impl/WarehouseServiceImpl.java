@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.BuildDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.bean.Shop;
@@ -35,7 +36,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         return warehouseMapper.findAllMyWareHouse(warehouse);
     }
 
-    public int buyProduct(Warehouse warehouse){
+    public WebResult buyProduct(Warehouse warehouse){
+        WebResult result = new WebResult();
         Shop request = new Shop();
         request.setId(warehouse.getShopId());
         Shop shop = warehouseMapper.findById(request);
@@ -44,7 +46,9 @@ public class WarehouseServiceImpl implements WarehouseService {
         tempDevice.setGameId(warehouse.getGameId());
         DeviceDTO deviceDTO = deviceMapper.selectByOpenId(tempDevice);
         if (deviceDTO.getScores()<shop.getPrice()*warehouse.getNum()){
-            return 9;
+            result.setMsg("积分不够,购买失败");
+            result.setCode("500");
+            return result;
         }
         Warehouse tempResult = warehouseMapper.findExsit(warehouse);
         if (tempResult ==null || StringUtils.isEmpty(tempResult.getOpenId())){
@@ -60,8 +64,11 @@ public class WarehouseServiceImpl implements WarehouseService {
             warehouseMapper.update(tempResult);
         }
         deviceDTO.setScores(-shop.getPrice());
-        deviceMapper.addScore(deviceDTO);
-        return 1;
+        deviceMapper.reduce(deviceDTO);
+        DeviceDTO resultDTO = deviceMapper.selectByOpenId(deviceDTO);
+        result.setCode("200");
+        result.setData(resultDTO.getScores());
+        return result;
 
 
     }
@@ -89,13 +96,18 @@ public class WarehouseServiceImpl implements WarehouseService {
         return buildMapper.findMyBuild(buildDTO);
     }
 
-    public void destroy(BuildDTO buildDTO){
+    public WebResult destroy(BuildDTO buildDTO){
+        WebResult result = new WebResult();
         buildMapper.del(buildDTO);
         DeviceDTO deviceDTO = new DeviceDTO();
         deviceDTO.setOpenId(buildDTO.getOpenId());
         deviceDTO.setGameId(buildDTO.getGameId());
         deviceDTO.setScores(buildDTO.getDestroyPrice());
         deviceMapper.addDestroyScore(deviceDTO);
+        DeviceDTO resultDTO = deviceMapper.selectByOpenId(deviceDTO);
+        result.setCode("200");
+        result.setData(resultDTO.getScores());
+        return result;
     }
 
 }
