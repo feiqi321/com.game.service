@@ -81,6 +81,7 @@ public class EventWebSocket {
     @OnError
     public void onError(Session session, Throwable error) {
         System.out.println("发生错误");
+        GlobalUtils.event = -1;
         error.printStackTrace();
     }
 
@@ -130,6 +131,7 @@ public class EventWebSocket {
             for (EventWebSocket item : webSocketSet) {
                 try {
                     item.sendMessage("99");
+                    GlobalUtils.event = 99;//boss死亡
                 } catch (IOException e) {
                     continue;
                 }

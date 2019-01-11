@@ -186,17 +186,19 @@ public class DeviceServiceImpl implements IDeviceService {
     @Async
     public void notice(){
         int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
-        //int total = 100;
 
         try {
             for (int i=0 ; i<100;i++) {
-                TimeUnit.SECONDS.sleep(2);
-                int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood") == null ? "0" : GlobalUtils.mapCache.get("blood").toString());
-                if (blood <= 0){
-                    break;
+                if (GlobalUtils.event != -1 && GlobalUtils.event != 99) {
+                    TimeUnit.SECONDS.sleep(2);
+                    int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood") == null ? "0" : GlobalUtils.mapCache.get("blood").toString());
+                    if (blood <= 0){
+                        break;
+                    }
+                    BigDecimal percent = new BigDecimal(blood*100).divide(new BigDecimal(total),0,BigDecimal.ROUND_HALF_DOWN);
+
+                    EventWebSocket.sendInfo("98@" + percent);
                 }
-                BigDecimal percent = new BigDecimal(blood*100).divide(new BigDecimal(total),BigDecimal.ROUND_HALF_DOWN,0);
-                EventWebSocket.sendInfo("98@"+percent);
             }
         }catch (Exception e){
             logger.error(e.getMessage());

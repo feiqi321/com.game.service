@@ -34,8 +34,6 @@ public class ManagerServiceImpl implements IManagerService{
     private DeviceMapper deviceMapper;
     @Resource
     private DeviceColorMapper deviceColorMapper;
-    @Resource
-    private BossMapper bossMapper;
 
     @Override
     public boolean login(String username, String pwd) {
@@ -76,9 +74,7 @@ public class ManagerServiceImpl implements IManagerService{
             List<DeviceColorDTO> list =  deviceColorMapper.findAllColor();
             wxConf.setList(list);
 
-            BossDTO bossDTO = bossMapper.findBoss();
-            GlobalUtils.mapCache.put("blood",bossDTO.getBlood());
-            GlobalUtils.mapCache.put("totalBlood",bossDTO.getBlood());
+
 
         }
         return wxConf;
