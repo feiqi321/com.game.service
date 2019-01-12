@@ -24,6 +24,6 @@ public interface WarehouseService {
 
     public WebResult destroy(BuildDTO buildDTO);
 
-    public void bossDestroy(BuildDTO buildDTO);
+    public void bossDestroy();
 
 }

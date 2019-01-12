@@ -9,6 +9,7 @@ import com.ovft.configure.sys.dao.DeviceColorMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.IDeviceService;
+import com.ovft.configure.sys.service.WarehouseService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class DeviceServiceImpl implements IDeviceService {
     private GameService gameService;
     @Resource
     private CollectMapper collectMapper;
+    @Resource
+    private WarehouseService warehouseService;
 
     @Override
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO){
@@ -172,6 +175,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = 0;//恢复
             if (GlobalUtils.event<=99) {
                 EventWebSocket.sendInfo("97");//boss到时间未死亡
+                warehouseService.bossDestroy();
             }
             TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = -1;//游戏结束
@@ -199,7 +203,7 @@ public class DeviceServiceImpl implements IDeviceService {
                     }
                     BigDecimal percent = new BigDecimal(blood*100).divide(new BigDecimal(total),0,BigDecimal.ROUND_HALF_DOWN);
 
-                    EventWebSocket.sendInfo("98@" + percent);
+                    EventWebSocket.sendInfo("98@" + percent.intValue());
                 }
             }
         }catch (Exception e){

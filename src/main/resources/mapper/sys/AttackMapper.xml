@@ -22,4 +22,10 @@
         select open_id as openId,game_id as gameId,sum(attack) as attack from attack where open_id = #{openId} and game_id = #{gameId}
     </select>
 
+    <select id="findLastThree"  resultType="com.ovft.configure.sys.bean.AttackDTO" parameterType="com.ovft.configure.sys.bean.AttackDTO">
+        select t.* from (
+          select open_id as openId,game_id as gameId,sum(attack) as attack from attack where  game_id = #{gameId} group by open_id
+        ) t order by t.attack asc limit 0,3
+    </select>
+
 </mapper>

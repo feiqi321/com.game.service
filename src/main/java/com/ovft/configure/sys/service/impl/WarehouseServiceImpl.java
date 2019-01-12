@@ -1,14 +1,13 @@
 package com.ovft.configure.sys.service.impl;
 
 import com.ovft.configure.http.result.WebResult;
-import com.ovft.configure.sys.bean.BuildDTO;
-import com.ovft.configure.sys.bean.DeviceDTO;
-import com.ovft.configure.sys.bean.Shop;
-import com.ovft.configure.sys.bean.Warehouse;
+import com.ovft.configure.sys.bean.*;
+import com.ovft.configure.sys.dao.AttackMapper;
 import com.ovft.configure.sys.dao.BuildMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
 import com.ovft.configure.sys.dao.WarehouseMapper;
 import com.ovft.configure.sys.service.WarehouseService;
+import com.ovft.configure.utils.GlobalUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,15 +26,18 @@ public class WarehouseServiceImpl implements WarehouseService {
     private DeviceMapper deviceMapper;
     @Resource
     private BuildMapper buildMapper;
+    @Resource
+    private AttackMapper attackMapper;
 
+    @Override
     public List<Shop> findAllShop(Shop shop){
         return warehouseMapper.findAllShop(shop);
     }
-
+    @Override
     public List<Warehouse> findAllMyWareHouse(Warehouse warehouse){
         return warehouseMapper.findAllMyWareHouse(warehouse);
     }
-
+    @Override
     public WebResult buyProduct(Warehouse warehouse){
         WebResult result = new WebResult();
         Shop request = new Shop();
@@ -70,10 +72,9 @@ public class WarehouseServiceImpl implements WarehouseService {
         result.setData(resultDTO.getScores());
         return result;
 
-
     }
 
-
+    @Override
     public int build(BuildDTO buildDTO){
         Warehouse temp = new Warehouse();
         temp.setId(buildDTO.getWareId());
@@ -91,11 +92,11 @@ public class WarehouseServiceImpl implements WarehouseService {
             return 1;
         }
     }
-
+    @Override
     public List<BuildDTO> findMyBuild(BuildDTO buildDTO){
         return buildMapper.findMyBuild(buildDTO);
     }
-
+    @Override
     public WebResult destroy(BuildDTO buildDTO){
         WebResult result = new WebResult();
         buildMapper.del(buildDTO);
@@ -109,10 +110,22 @@ public class WarehouseServiceImpl implements WarehouseService {
         result.setData(resultDTO.getScores());
         return result;
     }
+    @Override
+    public void bossDestroy(){
 
-    public void bossDestroy(BuildDTO buildDTO){
-        BuildDTO temp = buildMapper.findMyBuildOne(buildDTO);
-        buildMapper.del(temp);
+        String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
+        AttackDTO attackDTO = new AttackDTO();
+        attackDTO.setGameId(gameId);
+        List<AttackDTO> list  = attackMapper.findLastThree(attackDTO);
+        for (int i=0;i<list.size();i++){
+            AttackDTO tempDTO = list.get(i);
+            BuildDTO buildDTO = new BuildDTO();
+            buildDTO.setGameId(tempDTO.getGameId());
+            buildDTO.setOpenId(tempDTO.getOpenId());
+            BuildDTO temp = buildMapper.findMyBuildOne(buildDTO);
+            buildMapper.del(temp);
+        }
+
     }
 
 }
