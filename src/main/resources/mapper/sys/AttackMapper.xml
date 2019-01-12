@@ -18,6 +18,8 @@
         )
     </insert>
 
-
+    <select id="findTotalAttack"  resultType="com.ovft.configure.sys.bean.AttackDTO" parameterType="com.ovft.configure.sys.bean.AttackDTO">
+        select open_id as openId,game_id as gameId,sum(attack) as attack from attack where open_id = #{openId} and game_id = #{gameId}
+    </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.ovft.configure.sys.web;
 
 import com.ovft.configure.http.result.WebResult;
+import com.ovft.configure.sys.bean.AttackDTO;
 import com.ovft.configure.sys.bean.GameDTO;
 import com.ovft.configure.sys.bean.TaskDTO;
 import com.ovft.configure.sys.service.GameService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -46,6 +48,37 @@ public class GameController {
             }
             gameService.startGame();
             result.setData("操作成功");
+            result.setCode("200");
+        }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
+            logger.error(e.getMessage());
+        }
+        return  result;
+    }
+
+    /**
+     *  开始一局新的游戏
+     *
+     * @return
+     */
+    @PostMapping(value = "/findBlood")
+    public WebResult findBlood(@RequestBody AttackDTO attackDTO)  {
+        logger.info("开始一局新的游戏");
+        WebResult result = new WebResult();
+        try {
+            attackDTO = gameService.findTotalAttack(attackDTO);
+
+            int blood = GlobalUtils.mapCache.get("blood")==null?0:Integer.parseInt(GlobalUtils.mapCache.get("blood").toString());
+            int totalBlood = GlobalUtils.mapCache.get("totalBlood")==null?0:Integer.parseInt(GlobalUtils.mapCache.get("totalBlood").toString());
+            BigDecimal percent = null;
+            if (blood ==0 || totalBlood == 0){
+                percent = new BigDecimal(0);
+            }else{
+                percent = new BigDecimal(blood).divide(new BigDecimal(totalBlood),0,BigDecimal.ROUND_HALF_DOWN);
+            }
+            attackDTO.setPercent(percent.intValue());
+            result.setData(attackDTO);
             result.setCode("200");
         }catch (Exception e){
             result.setCode("500");

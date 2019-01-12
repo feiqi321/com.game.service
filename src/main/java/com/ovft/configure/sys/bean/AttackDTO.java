@@ -15,6 +15,16 @@ public class AttackDTO implements Serializable {
 
     private int attack;
 
+    private int percent;
+
+    public int getPercent() {
+        return percent;
+    }
+
+    public void setPercent(int percent) {
+        this.percent = percent;
+    }
+
     public int getId() {
         return id;
     }

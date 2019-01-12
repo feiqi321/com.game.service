@@ -11,4 +11,6 @@ public interface AttackMapper {
 
     public void attack(AttackDTO attackDTO);
 
+    public AttackDTO findTotalAttack(AttackDTO attackDTO);
+
 }

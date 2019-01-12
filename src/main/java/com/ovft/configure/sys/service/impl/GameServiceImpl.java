@@ -1,7 +1,9 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.sys.bean.AttackDTO;
 import com.ovft.configure.sys.bean.BossDTO;
 import com.ovft.configure.sys.bean.GameDTO;
+import com.ovft.configure.sys.dao.AttackMapper;
 import com.ovft.configure.sys.dao.BossMapper;
 import com.ovft.configure.sys.dao.GameMapper;
 import com.ovft.configure.sys.service.GameService;
@@ -21,7 +23,8 @@ public class GameServiceImpl implements GameService {
     private GameMapper gameMapper;
     @Resource
     private BossMapper bossMapper;
-
+    @Resource
+    private AttackMapper attackMapper;
 
 
     public void startGame(){
@@ -38,6 +41,10 @@ public class GameServiceImpl implements GameService {
     public void endGame(){
         gameMapper.update();
         GlobalUtils.mapCache.remove("gameId");
+    }
+    @Override
+    public AttackDTO findTotalAttack(AttackDTO attackDTO){
+        return attackMapper.findTotalAttack(attackDTO);
     }
 
 }
