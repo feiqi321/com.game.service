@@ -27,5 +27,9 @@
         delete from build where id = #{id}
     </delete>
 
+    <select id="findMyBuildOne"  resultType="com.ovft.configure.sys.bean.BuildDTO" parameterType="com.ovft.configure.sys.bean.BuildDTO">
+        SELECT id,open_id as openId,destroy_price as destroyPrice,game_id as gameId,ware_id as wareId,posi,url
+        FROM build order by id asc limit 1
+    </select>
 
 </mapper>

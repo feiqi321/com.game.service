@@ -170,7 +170,9 @@ public class DeviceServiceImpl implements IDeviceService {
                 return null;
             }
             GlobalUtils.event = 0;//恢复
-            EventWebSocket.sendInfo("30");
+            if (GlobalUtils.event<=99) {
+                EventWebSocket.sendInfo("97");//boss到时间未死亡
+            }
             TimeUnit.MINUTES.sleep(1);
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;

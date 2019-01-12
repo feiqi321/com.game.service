@@ -62,17 +62,17 @@ public class EventWebSocket {
     @OnMessage
     public void onMessage(String message, Session session) {
         System.out.println("来自客户端的消息:" + message);
-
-        String[] userinfo = message.split(",");
-        String openId = userinfo[0];
-        String gameId = userinfo[1];
-        String attack = userinfo[2];
-        AttackDTO attackDTO = new AttackDTO();
-        attackDTO.setOpenId(openId);
-        attackDTO.setGameId(gameId);
-        attackDTO.setAttack(Integer.parseInt(attack));
-        this.attack(attackDTO);
-
+        if (GlobalUtils.event == 3) {
+            String[] userinfo = message.split(",");
+            String openId = userinfo[0];
+            String gameId = userinfo[1];
+            String attack = userinfo[2];
+            AttackDTO attackDTO = new AttackDTO();
+            attackDTO.setOpenId(openId);
+            attackDTO.setGameId(gameId);
+            attackDTO.setAttack(Integer.parseInt(attack));
+            this.attack(attackDTO);
+        }
     }
 
     /**
@@ -119,7 +119,7 @@ public class EventWebSocket {
     public synchronized void attack(AttackDTO attackDTO){
         int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood")==null?"0":GlobalUtils.mapCache.get("blood").toString());
         AttackService attackService = SpringUtils.getBean(AttackServiceImpl.class);
-        //int blood = 100;
+
         if (blood>0 && blood>attackDTO.getAttack()) {
             GlobalUtils.mapCache.put("blood",blood-attackDTO.getAttack());
             attackService.attack(attackDTO);

@@ -110,4 +110,9 @@ public class WarehouseServiceImpl implements WarehouseService {
         return result;
     }
 
+    public void bossDestroy(BuildDTO buildDTO){
+        BuildDTO temp = buildMapper.findMyBuildOne(buildDTO);
+        buildMapper.del(temp);
+    }
+
 }

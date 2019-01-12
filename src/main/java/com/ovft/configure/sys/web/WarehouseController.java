@@ -159,4 +159,23 @@ public class WarehouseController {
         }
         return  result;
     }
+
+    /**
+     *  拆除
+     *
+     * @return
+     */
+    @PostMapping(value = "/bossDestroy")
+    public WebResult bossDestroy(@RequestBody BuildDTO buildDTO)  {
+        logger.info("拆除");
+        WebResult result = new WebResult();
+        try {
+             warehouseService.bossDestroy(buildDTO);
+        }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
+            logger.error(e.getMessage());
+        }
+        return  result;
+    }
 }

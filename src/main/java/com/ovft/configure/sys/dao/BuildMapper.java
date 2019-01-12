@@ -17,4 +17,6 @@ public interface BuildMapper {
 
     public List<BuildDTO> findMyBuild(BuildDTO buildDTO);
 
+    public BuildDTO findMyBuildOne(BuildDTO buildDTO);
+
 }
