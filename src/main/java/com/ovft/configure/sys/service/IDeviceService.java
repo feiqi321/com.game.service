@@ -12,7 +12,7 @@ public interface IDeviceService {
 
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO);
 
-    public void saveOrUpdate(DeviceDTO deviceDTO);
+    public DeviceDTO saveOrUpdate(DeviceDTO deviceDTO);
 
     public void startEvent();
 

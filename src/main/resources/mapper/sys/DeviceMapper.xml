@@ -63,4 +63,10 @@
         FROM device
         where open_id = #{openId} and device_id = #{deviceId} and game_id = #{gameId}
     </select>
+
+    <select id="selectRealDevice" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
+        SELECT minor as deviceId
+        FROM minor
+        where  no =#{deviceId} limit 1
+    </select>
 </mapper>

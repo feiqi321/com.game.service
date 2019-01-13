@@ -48,14 +48,16 @@ public class DeviceServiceImpl implements IDeviceService {
 
     }
     @Override
-    public void saveOrUpdate(DeviceDTO deviceDTO){
+    public DeviceDTO saveOrUpdate(DeviceDTO deviceDTO){
+        DeviceDTO realDevice = deviceMapper.selectRealDevice(deviceDTO);
+        deviceDTO.setDeviceId(realDevice.getDeviceId());
         DeviceDTO temp = deviceMapper.selectByOpenId(deviceDTO);
         if (temp != null && StringUtils.isNotEmpty(temp.getOpenId())){
             deviceMapper.update(deviceDTO);
         }else{
             deviceMapper.save(deviceDTO);
         }
-
+        return deviceDTO;
     }
 
     @Override

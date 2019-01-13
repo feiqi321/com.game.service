@@ -51,7 +51,8 @@ public class DeviceController {
         logger.info("手环绑定{}-{}",deviceDTO.getOpenId(),deviceDTO.getDeviceId());
         WebResult result = new WebResult();
         try {
-            iDeviceService.saveOrUpdate(deviceDTO);
+            DeviceDTO resultDTO = iDeviceService.saveOrUpdate(deviceDTO);
+            result.setData(resultDTO);
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();

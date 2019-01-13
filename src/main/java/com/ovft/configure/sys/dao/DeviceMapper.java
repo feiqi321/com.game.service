@@ -24,4 +24,6 @@ public interface DeviceMapper {
 
     public int checkDevice(DeviceDTO dto);
 
+    public DeviceDTO selectRealDevice(DeviceDTO dto);
+
 }
