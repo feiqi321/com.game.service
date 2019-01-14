@@ -15,5 +15,7 @@ public interface IManagerService {
      */
     public WxConf queryOpenId(String openCode,String gameId,String nickName,String imgUrl);
 
-
+    public void saveMonsterHealth(int health);
+    
+    public int queryMonsterHealth();
 }

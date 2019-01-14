@@ -39,11 +39,13 @@ public class GameServiceImpl implements GameService {
         logger.info("游戏开始，boss血量初始化{}",bossDTO.getBlood());
         GlobalUtils.mapCache.put("blood",bossDTO.getBlood());
         GlobalUtils.mapCache.put("totalBlood",bossDTO.getBlood());
+        GlobalUtils.mapCache.put("gameno",gameDTO.getId());
     }
 
     public void endGame(){
         gameMapper.update();
         GlobalUtils.mapCache.remove("gameId");
+        GlobalUtils.mapCache.remove("gameno");
     }
     @Override
     public AttackDTO findTotalAttack(AttackDTO attackDTO){

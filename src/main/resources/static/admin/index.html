@@ -1,0 +1,173 @@
+<html>
+
+<head>
+    <title>控制台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+    <script src="tool.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="js.cookie.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="bootstrap.min.js"></script>
+
+    <style>
+        main{
+            padding: 20px;
+            text-align: center;
+        }
+
+        #status span{
+            display: block;
+        }
+
+        #buttons{
+            padding-top: 20px;
+        }
+
+        #buttons > button{
+            display: none;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            let token = Cookies.get('token');
+            if (!token) {
+                location.href = "login.html";
+            }
+
+            queryGameStatus();
+        });
+
+        function queryGameStatus(){
+            $.post(
+                url("game/manager/queryGameStatus"),
+                {
+                    token : Cookies.get('token')
+                },
+                function (result) {
+                    if (result.code == "200") {
+                        let data = result.data;
+                        if(data.event == -1){
+                            $("#btn1").show();
+                            $("#btn2").hide();
+                            $("#btn3").show();
+                        }else{
+                            $("#btn1").hide();
+                            $("#btn2").show();
+                            $("#btn3").hide();
+                        }
+                        $("#stt1").text(`当前游戏编号：${data.gameno}`);
+                        $("#stt2").text(`当前游戏状态：${data.eventName}`);
+                        $("#stt3").text(`怪兽总血量：${data.health}`);
+                    }else{
+                        location.href = "login.html";
+                    }
+                },
+                "json"
+            );
+        }
+
+        function saveMonsterHealth() {
+            $.post(
+                url("game/manager/saveMonsterHealth"),
+                {
+                    token : Cookies.get('token'),
+                    health: $("#monsterHealth").val()
+                },
+                function (result) {
+                    if (result.code == "200") {
+                        $("#stt3").text(`怪兽总血量：${$("#monsterHealth").val()}`);
+                        $("#alertSuccess").fadeIn().fadeOut();
+                        setTimeout(() => {
+                            $('#monsterModal').modal('hide');
+                        }, 800);
+                    } else {
+                        $("#monsterHealth").val('');
+                        $("#alertFail").text(result.msg).fadeIn().fadeOut();
+                    }
+                },
+                "json"
+            );
+        }
+
+        function endGame(){
+            $.post(
+                url("game/event/stopEvent"),
+                function (result) {
+                    if (result.code == "200") {
+                        $("#alertSuccess1").fadeIn().fadeOut();
+                        queryGameStatus();
+                    } else {
+                        $("#alertFail1").text(result.msg).fadeIn().fadeOut();
+                    }
+                },
+                "json"
+            );
+        }
+
+        function newGame(){
+            $.post(
+                url("game/game/startGame"),
+                function (result) {
+                    if (result.code == "200") {
+                        $("#alertSuccess1").fadeIn().fadeOut();
+                        queryGameStatus();
+                    } else {
+                        $("#alertFail1").text(result.msg).fadeIn().fadeOut();
+                    }
+                },
+                "json"
+            );
+        }
+    </script>
+</head>
+
+<body>
+    <main>
+        <div id="status">
+            <span id="stt1">
+                当前游戏编号：
+            </span>
+            <span id="stt2">
+                当前游戏状态：
+            </span>
+            <span id="stt3">
+                怪兽总血量：
+            </span>
+        </div>
+        <div id="buttons">
+            <button id="btn1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#monsterModal">修改怪兽血量</button>
+            <button id="btn2" type="button" class="btn btn-primary" onclick="endGame()">结束当前游戏</button>
+            <button id="btn3" type="button" class="btn btn-primary" onclick="newGame()">开始新游戏</button>
+        </div>
+        <div class="mt-2">
+            <div id="alertSuccess1" class="alert alert-success collapse" role="alert">操作成功</div>
+            <div id="alertFail1" class="alert alert-danger collapse" role="alert"></div>
+        </div>
+    </main>
+
+    <div id="monsterModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="monsterModalTitle">修改怪兽总血量</h5>
+                </div>
+                <div class="modal-body">
+                    <input id="monsterHealth" type="number" class="form-control" placeholder="怪兽总血量">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="saveMonsterHealth()">保存</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+                <div class="mt-2">
+                    <div id="alertSuccess" class="alert alert-success collapse" role="alert">保存成功</div>
+                    <div id="alertFail" class="alert alert-danger collapse" role="alert"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

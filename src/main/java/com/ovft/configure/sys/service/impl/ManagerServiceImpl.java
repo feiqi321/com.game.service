@@ -34,6 +34,8 @@ public class ManagerServiceImpl implements IManagerService{
     private DeviceMapper deviceMapper;
     @Resource
     private DeviceColorMapper deviceColorMapper;
+    @Resource
+    private BossMapper bossMapper;
 
     @Override
     public boolean login(String username, String pwd) {
@@ -81,5 +83,15 @@ public class ManagerServiceImpl implements IManagerService{
         }
         return wxConf;
 
+    }
+
+    @Override
+    public int queryMonsterHealth() {
+        return bossMapper.findBoss().getBlood();
+    } 
+
+    @Override
+    public void saveMonsterHealth(int health) {
+        bossMapper.updateHealth(health);
     }
 }

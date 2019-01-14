@@ -76,4 +76,51 @@ public class ManagerController {
         return  result;
     }
 
+    @RequestMapping("/queryGameStatus")
+    public WebResult queryGameStatus(@RequestParam String token,HttpSession session){
+        WebResult result = new WebResult();
+        if(session.getAttribute("token") == null || !session.getAttribute("token").equals(token)){
+            result.setCode("501");
+            result.setMsg("登陆校验失败");
+            return result;
+        }
+        
+        Map map = new HashMap<>();
+
+        int event = GlobalUtils.event;
+        map.put("event",event);
+        String eventName = GlobalUtils.getEventName();
+        map.put("eventName",eventName);
+
+        map.put("health",iManagerService.queryMonsterHealth());
+        
+        if(GlobalUtils.mapCache.get("gameno") != null){
+            int gameno = (int) GlobalUtils.mapCache.get("gameno");
+            map.put("gameno",gameno);
+        }
+
+        result.setCode("200");
+        result.setData(map);
+        return result;
+    }
+
+    @RequestMapping("/saveMonsterHealth")
+    public WebResult saveMonsterHealth(@RequestParam String token,@RequestParam int health,HttpSession session){
+        WebResult result = new WebResult();
+        if(session.getAttribute("token") == null || !session.getAttribute("token").equals(token)){
+            result.setCode("501");
+            result.setMsg("登陆校验失败");
+            return result;
+        }
+
+        if(health > 0){
+            iManagerService.saveMonsterHealth(health);
+            result.setCode("200");
+        }else{
+            result.setCode("502");
+            result.setMsg("怪兽生命值必须大于0");
+        }
+
+        return result;
+    }
 }
