@@ -127,7 +127,7 @@ public class DeviceServiceImpl implements IDeviceService {
     public String executeAsyncTask(){
         try {
             GlobalUtils.event = 0;//开始
-            GlobalUtils.animationID = 1;
+            /*GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
@@ -164,7 +164,7 @@ public class DeviceServiceImpl implements IDeviceService {
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
-            }
+            }*/
             GlobalUtils.event = 3;//怪兽袭击
             GlobalUtils.animationID = 4;
             GlobalUtils.musicID = 4;
@@ -183,7 +183,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
-            //gameService.endGame();//将游戏的状态设置为1 ，已结束
+            gameService.endGame();//将游戏的状态设置为1 ，已结束
         } catch (Exception e) {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;

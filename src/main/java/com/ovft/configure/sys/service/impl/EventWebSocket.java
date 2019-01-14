@@ -4,6 +4,8 @@ import com.ovft.configure.sys.bean.AttackDTO;
 import com.ovft.configure.sys.dao.AttackMapper;
 import com.ovft.configure.sys.service.AttackService;
 import com.ovft.configure.utils.GlobalUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +21,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @ServerEndpoint(value = "/websocket")
 @Component
 public class EventWebSocket {
-
+    private static final Logger logger = LoggerFactory.getLogger(EventWebSocket.class);
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
 
@@ -117,13 +119,16 @@ public class EventWebSocket {
     }
 
     public synchronized void attack(AttackDTO attackDTO){
+        logger.info("boss血量{}",GlobalUtils.mapCache.get("blood"));
         int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood")==null?"0":GlobalUtils.mapCache.get("blood").toString());
         AttackService attackService = SpringUtils.getBean(AttackServiceImpl.class);
-
+        logger.info("blood:{}",blood);
         if (blood>0 && blood>attackDTO.getAttack()) {
+            logger.info("if:{}",1);
             GlobalUtils.mapCache.put("blood",blood-attackDTO.getAttack());
             attackService.attack(attackDTO);
         }else if (blood>0 && blood<=attackDTO.getAttack()){
+            logger.info("if:{}",2);
             GlobalUtils.mapCache.put("blood",0);
             attackService.attack(attackDTO);
             GlobalUtils.animationID = 5;
@@ -137,6 +142,7 @@ public class EventWebSocket {
                 }
             }
         }else{
+            logger.info("if:{}",3);
             GlobalUtils.mapCache.put("blood",0);
         }
     }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GBK"?>
 <!-- Logback configuration. See http://logback.qos.ch/manual/index.html -->
 <configuration scan="true" scanPeriod="10 seconds">
     <conversionRule conversionWord="ip" converterClass="com.ovft.configure.utils.LogIpConfigUtil"/>
@@ -36,9 +36,7 @@
             <maxHistory>10</maxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level] %ip:${port} [%thread] %logger{36} -%msg%n
-
-            </Pattern>
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level] %ip:${port} [%thread] %logger{36} -%msg%n</Pattern>
         </layout>
     </appender>
 
