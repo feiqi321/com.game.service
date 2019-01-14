@@ -21,6 +21,26 @@ public class DeviceDTO implements Serializable {
 
     private int type;//1蓝牙资源  2手环
 
+    private String nickName;
+
+    private String imgUrl;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public int getTotalScores() {
         return totalScores;
     }

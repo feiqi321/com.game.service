@@ -51,7 +51,7 @@ public class ManagerController {
      * @return
      */
     @PostMapping(value = "/access")
-    public WebResult startEvent(@RequestBody WxConf wxConf)  {
+    public WebResult access(@RequestBody WxConf wxConf)  {
         logger.info("第一次进入系统");
         WebResult result = new WebResult();
         try {
@@ -61,7 +61,7 @@ public class ManagerController {
                 result.setMsg("游戏还未开始");
                 return result;
             }
-            WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode(),gameId);
+            WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode(),gameId,wxConf.getNickName(),wxConf.getImgUrl());
             if (resultDto==null){
                 result.setCode("502");
                 result.setMsg("获取微信数据失败");

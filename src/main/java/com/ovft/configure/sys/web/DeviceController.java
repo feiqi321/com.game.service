@@ -52,8 +52,13 @@ public class DeviceController {
         WebResult result = new WebResult();
         try {
             DeviceDTO resultDTO = iDeviceService.saveOrUpdate(deviceDTO);
-            result.setData(resultDTO);
-            result.setCode("200");
+            if (resultDTO==null){
+                result.setMsg("！该手环不存在");
+                result.setCode("500");
+            }else {
+                result.setData(resultDTO);
+                result.setCode("200");
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

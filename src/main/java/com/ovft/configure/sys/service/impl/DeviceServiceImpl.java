@@ -1,12 +1,10 @@
 package com.ovft.configure.sys.service.impl;
 
-import com.ovft.configure.sys.bean.CollectDTO;
-import com.ovft.configure.sys.bean.CollectingDTO;
-import com.ovft.configure.sys.bean.DeviceColorDTO;
-import com.ovft.configure.sys.bean.DeviceDTO;
+import com.ovft.configure.sys.bean.*;
 import com.ovft.configure.sys.dao.CollectMapper;
 import com.ovft.configure.sys.dao.DeviceColorMapper;
 import com.ovft.configure.sys.dao.DeviceMapper;
+import com.ovft.configure.sys.dao.RankMapper;
 import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.sys.service.WarehouseService;
@@ -39,6 +37,8 @@ public class DeviceServiceImpl implements IDeviceService {
     private CollectMapper collectMapper;
     @Resource
     private WarehouseService warehouseService;
+    @Resource
+    private RankMapper rankMapper;
 
     @Override
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO){
@@ -50,6 +50,9 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public DeviceDTO saveOrUpdate(DeviceDTO deviceDTO){
         DeviceDTO realDevice = deviceMapper.selectRealDevice(deviceDTO);
+        if (realDevice == null || StringUtils.isEmpty(realDevice.getDeviceId())){
+            return null;
+        }
         deviceDTO.setDeviceId(realDevice.getDeviceId());
         DeviceDTO temp = deviceMapper.selectByOpenId(deviceDTO);
         if (temp != null && StringUtils.isNotEmpty(temp.getOpenId())){
@@ -127,9 +130,9 @@ public class DeviceServiceImpl implements IDeviceService {
     public String executeAsyncTask(){
         try {
             GlobalUtils.event = 0;//开始
-            /*GlobalUtils.animationID = 1;
+            GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
-            TimeUnit.MINUTES.sleep(1);
+            TimeUnit.MINUTES.sleep(30);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -164,7 +167,7 @@ public class DeviceServiceImpl implements IDeviceService {
             TimeUnit.MINUTES.sleep(1);
             if (GlobalUtils.event == -1){
                 return null;
-            }*/
+            }
             GlobalUtils.event = 3;//怪兽袭击
             GlobalUtils.animationID = 4;
             GlobalUtils.musicID = 4;
@@ -183,12 +186,31 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
+            this.comunicateOrder();
             gameService.endGame();//将游戏的状态设置为1 ，已结束
         } catch (Exception e) {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;
         }
         return null;
+    }
+
+    public void comunicateOrder(){
+        String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
+        DeviceDTO deviceDTO = new DeviceDTO();
+        deviceDTO.setGameId(gameId);
+        List<DeviceDTO> list = deviceMapper.selectOrder(deviceDTO);
+        for (int i=0;i<list.size();i++){
+            DeviceDTO temp = list.get(i);
+            Rank rank = new Rank();
+            rank.setGameId(temp.getGameId());
+            rank.setOpenId(temp.getOpenId());
+            rank.setNickName(temp.getNickName());
+            rank.setImgUrl(temp.getImgUrl());
+            rank.setScores(temp.getTotalScores());
+            rankMapper.save(rank);
+        }
+
     }
 
     @Async

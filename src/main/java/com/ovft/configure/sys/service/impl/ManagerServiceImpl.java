@@ -46,7 +46,7 @@ public class ManagerServiceImpl implements IManagerService{
      * @param openCode
      * @return
      */
-    public WxConf queryOpenId(String openCode,String gameId){
+    public WxConf queryOpenId(String openCode,String gameId,String nickName,String imgUrl){
         WxConf wxConf = wxConfMapper.findWxConf();
         logger.info("https://api.weixin.qq.com/sns/jscode2session?appid="+wxConf.getAppId()+"&secret="+wxConf.getSecret()+"&js_code="+openCode+"&grant_type=authorization_code");
         String json = HttpClient.httpGet("https://api.weixin.qq.com/sns/jscode2session?appid="+wxConf.getAppId()+"&secret="+wxConf.getSecret()+"&js_code="+openCode+"&grant_type=authorization_code");
@@ -65,6 +65,8 @@ public class ManagerServiceImpl implements IManagerService{
             wxConf.setOpenId(resultStr);
             if (temp == null || StringUtils.isEmpty(temp.getOpenId())){
                 dto.setScores(0);
+                dto.setNickName(nickName);
+                dto.setImgUrl(imgUrl);
                 deviceMapper.save(dto);
                 wxConf.setDeviceId("");
             }else{

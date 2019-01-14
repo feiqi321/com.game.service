@@ -22,7 +22,29 @@ public class WxConf implements Serializable {
 
     private String gameId;
 
+    private String nickName;
+
+    private String imgUrl;
+
+
     private List<DeviceColorDTO> list;
+
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public String getGameId() {
         return gameId;

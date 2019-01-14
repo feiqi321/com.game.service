@@ -3,6 +3,8 @@ package com.ovft.configure.sys.dao;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * Created by looyer on 2018/12/24.
  */
@@ -19,11 +21,14 @@ public interface DeviceMapper {
 
     public void reduce(DeviceDTO dto);
 
+    public void addBossDestroyScore(DeviceDTO dto);
 
     public void addDestroyScore(DeviceDTO dto);
 
     public int checkDevice(DeviceDTO dto);
 
     public DeviceDTO selectRealDevice(DeviceDTO dto);
+
+    public List<DeviceDTO> selectOrder(DeviceDTO dto);
 
 }

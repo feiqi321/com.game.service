@@ -2,10 +2,7 @@ package com.ovft.configure.sys.service.impl;
 
 import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.*;
-import com.ovft.configure.sys.dao.AttackMapper;
-import com.ovft.configure.sys.dao.BuildMapper;
-import com.ovft.configure.sys.dao.DeviceMapper;
-import com.ovft.configure.sys.dao.WarehouseMapper;
+import com.ovft.configure.sys.dao.*;
 import com.ovft.configure.sys.service.WarehouseService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +25,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private BuildMapper buildMapper;
     @Resource
     private AttackMapper attackMapper;
+
 
     @Override
     public List<Shop> findAllShop(Shop shop){
@@ -124,6 +122,14 @@ public class WarehouseServiceImpl implements WarehouseService {
             buildDTO.setOpenId(tempDTO.getOpenId());
             BuildDTO temp = buildMapper.findMyBuildOne(buildDTO);
             buildMapper.del(temp);
+            Warehouse warehouse= new Warehouse();
+            warehouse.setId(temp.getWareId());
+            warehouse = warehouseMapper.findWareById(warehouse);
+            DeviceDTO deviceDTO = new DeviceDTO();
+            deviceDTO.setGameId(tempDTO.getGameId());
+            deviceDTO.setOpenId(tempDTO.getOpenId());
+            deviceDTO.setScores(-warehouse.getPrice());
+            deviceMapper.addBossDestroyScore(deviceDTO);
         }
 
     }
