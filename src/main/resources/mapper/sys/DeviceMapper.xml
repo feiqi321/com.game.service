@@ -4,13 +4,13 @@
 <mapper namespace="com.ovft.configure.sys.dao.DeviceMapper" >
 
     <select id="selectByOpenId" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
-        SELECT id,open_id as openId,device_id as deviceId,scores,total_scores as totalScores,game_id as gameId,nick_name as nickName,img_url as imgUrl
+        SELECT id,open_id as openId,device_id as deviceId,(select sum(scores) from device where open_id = #{openId}) as scores from ,total_scores as totalScores,game_id as gameId,nick_name as nickName,img_url as imgUrl
         FROM device
         where open_id = #{openId} and game_id = #{gameId} order by id desc limit 1
     </select>
 
     <select id="selectOrder" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
-        SELECT id,open_id as openId,device_id as deviceId,scores,total_scores as totalScores,game_id as gameId,nick_name as nickName,img_url as imgUrl
+        SELECT id,open_id as openId,device_id as deviceId,(select sum(scores) from device where open_id = #{openId}) as scores,total_scores as totalScores,game_id as gameId,nick_name as nickName,img_url as imgUrl
         FROM device
         where  game_id = #{gameId}
     </select>
@@ -43,7 +43,7 @@
         UPDATE
         device
         SET
-        total_scores = scores+#{scores},
+        total_scores = total_scores+#{scores},
         scores=scores+#{scores}
         WHERE open_id = #{openId} and game_id = #{gameId}
     </update>

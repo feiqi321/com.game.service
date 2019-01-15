@@ -101,8 +101,6 @@ public class WarehouseServiceImpl implements WarehouseService {
         DeviceDTO deviceDTO = new DeviceDTO();
         deviceDTO.setOpenId(buildDTO.getOpenId());
         deviceDTO.setGameId(buildDTO.getGameId());
-        deviceDTO.setScores(buildDTO.getDestroyPrice());
-        deviceMapper.addDestroyScore(deviceDTO);
         DeviceDTO resultDTO = deviceMapper.selectByOpenId(deviceDTO);
         result.setCode("200");
         result.setData(resultDTO.getScores());

@@ -58,6 +58,8 @@ public class EventController {
         WebResult result = new WebResult();
         try {
             GlobalUtils.event = -1;
+            GlobalUtils.mapCache.remove("gameId");
+            GlobalUtils.mapCache.remove("gameno");
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();
