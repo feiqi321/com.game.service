@@ -187,6 +187,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
             this.comunicateOrder();
+            EventWebSocket.sendInfo("100");//游戏结束
             gameService.endGame();//将游戏的状态设置为1 ，已结束
         } catch (Exception e) {
             logger.error(e.getMessage());

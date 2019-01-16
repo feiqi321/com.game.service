@@ -63,7 +63,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             tempResult.setNum(tempResult.getNum()+warehouse.getNum());
             warehouseMapper.update(tempResult);
         }
-        deviceDTO.setScores(-shop.getPrice());
+        deviceDTO.setScores(-(shop.getPrice()*warehouse.getNum()));
         deviceMapper.reduce(deviceDTO);
         DeviceDTO resultDTO = deviceMapper.selectByOpenId(deviceDTO);
         result.setCode("200");
