@@ -4,7 +4,7 @@
 <mapper namespace="com.ovft.configure.sys.dao.RankMapper" >
 
     <select id="findRank"  resultType="com.ovft.configure.sys.bean.Rank">
-        select id,game_id as gameId,open_id as openId,nick_name as nickName,img_url as imgUrl from rank order by scores desc
+        select id,game_id as gameId,open_id as openId,nick_name as nickName,img_url as imgUrl from rank order by scores desc limit 0,5
     </select>
 
 

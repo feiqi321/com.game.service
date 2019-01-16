@@ -3,9 +3,11 @@ package com.ovft.configure.sys.service.impl;
 import com.ovft.configure.sys.bean.AttackDTO;
 import com.ovft.configure.sys.bean.BossDTO;
 import com.ovft.configure.sys.bean.GameDTO;
+import com.ovft.configure.sys.bean.Rank;
 import com.ovft.configure.sys.dao.AttackMapper;
 import com.ovft.configure.sys.dao.BossMapper;
 import com.ovft.configure.sys.dao.GameMapper;
+import com.ovft.configure.sys.dao.RankMapper;
 import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -27,7 +30,8 @@ public class GameServiceImpl implements GameService {
     private BossMapper bossMapper;
     @Resource
     private AttackMapper attackMapper;
-
+    @Resource
+    private RankMapper rankMapper;
 
     public void startGame(){
         String gameId = UUID.randomUUID().toString();
@@ -50,6 +54,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public AttackDTO findTotalAttack(AttackDTO attackDTO){
         return attackMapper.findTotalAttack(attackDTO);
+    }
+    @Override
+    public List<Rank> listRank(){
+        return rankMapper.findRank();
     }
 
 }

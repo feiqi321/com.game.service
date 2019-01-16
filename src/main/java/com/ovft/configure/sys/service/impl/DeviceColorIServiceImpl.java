@@ -158,12 +158,15 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                         deviceDTO.setScores(15);
                         singleReward = 15;
                         groupReward = colorRuleDTO.getScores();
+                        totalReward = 30;
                         bigUrl = colorRuleDTO.getUrl2();
                     } else if (resultCollect.getHands() == 1) {//已经1次手环在
                         deviceDTO.setScores(10);
+                        totalReward = 15;
                         singleReward = 10;
                     } else {//已经0次手环在
                         deviceDTO.setScores(5);
+                        totalReward = 5;
                         singleReward = 5;
                     }
                     resultCollect.setHands(resultCollect.getHands() + 1);

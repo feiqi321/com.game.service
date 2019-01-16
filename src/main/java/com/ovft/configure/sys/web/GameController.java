@@ -3,6 +3,7 @@ package com.ovft.configure.sys.web;
 import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.AttackDTO;
 import com.ovft.configure.sys.bean.GameDTO;
+import com.ovft.configure.sys.bean.Rank;
 import com.ovft.configure.sys.bean.TaskDTO;
 import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.TaskService;
@@ -88,5 +89,25 @@ public class GameController {
         return  result;
     }
 
+    /**
+     *  游戏排名
+     *
+     * @return
+     */
+    @PostMapping(value = "/gameOrder")
+    public WebResult gameOrder()  {
+        logger.info("开始一局新的游戏");
+        WebResult result = new WebResult();
+        try {
 
+            List<Rank> list = gameService.listRank();
+            result.setData(list);
+            result.setCode("200");
+        }catch (Exception e){
+            result.setCode("500");
+            result.setMsg(e.getMessage());
+            logger.error(e.getMessage());
+        }
+        return  result;
+    }
 }
