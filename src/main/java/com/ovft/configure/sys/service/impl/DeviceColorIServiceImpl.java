@@ -31,7 +31,8 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         return deviceColorMapper.findByDeviceId(deviceColorDTO);
     }
     @Override
-    public DeviceColorDTO collect(CollectDTO collectDTO){
+    public WebResult collect(CollectDTO collectDTO){
+        WebResult webResult = new WebResult();
         DeviceColorDTO result = new DeviceColorDTO();
         DeviceColorDTO deviceColorDTO = new DeviceColorDTO();
         deviceColorDTO.setDeviceId(collectDTO.getDeviceId());
@@ -39,7 +40,8 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         CollectDTO resultCollect = collectMapper.findByOpenId(collectDTO);
         //判断还没有收集过此能量
         if (resultCollect!=null && (resultColor.getColor()==resultCollect.getColor1() || resultColor.getColor()==resultCollect.getColor2())){
-            result = null;
+            webResult.setCode("500");
+            webResult.setMsg("同一组合不能收集同种能量");
         }else{
             if (GlobalUtils.event == 1){//下雪
                 EventConfigDTO eventConfigDTO = new EventConfigDTO();
@@ -54,7 +56,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }else if (GlobalUtils.event == 2){//地震
                 result.setEvent(2);
                 if (resultColor.getColor() == 4){//绿色能量不能收集
-                    result = null;
+                    webResult.setMsg("地震阶段,不允许收集绿色能量");
                 }else{//在30cm外
                     EventConfigDTO eventConfigDTO = new EventConfigDTO();
                     eventConfigDTO.setEvent(2);
@@ -84,8 +86,9 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 result.setContinuTime(eventConfigDTO.getEventTime());
             }
         }
-
-        return result;
+        webResult.setCode("200");
+        webResult.setData(result);
+        return webResult;
     }
 
     @Override

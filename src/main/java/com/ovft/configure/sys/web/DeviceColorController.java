@@ -57,14 +57,8 @@ public class DeviceColorController {
         logger.info("收集资源判断{}{}",collectDTO.getDeviceId(),collectDTO.getOpenId());
         WebResult result = new WebResult();
         try {
-            DeviceColorDTO deviceColorDTO = iDeviceColorService.collect(collectDTO);
-            if (deviceColorDTO == null) {
-                result.setCode("502");
-                result.setMsg("不能收集此能量");
-            }else{
-                result.setCode("200");
-                result.setData(deviceColorDTO);
-            }
+            result = iDeviceColorService.collect(collectDTO);
+
         }catch (Exception e){
             result.setCode("500");
             result.setMsg(e.getMessage());
