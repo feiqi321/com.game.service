@@ -9,9 +9,11 @@ import com.ovft.configure.sys.dao.BossMapper;
 import com.ovft.configure.sys.dao.GameMapper;
 import com.ovft.configure.sys.dao.RankMapper;
 import com.ovft.configure.sys.service.GameService;
+import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,6 +34,8 @@ public class GameServiceImpl implements GameService {
     private AttackMapper attackMapper;
     @Resource
     private RankMapper rankMapper;
+    /*@Autowired
+    private IDeviceService iDeviceService;*/
 
     public void startGame(){
         String gameId = UUID.randomUUID().toString();
@@ -44,6 +48,7 @@ public class GameServiceImpl implements GameService {
         GlobalUtils.mapCache.put("blood",bossDTO.getBlood());
         GlobalUtils.mapCache.put("totalBlood",bossDTO.getBlood());
         GlobalUtils.mapCache.put("gameno",gameDTO.getId());
+        //iDeviceService.startEvent();
     }
 
     public void endGame(){

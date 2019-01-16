@@ -24,4 +24,6 @@ public interface IDeviceService {
 
     public List<CollectingDTO> collecting(DeviceDTO deviceDTO);
 
+    public void startGameEvent();
+
 }

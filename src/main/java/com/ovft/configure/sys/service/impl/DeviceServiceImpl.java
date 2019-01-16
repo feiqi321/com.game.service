@@ -115,6 +115,10 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
+    public void startGameEvent(){
+        this.startEvent();
+    }
+    @Override
     @Async
     public void startEvent(){
         this.executeAsyncTask();
