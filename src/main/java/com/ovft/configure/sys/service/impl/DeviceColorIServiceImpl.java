@@ -42,6 +42,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         if (resultCollect!=null && (resultColor.getColor()==resultCollect.getColor1() || resultColor.getColor()==resultCollect.getColor2())){
             webResult.setCode("500");
             webResult.setMsg("同一组合不能收集同种能量");
+            return webResult;
         }else{
             if (GlobalUtils.event == 1){//下雪
                 EventConfigDTO eventConfigDTO = new EventConfigDTO();
@@ -56,7 +57,9 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }else if (GlobalUtils.event == 2){//地震
                 result.setEvent(2);
                 if (resultColor.getColor() == 4){//绿色能量不能收集
+                    webResult.setCode("500");
                     webResult.setMsg("地震阶段,不允许收集绿色能量");
+                    return webResult;
                 }else{//在30cm外
                     EventConfigDTO eventConfigDTO = new EventConfigDTO();
                     eventConfigDTO.setEvent(2);
