@@ -91,6 +91,10 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
     @Override
     public WebResult confirm(CollectDTO collectDTO){
         WebResult result = new WebResult();
+        int singleReward=0;
+        int groupReward=0;
+        int totalReward=0;
+        String bigUrl = "";
         DeviceColorDTO deviceColorDTO = new DeviceColorDTO();
         deviceColorDTO.setDeviceId(collectDTO.getDeviceId());
         DeviceColorDTO resultColor = deviceColorMapper.findByDeviceId(deviceColorDTO);
@@ -102,7 +106,8 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
-                deviceDTO.setScores(50);
+                deviceDTO.setScores(5);
+                singleReward = 5;
                 deviceDTO.setGameId(collectDTO.getGameId());
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(resultCollect.getHands()+1);
@@ -112,15 +117,15 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         }else if (resultCollect !=null && resultCollect.getColor1() > 0 && resultCollect.getColor2()==0){
             resultCollect.setColor2(resultColor.getColor());
             resultCollect.setStatus(0);
-
-
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 if (resultCollect.getHands() == 1) {
-                    deviceDTO.setScores(100);
+                    deviceDTO.setScores(10);
+                    singleReward = 10;
                 } else {
-                    deviceDTO.setScores(50);
+                    deviceDTO.setScores(5);
+                    singleReward = 5;
                 }
                 deviceDTO.setGameId(collectDTO.getGameId());
                 deviceMapper.addScore(deviceDTO);
@@ -150,11 +155,16 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 if (collectDTO.getLength() == 0) {
 
                     if (resultCollect.getHands() == 2) {//已经2次手环在
-                        deviceDTO.setScores(150);
+                        deviceDTO.setScores(15);
+                        singleReward = 15;
+                        groupReward = colorRuleDTO.getScores();
+                        bigUrl = colorRuleDTO.getUrl2();
                     } else if (resultCollect.getHands() == 1) {//已经1次手环在
-                        deviceDTO.setScores(100);
+                        deviceDTO.setScores(10);
+                        singleReward = 10;
                     } else {//已经0次手环在
-                        deviceDTO.setScores(50);
+                        deviceDTO.setScores(5);
+                        singleReward = 5;
                     }
                     resultCollect.setHands(resultCollect.getHands() + 1);
                     deviceDTO.setGameId(collectDTO.getGameId());
@@ -176,7 +186,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 deviceDTO.setGameId(collectDTO.getGameId());
-                deviceDTO.setScores(50);
+                deviceDTO.setScores(5);
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(1);
                 resultCollect.setViewStatus(2);//沒有完成收集
@@ -187,6 +197,10 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         resultQuery.setOpenId(collectDTO.getOpenId());
         resultQuery.setGameId(collectDTO.getGameId());
         DeviceDTO resultDevice = deviceMapper.selectByOpenId(resultQuery);
+        resultDevice.setBigUrl(bigUrl);
+        resultDevice.setSingleReward(singleReward);
+        resultDevice.setGroupReward(groupReward);
+        resultDevice.setTotalReward(totalReward);
         result.setCode("200");
         result.setData(resultDevice);
         return result;

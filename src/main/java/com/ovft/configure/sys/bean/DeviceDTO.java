@@ -25,6 +25,46 @@ public class DeviceDTO implements Serializable {
 
     private String imgUrl;
 
+    private int singleReward;
+
+    private int groupReward;
+
+    private int totalReward;
+
+    private String bigUrl;
+
+    public String getBigUrl() {
+        return bigUrl;
+    }
+
+    public void setBigUrl(String bigUrl) {
+        this.bigUrl = bigUrl;
+    }
+
+    public int getSingleReward() {
+        return singleReward;
+    }
+
+    public void setSingleReward(int singleReward) {
+        this.singleReward = singleReward;
+    }
+
+    public int getGroupReward() {
+        return groupReward;
+    }
+
+    public void setGroupReward(int groupReward) {
+        this.groupReward = groupReward;
+    }
+
+    public int getTotalReward() {
+        return totalReward;
+    }
+
+    public void setTotalReward(int totalReward) {
+        this.totalReward = totalReward;
+    }
+
     public String getNickName() {
         return nickName;
     }
