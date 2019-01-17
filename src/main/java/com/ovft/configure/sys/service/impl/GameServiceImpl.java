@@ -67,6 +67,9 @@ public class GameServiceImpl implements GameService {
         List<Rank> scoreList = new ArrayList<Rank>();
         List<Rank> timeList = new ArrayList<Rank>();
         for (int i=0;i<list.size();i++){
+            if (i>=5){
+                break;
+            }
             DeviceDTO temp = list.get(i);
             Rank rank = new Rank();
             rank.setGameId(temp.getGameId());
@@ -78,6 +81,9 @@ public class GameServiceImpl implements GameService {
         }
         List<DeviceDTO> timeDevicelist = deviceMapper.selectTimeOrder(deviceDTO);
         for (int i=0;i<timeDevicelist.size();i++){
+            if (i>=23){
+                break;
+            }
             DeviceDTO temp = list.get(i);
             Rank rank = new Rank();
             rank.setGameId(temp.getGameId());
