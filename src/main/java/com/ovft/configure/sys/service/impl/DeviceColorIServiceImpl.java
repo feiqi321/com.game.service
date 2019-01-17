@@ -100,6 +100,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         int singleReward=0;
         int groupReward=0;
         int totalReward=0;
+        int orderNum = 0;
         String bigUrl = "";
         DeviceColorDTO deviceColorDTO = new DeviceColorDTO();
         deviceColorDTO.setDeviceId(collectDTO.getDeviceId());
@@ -107,6 +108,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         CollectDTO resultCollect = collectMapper.findByOpenId(collectDTO);
         if (resultCollect !=null && resultCollect.getColor1()==0){
             resultCollect.setColor1(resultColor.getColor());
+            orderNum =1;
             resultCollect.setStatus(0);
 
             if (collectDTO.getLength()==0) {
@@ -123,6 +125,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         }else if (resultCollect !=null && resultCollect.getColor1() > 0 && resultCollect.getColor2()==0){
             resultCollect.setColor2(resultColor.getColor());
             resultCollect.setStatus(0);
+            orderNum =2;
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
@@ -143,6 +146,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         }else if (resultCollect !=null && resultCollect.getColor2() > 0 && resultCollect.getColor3()==0){
             resultCollect.setColor3(resultColor.getColor());
             resultCollect.setStatus(1);
+            orderNum =3;
             ColorRuleDTO colorRuleDTO = new ColorRuleDTO();
             colorRuleDTO.setColor1(resultCollect.getColor1());
             colorRuleDTO.setColor2(resultCollect.getColor2());
@@ -155,17 +159,16 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }else {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 resultCollect.setScores(colorRuleDTO.getScores());
+                groupReward = colorRuleDTO.getScores();
+                bigUrl = colorRuleDTO.getUrl2();
                 resultCollect.setUrl(colorRuleDTO.getUrl());
                 resultCollect.setUrl2(colorRuleDTO.getUrl2());
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 if (collectDTO.getLength() == 0) {
-
                     if (resultCollect.getHands() == 2) {//已经2次手环在
                         deviceDTO.setScores(15);
                         singleReward = 15;
-                        groupReward = colorRuleDTO.getScores();
                         totalReward = 30;
-                        bigUrl = colorRuleDTO.getUrl2();
                     } else if (resultCollect.getHands() == 1) {//已经1次手环在
                         deviceDTO.setScores(10);
                         totalReward = 15;
@@ -187,6 +190,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }
         }else{
             resultCollect = new CollectDTO();
+            orderNum =1;
             resultCollect.setOpenId(collectDTO.getOpenId());
             resultCollect.setColor1(resultColor.getColor());
             resultCollect.setGameId(collectDTO.getGameId());
@@ -210,6 +214,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         resultDevice.setSingleReward(singleReward);
         resultDevice.setGroupReward(groupReward);
         resultDevice.setTotalReward(totalReward);
+        resultDevice.setOrderNum(orderNum);
         result.setCode("200");
         result.setData(resultDevice);
         return result;

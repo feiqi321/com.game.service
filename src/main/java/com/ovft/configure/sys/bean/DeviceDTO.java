@@ -35,6 +35,36 @@ public class DeviceDTO implements Serializable {
 
     private String createTime;
 
+    private int event;
+
+    private int newNum;
+
+    private int orderNum;
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public int getNewNum() {
+        return newNum;
+    }
+
+    public void setNewNum(int newNum) {
+        this.newNum = newNum;
+    }
+
+    public int getEvent() {
+        return event;
+    }
+
+    public void setEvent(int event) {
+        this.event = event;
+    }
+
     public String getCreateTime() {
         return createTime;
     }

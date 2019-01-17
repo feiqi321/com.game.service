@@ -96,7 +96,7 @@ public class GameController {
      */
     @PostMapping(value = "/gameOrder")
     public WebResult gameOrder()  {
-        logger.info("开始一局新的游戏");
+        logger.info("游戏排名");
         WebResult result = new WebResult();
         try {
 
