@@ -50,7 +50,6 @@ public class GameServiceImpl implements GameService {
     public void endGame(){
         gameMapper.update();
         GlobalUtils.mapCache.remove("gameId");
-        GlobalUtils.mapCache.remove("gameno");
     }
     @Override
     public AttackDTO findTotalAttack(AttackDTO attackDTO){
