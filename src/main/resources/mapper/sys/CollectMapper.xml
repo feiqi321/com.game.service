@@ -54,4 +54,11 @@
         view_status = 1
         WHERE open_id = #{openId} and game_id =#{gameId}
     </update>
+
+    <select id="findNewNum" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="java.lang.Integer">
+        SELECT count(*) as num
+        FROM collect
+        where open_id = #{openId} and game_id =#{gameId} and view_status = 0
+    </select>
+
 </mapper>

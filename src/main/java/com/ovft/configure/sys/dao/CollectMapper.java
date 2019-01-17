@@ -23,4 +23,6 @@ public interface CollectMapper {
 
     public void view(CollectDTO collectDTO);
 
+    public int findNewNum(CollectDTO collectDTO);
+
 }

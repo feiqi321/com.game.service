@@ -4,6 +4,7 @@ import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.CollectingDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.service.IDeviceService;
+import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class DeviceController {
         WebResult result = new WebResult();
         try {
             DeviceDTO resultDto = iDeviceService.findByOpenId(deviceDTO);
+            resultDto.setEvent(GlobalUtils.event);
             result.setData(resultDto);
             result.setCode("200");
         }catch (Exception e){

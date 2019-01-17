@@ -42,9 +42,13 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO){
-
-
-        return deviceMapper.selectByOpenId(deviceDTO);
+        DeviceDTO resultDTO = deviceMapper.selectByOpenId(deviceDTO);
+        CollectDTO collectDTO = new CollectDTO();
+        collectDTO.setGameId(deviceDTO.getGameId());
+        collectDTO.setOpenId(deviceDTO.getOpenId());
+        int num = collectMapper.findNewNum(collectDTO);
+        resultDTO.setNewNum(num);
+        return resultDTO;
 
     }
     @Override
