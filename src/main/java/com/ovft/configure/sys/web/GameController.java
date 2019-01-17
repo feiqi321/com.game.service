@@ -100,9 +100,8 @@ public class GameController {
         WebResult result = new WebResult();
         try {
 
-            List<Rank> list = gameService.listRank();
-            result.setData(list);
-            result.setCode("200");
+            result = gameService.listRank();
+
         }catch (Exception e){
             result.setCode("500");
             result.setMsg(e.getMessage());

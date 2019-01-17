@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.service;
 
+import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.AttackDTO;
 import com.ovft.configure.sys.bean.Rank;
 
@@ -16,6 +17,6 @@ public interface GameService {
 
     public AttackDTO findTotalAttack(AttackDTO attackDTO);
 
-    public List<Rank> listRank();
+    public WebResult listRank();
 
 }

@@ -1,13 +1,8 @@
 package com.ovft.configure.sys.service.impl;
 
-import com.ovft.configure.sys.bean.AttackDTO;
-import com.ovft.configure.sys.bean.BossDTO;
-import com.ovft.configure.sys.bean.GameDTO;
-import com.ovft.configure.sys.bean.Rank;
-import com.ovft.configure.sys.dao.AttackMapper;
-import com.ovft.configure.sys.dao.BossMapper;
-import com.ovft.configure.sys.dao.GameMapper;
-import com.ovft.configure.sys.dao.RankMapper;
+import com.ovft.configure.http.result.WebResult;
+import com.ovft.configure.sys.bean.*;
+import com.ovft.configure.sys.dao.*;
 import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.utils.GlobalUtils;
@@ -17,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,8 +30,8 @@ public class GameServiceImpl implements GameService {
     private AttackMapper attackMapper;
     @Resource
     private RankMapper rankMapper;
-    /*@Autowired
-    private IDeviceService iDeviceService;*/
+    @Resource
+    private DeviceMapper deviceMapper;
 
     public void startGame(){
         String gameId = UUID.randomUUID().toString();
@@ -61,8 +57,42 @@ public class GameServiceImpl implements GameService {
         return attackMapper.findTotalAttack(attackDTO);
     }
     @Override
-    public List<Rank> listRank(){
-        return rankMapper.findRank();
+    public WebResult listRank(){
+        WebResult webResult = new WebResult();
+        OrderResponse orderResponse = new OrderResponse();
+        String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
+        DeviceDTO deviceDTO = new DeviceDTO();
+        deviceDTO.setGameId(gameId);
+        List<DeviceDTO> list = deviceMapper.selectOrder(deviceDTO);
+        List<Rank> scoreList = new ArrayList<Rank>();
+        List<Rank> timeList = new ArrayList<Rank>();
+        for (int i=0;i<list.size();i++){
+            DeviceDTO temp = list.get(i);
+            Rank rank = new Rank();
+            rank.setGameId(temp.getGameId());
+            rank.setOpenId(temp.getOpenId());
+            rank.setNickName(temp.getNickName());
+            rank.setImgUrl(temp.getImgUrl());
+            rank.setScores(temp.getTotalScores());
+            scoreList.add(rank);
+        }
+        List<DeviceDTO> timeDevicelist = deviceMapper.selectTimeOrder(deviceDTO);
+        for (int i=0;i<timeDevicelist.size();i++){
+            DeviceDTO temp = list.get(i);
+            Rank rank = new Rank();
+            rank.setGameId(temp.getGameId());
+            rank.setOpenId(temp.getOpenId());
+            rank.setNickName(temp.getNickName());
+            rank.setImgUrl(temp.getImgUrl());
+            rank.setScores(temp.getTotalScores());
+            timeList.add(rank);
+        }
+        orderResponse.setScoreList(scoreList);
+        orderResponse.setTimeList(timeList);
+        orderResponse.setEvent(GlobalUtils.animationID);
+        webResult.setData(orderResponse);
+        webResult.setCode("200");
+        return webResult;
     }
 
 }
