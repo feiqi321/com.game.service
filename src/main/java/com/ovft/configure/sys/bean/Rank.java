@@ -19,6 +19,16 @@ public class Rank implements Serializable {
 
     private int scores;
 
+    private String createTime;
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     public int getId() {
         return id;
     }

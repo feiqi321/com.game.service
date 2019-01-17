@@ -91,6 +91,7 @@ public class GameServiceImpl implements GameService {
             rank.setNickName(temp.getNickName());
             rank.setImgUrl(temp.getImgUrl());
             rank.setScores(temp.getTotalScores());
+            rank.setCreateTime(temp.getCreateTime());
             timeList.add(rank);
         }
         orderResponse.setScoreList(scoreList);

@@ -10,15 +10,15 @@
     </select>
 
     <select id="selectOrder" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
-        SELECT id,open_id as openId,device_id as deviceId,(select sum(scores) from device where open_id = #{openId}) as scores,total_scores as totalScores,game_id as gameId,nick_name as nickName,img_url as imgUrl
-        FROM device
-        where  game_id = #{gameId} order by total_scores DESC
+        SELECT t.id,open_id as openId,t.device_id as deviceId,(select sum(scores) from device where open_id = t.open_id) as scores,t.total_scores as totalScores,t.game_id as gameId,t.nick_name as nickName,t.img_url as imgUrl
+        FROM device t
+        where  t.game_id = #{gameId} order by t.total_scores DESC
     </select>
 
     <select id="selectTimeOrder" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
-        SELECT id,open_id as openId,device_id as deviceId,(select sum(scores) from device where open_id = #{openId}) as scores,total_scores as totalScores,game_id as gameId,nick_name as nickName,img_url as imgUrl
-        FROM device
-        where  game_id = #{gameId} order by create_time asc
+        SELECT t.id,t.open_id as openId,t.device_id as deviceId,(select sum(scores) from device where open_id = t.open_id) as scores,t.total_scores as totalScores,t.game_id as gameId,t.nick_name as nickName,t.img_url as imgUrl,DATE_FORMAT(t.create_time,   '%Y-%m-%d %H:%i:%S') as createTime
+        FROM device t
+        where  t.game_id = #{gameId} order by t.create_time asc
     </select>
 
 

@@ -33,6 +33,16 @@ public class DeviceDTO implements Serializable {
 
     private String bigUrl;
 
+    private String createTime;
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     public String getBigUrl() {
         return bigUrl;
     }
