@@ -15,6 +15,8 @@ public interface CollectMapper {
 
     public List<CollectDTO> listAllByOpenId(CollectDTO collectDTO);
 
+    public List<CollectDTO> listAllOrderByOpenId(CollectDTO collectDTO);
+
     public void save(CollectDTO collectDTO);
 
     public void update(CollectDTO collectDTO);

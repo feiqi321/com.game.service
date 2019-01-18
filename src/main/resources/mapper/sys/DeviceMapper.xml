@@ -89,4 +89,10 @@
         FROM minor
         where  no =#{deviceId} limit 1
     </select>
+
+    <select id="selectShowDevice" parameterType="com.ovft.configure.sys.bean.DeviceDTO" resultType="com.ovft.configure.sys.bean.DeviceDTO">
+        SELECT no as deviceId
+        FROM minor
+        where  deviceId =#{deviceId} limit 1
+    </select>
 </mapper>

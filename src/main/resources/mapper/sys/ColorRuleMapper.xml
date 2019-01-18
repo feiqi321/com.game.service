@@ -7,5 +7,7 @@
         select id,color1,color2,color3,scores,url,url2 from color_rule where color1 = #{color1} and color2=#{color2} and color3 = #{color3} limit 1
     </select>
 
-
+    <select id="findAllRule"  resultType="com.ovft.configure.sys.bean.ColorRuleDTO">
+        select id,color1,color2,color3,0 as scores,url,url2 from color_rule
+    </select>
 </mapper>

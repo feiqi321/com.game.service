@@ -15,6 +15,12 @@
         where open_id = #{openId} and game_id =#{gameId} and status not in (0,2)order by id
     </select>
 
+    <select id="listAllOrderByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
+        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
+        FROM collect
+        where open_id = #{openId}  and status not in (0,2) order by id asc
+    </select>
+
 
     <insert id="save" parameterType="com.ovft.configure.sys.bean.CollectDTO">
         <selectKey resultType="java.lang.Integer" keyProperty="id"

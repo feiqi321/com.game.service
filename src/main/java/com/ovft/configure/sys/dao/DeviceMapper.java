@@ -33,4 +33,6 @@ public interface DeviceMapper {
 
     public List<DeviceDTO> selectTimeOrder(DeviceDTO dto);
 
+    public DeviceDTO selectShowDevice(DeviceDTO dto);
+
 }

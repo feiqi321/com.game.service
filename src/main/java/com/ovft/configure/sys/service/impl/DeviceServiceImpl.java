@@ -48,6 +48,10 @@ public class DeviceServiceImpl implements IDeviceService {
         collectDTO.setOpenId(deviceDTO.getOpenId());
         int num = collectMapper.findNewNum(collectDTO);
         resultDTO.setNewNum(num);
+        DeviceDTO realDTO = new DeviceDTO();
+        realDTO.setDeviceId(resultDTO.getDeviceId());
+        DeviceDTO realResult = deviceMapper.selectShowDevice(realDTO);
+        resultDTO.setUserId(realResult.getDeviceId());
         return resultDTO;
 
     }

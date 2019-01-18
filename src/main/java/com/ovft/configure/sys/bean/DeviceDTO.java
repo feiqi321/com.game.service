@@ -41,6 +41,16 @@ public class DeviceDTO implements Serializable {
 
     private int orderNum;
 
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public int getOrderNum() {
         return orderNum;
     }

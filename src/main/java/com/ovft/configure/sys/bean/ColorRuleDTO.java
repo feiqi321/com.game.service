@@ -21,6 +21,17 @@ public class ColorRuleDTO implements Serializable {
 
     private String url2;
 
+    //0 未阅览 1已经阅览
+    private int viewStatus;
+
+    public int getViewStatus() {
+        return viewStatus;
+    }
+
+    public void setViewStatus(int viewStatus) {
+        this.viewStatus = viewStatus;
+    }
+
     public String getUrl2() {
         return url2;
     }

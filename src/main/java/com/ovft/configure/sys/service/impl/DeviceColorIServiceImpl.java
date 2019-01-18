@@ -108,7 +108,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         CollectDTO resultCollect = collectMapper.findByOpenId(collectDTO);
         if (resultCollect !=null && resultCollect.getColor1()==0){
             resultCollect.setColor1(resultColor.getColor());
-            orderNum =1;
+            orderNum =0;
             resultCollect.setStatus(0);
 
             if (collectDTO.getLength()==0) {
@@ -125,7 +125,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         }else if (resultCollect !=null && resultCollect.getColor1() > 0 && resultCollect.getColor2()==0){
             resultCollect.setColor2(resultColor.getColor());
             resultCollect.setStatus(0);
-            orderNum =2;
+            orderNum =1;
             if (collectDTO.getLength()==0) {
                 DeviceDTO deviceDTO = new DeviceDTO();
                 deviceDTO.setOpenId(collectDTO.getOpenId());
@@ -146,7 +146,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         }else if (resultCollect !=null && resultCollect.getColor2() > 0 && resultCollect.getColor3()==0){
             resultCollect.setColor3(resultColor.getColor());
             resultCollect.setStatus(1);
-            orderNum =3;
+            orderNum =2;
             ColorRuleDTO colorRuleDTO = new ColorRuleDTO();
             colorRuleDTO.setColor1(resultCollect.getColor1());
             colorRuleDTO.setColor2(resultCollect.getColor2());
@@ -190,7 +190,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }
         }else{
             resultCollect = new CollectDTO();
-            orderNum =1;
+            orderNum =0;
             resultCollect.setOpenId(collectDTO.getOpenId());
             resultCollect.setColor1(resultColor.getColor());
             resultCollect.setGameId(collectDTO.getGameId());
@@ -219,9 +219,30 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         result.setData(resultDevice);
         return result;
     }
+    /*@Override
+    public List<ColorRuleDTO> listAllByOpenId(CollectDTO collectDTO){
+        List<ColorRuleDTO> ruleList = colorRuleMapper.findAllRule();
+        List<CollectDTO> list = collectMapper.listAllByOpenId(collectDTO);
+        for (int i=0;i<ruleList.size();i++){
+            ColorRuleDTO colorRuleDTO = ruleList.get(i);
+            colorRuleDTO.setViewStatus(1);
+            colorRuleDTO.setScores(0);
+            for (int j=0;j<list.size();j++){
+                CollectDTO tempDTO = list.get(j);
+                if (colorRuleDTO.getColor1()==tempDTO.getColor1() && colorRuleDTO.getColor2()==tempDTO.getColor2() && colorRuleDTO.getColor3()==tempDTO.getColor3()){
+                    colorRuleDTO.setViewStatus(tempDTO.getViewStatus());
+                    colorRuleDTO.setScores(tempDTO.getScores());
+                }
+            }
+
+        }
+
+        collectMapper.view(collectDTO);
+        return ruleList;
+    }*/
     @Override
     public List<CollectDTO> listAllByOpenId(CollectDTO collectDTO){
-        List<CollectDTO> list = collectMapper.listAllByOpenId(collectDTO);
+        List<CollectDTO> list = collectMapper.listAllOrderByOpenId(collectDTO);
         collectMapper.view(collectDTO);
         return list;
     }
