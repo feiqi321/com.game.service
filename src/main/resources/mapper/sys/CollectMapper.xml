@@ -4,19 +4,19 @@
 <mapper namespace="com.ovft.configure.sys.dao.CollectMapper" >
 
     <select id="findByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
+        SELECT id,open_id as openId,color1,color2,color3,position1,position2,position3,status,view_status as viewStatus,url,url2,scores,hands
         FROM collect
         where open_id = #{openId} and game_id =#{gameId} and status = 0 order by id desc limit 1
     </select>
 
     <select id="listAllByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
+        SELECT id,open_id as openId,color1,color2,color3,position1,position2,position3,status,view_status as viewStatus,url,url2,scores,hands
         FROM collect
         where open_id = #{openId} and game_id =#{gameId} and status not in (0,2)order by id
     </select>
 
     <select id="listAllOrderByOpenId" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="com.ovft.configure.sys.bean.CollectDTO">
-        SELECT id,open_id as openId,color1,color2,color3,status,view_status as viewStatus,url,url2,scores,hands
+        SELECT id,open_id as openId,color1,color2,color3,position1,position2,position3,status,view_status as viewStatus,url,url2,scores,hands
         FROM collect
         where open_id = #{openId}  and status not in (0,2) order by id asc
     </select>
@@ -29,11 +29,11 @@
         </selectKey>
         INSERT INTO collect
         (
-        open_id,game_id,color1,color2,color3,status,hands,view_status,create_time,update_time
+        open_id,game_id,color1,color2,color3,position1,position2,position3,status,hands,view_status,create_time,update_time
         )
         VALUES
         (
-        #{openId},#{gameId},#{color1},#{color2},#{color3},#{status},#{hands},#{viewStatus},now(),now()
+        #{openId},#{gameId},#{color1},#{color2},#{color3},#{position1},#{position2},#{position3},#{status},#{hands},#{viewStatus},now(),now()
         )
     </insert>
 
@@ -41,7 +41,7 @@
         UPDATE
         collect
         SET
-        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},hands = #{hands}
+        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},position1=#{position1},position2=#{position2},position3=#{position3},status=#{status},hands = #{hands}
         WHERE id = #{id}
     </update>
 
@@ -49,7 +49,7 @@
         UPDATE
         collect
         SET
-        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},status=#{status},scores = #{scores},url=#{url},url2=#{url2},hands = #{hands},view_status=0
+        open_id=#{openId},color1=#{color1},color2=#{color2},color3=#{color3},position1=#{position1},position2=#{position2},position3=#{position3},status=#{status},scores = #{scores},url=#{url},url2=#{url2},hands = #{hands},view_status=0
         WHERE id = #{id}
     </update>
 

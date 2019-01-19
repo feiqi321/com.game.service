@@ -63,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
         CollectDTO collectDTO= new CollectDTO();
         collectDTO.setOpenId(taskDTO.getOpenId());
         collectDTO.setGameId(taskDTO.getGameId());
-        List<CollectDTO> myCollect =collectMapper.listAllByOpenId(collectDTO);
+        List<CollectDTO> myCollect =collectMapper.listAllOrderByOpenId(collectDTO);
         resultDTO.setMyNum(myCollect.size());
         if (resultDTO.getMyNum()<resultDTO.getFirstNum()){
             resultDTO.setStatus(1);

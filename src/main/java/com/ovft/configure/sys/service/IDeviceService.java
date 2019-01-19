@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.service;
 
+import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.CollectingDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 
@@ -22,7 +23,7 @@ public interface IDeviceService {
 
     public void addScores(DeviceDTO deviceDTO);
 
-    public List<CollectingDTO> collecting(DeviceDTO deviceDTO);
+    public WebResult collecting(DeviceDTO deviceDTO);
 
     public void startGameEvent();
 

@@ -116,9 +116,12 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 deviceDTO.setScores(5);
                 singleReward = 5;
+                resultCollect.setPosition1(5);
                 deviceDTO.setGameId(collectDTO.getGameId());
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(resultCollect.getHands()+1);
+            }else{
+                resultCollect.setPosition1(0);
             }
             resultCollect.setGameId(collectDTO.getGameId());
             collectMapper.update(resultCollect);
@@ -132,13 +135,17 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 if (resultCollect.getHands() == 1) {
                     deviceDTO.setScores(10);
                     singleReward = 10;
+                    resultCollect.setPosition2(10);
                 } else {
                     deviceDTO.setScores(5);
                     singleReward = 5;
+                    resultCollect.setPosition2(5);
                 }
                 deviceDTO.setGameId(collectDTO.getGameId());
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(resultCollect.getHands()+1);
+            }else{
+                resultCollect.setPosition2(0);
             }
             resultCollect.setGameId(collectDTO.getGameId());
             collectMapper.update(resultCollect);
@@ -169,18 +176,23 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                         deviceDTO.setScores(15);
                         singleReward = 15;
                         totalReward = 30;
+                        resultCollect.setPosition3(15);
                     } else if (resultCollect.getHands() == 1) {//已经1次手环在
                         deviceDTO.setScores(10);
                         totalReward = 15;
                         singleReward = 10;
+                        resultCollect.setPosition3(10);
                     } else {//已经0次手环在
                         deviceDTO.setScores(5);
                         totalReward = 5;
                         singleReward = 5;
+                        resultCollect.setPosition3(5);
                     }
                     resultCollect.setHands(resultCollect.getHands() + 1);
                     deviceDTO.setGameId(collectDTO.getGameId());
                     deviceMapper.addScore(deviceDTO);
+                }else{
+                    resultCollect.setPosition3(0);
                 }
                 resultCollect.setGameId(collectDTO.getGameId());
                 collectMapper.complete(resultCollect);
@@ -200,9 +212,13 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 deviceDTO.setOpenId(collectDTO.getOpenId());
                 deviceDTO.setGameId(collectDTO.getGameId());
                 deviceDTO.setScores(5);
+                singleReward = 5;
+                resultCollect.setPosition1(5);
                 deviceMapper.addScore(deviceDTO);
                 resultCollect.setHands(1);
                 resultCollect.setViewStatus(2);//沒有完成收集
+            }else{
+                resultCollect.setPosition1(0);
             }
             collectMapper.save(resultCollect);
         }

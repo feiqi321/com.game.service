@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.service.impl;
 
+import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.*;
 import com.ovft.configure.sys.dao.CollectMapper;
 import com.ovft.configure.sys.dao.DeviceColorMapper;
@@ -51,7 +52,7 @@ public class DeviceServiceImpl implements IDeviceService {
         DeviceDTO realDTO = new DeviceDTO();
         realDTO.setDeviceId(resultDTO.getDeviceId());
         DeviceDTO realResult = deviceMapper.selectShowDevice(realDTO);
-        resultDTO.setUserId(realResult.getDeviceId());
+        resultDTO.setUserId(realResult==null?"":realResult.getDeviceId());
         return resultDTO;
 
     }
@@ -95,8 +96,12 @@ public class DeviceServiceImpl implements IDeviceService {
         return flag;
     }
 
-    public List<CollectingDTO> collecting(DeviceDTO deviceDTO){
+    public WebResult collecting(DeviceDTO deviceDTO){
+        WebResult webResult = new WebResult();
+        FirstList firstList = new FirstList();
         List<CollectingDTO> list = new ArrayList<CollectingDTO>();
+        List<Boolean> shList = new ArrayList<Boolean>();
+        List<Integer> singleList = new ArrayList<Integer>();
         CollectDTO collectDTO = new CollectDTO();
         collectDTO.setOpenId(deviceDTO.getOpenId());
         collectDTO.setGameId(deviceDTO.getGameId());
@@ -106,20 +111,55 @@ public class DeviceServiceImpl implements IDeviceService {
             collectingDTO.setType(resultCollect.getColor1());
             collectingDTO.setStatus(1);
             list.add(collectingDTO);
+            if (resultCollect.getPosition1()>0){
+                shList.add(true);
+                singleList.add(resultCollect.getPosition1());
+            }else{
+                shList.add(false);
+                singleList.add(0);
+            }
+        }else{
+            shList.add(false);
+            singleList.add(0);
         }
         if (resultCollect !=null && resultCollect.getColor2()!=0){
             CollectingDTO collectingDTO = new CollectingDTO();
             collectingDTO.setType(resultCollect.getColor2());
             collectingDTO.setStatus(1);
             list.add(collectingDTO);
+            if (resultCollect.getPosition2()>0){
+                shList.add(true);
+                singleList.add(resultCollect.getPosition2());
+            }else{
+                shList.add(false);
+                singleList.add(0);
+            }
+        }else{
+            shList.add(false);
+            singleList.add(0);
         }
         if (resultCollect !=null && resultCollect.getColor3()!=0){
             CollectingDTO collectingDTO = new CollectingDTO();
             collectingDTO.setType(resultCollect.getColor3());
             collectingDTO.setStatus(1);
             list.add(collectingDTO);
+            if (resultCollect.getPosition3()>0){
+                shList.add(true);
+                singleList.add(resultCollect.getPosition3());
+            }else{
+                shList.add(false);
+                singleList.add(0);
+            }
+        }else{
+            shList.add(false);
+            singleList.add(0);
         }
-        return list;
+        firstList.setCollectList(list);
+        firstList.setShList(shList);
+        firstList.setSingleList(singleList);
+        webResult.setData(firstList);
+        webResult.setCode("200");
+        return webResult;
     }
 
     @Override

@@ -118,9 +118,7 @@ public class DeviceController {
         logger.info("判断是否是资源或者是自己的手环{}-{}",deviceDTO.getOpenId(),deviceDTO.getGameId());
         WebResult result = new WebResult();
         try {
-            List<CollectingDTO> list = iDeviceService.collecting(deviceDTO);
-            result.setCode("200");
-            result.setData(list);
+            result = iDeviceService.collecting(deviceDTO);
         }catch (Exception e){
             e.printStackTrace();
         }

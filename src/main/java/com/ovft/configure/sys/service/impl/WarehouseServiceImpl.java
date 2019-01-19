@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -46,13 +47,13 @@ public class WarehouseServiceImpl implements WarehouseService {
         tempDevice.setGameId(warehouse.getGameId());
         DeviceDTO deviceDTO = deviceMapper.selectByOpenId(tempDevice);
         if (deviceDTO.getScores()<shop.getPrice()*warehouse.getNum()){
-            result.setMsg("积分不够,购买失败");
+            result.setMsg("能量不够,购买失败");
             result.setCode("500");
             return result;
         }
         Warehouse tempResult = warehouseMapper.findExsit(warehouse);
         if (tempResult ==null || StringUtils.isEmpty(tempResult.getOpenId())){
-            warehouse.setDestroyPrice(shop.getDestroyPrice());
+            warehouse.setDestroyPrice(new BigDecimal(shop.getPrice()).multiply(new BigDecimal(80)).divide(new BigDecimal(100),0,BigDecimal.ROUND_HALF_UP).intValue());
             warehouse.setPrice(shop.getPrice());
             warehouse.setType(shop.getType());
             warehouse.setUrl1(shop.getUrl1());
@@ -101,6 +102,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         DeviceDTO deviceDTO = new DeviceDTO();
         deviceDTO.setOpenId(buildDTO.getOpenId());
         deviceDTO.setGameId(buildDTO.getGameId());
+        deviceDTO.setScores(buildDTO.getDestroyPrice());
+        deviceMapper.addDestroyScore(deviceDTO);
         DeviceDTO resultDTO = deviceMapper.selectByOpenId(deviceDTO);
         result.setCode("200");
         result.setData(resultDTO.getScores());
@@ -131,5 +134,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         }
 
     }
+
+
+
 
 }
