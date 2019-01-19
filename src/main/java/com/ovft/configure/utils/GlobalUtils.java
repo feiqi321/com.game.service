@@ -37,6 +37,12 @@ public class GlobalUtils {
             case 3:
                 eventName = "怪兽";
                 break;
+            case 97:
+                eventName = "怪兽-玩家失败";
+                break;
+            case 99:
+                eventName = "怪兽-玩家胜利";
+                break;
             case -1:
                 eventName = "结束";
                 break;
