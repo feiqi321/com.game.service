@@ -30,6 +30,8 @@ public class GameController {
     private static final Logger logger = LoggerFactory.getLogger(GameController.class);
     @Autowired
     private GameService gameService;
+    @Autowired
+    private EventController eventController;
 
     /**
      *  开始一局新的游戏
@@ -48,6 +50,7 @@ public class GameController {
                 return result;
             }
             gameService.startGame();
+            eventController.startEvent();
             result.setData("操作成功");
             result.setCode("200");
         }catch (Exception e){
@@ -59,13 +62,13 @@ public class GameController {
     }
 
     /**
-     *  开始一局新的游戏
+     *  查询boss的血量
      *
      * @return
      */
     @PostMapping(value = "/findBlood")
     public WebResult findBlood(@RequestBody AttackDTO attackDTO)  {
-        logger.info("开始一局新的游戏");
+        logger.info("查询boss的血量");
         WebResult result = new WebResult();
         try {
             attackDTO = gameService.findTotalAttack(attackDTO);

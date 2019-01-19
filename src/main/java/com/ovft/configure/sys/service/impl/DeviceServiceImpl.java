@@ -233,6 +233,7 @@ public class DeviceServiceImpl implements IDeviceService {
             if (GlobalUtils.event<=99) {
                 EventWebSocket.sendInfo("97");//boss到时间未死亡
                 warehouseService.bossDestroy();
+                GlobalUtils.event = 97;//boss到时间未死亡
             }
             TimeUnit.MINUTES.sleep(2);
             GlobalUtils.event = -1;//游戏结束

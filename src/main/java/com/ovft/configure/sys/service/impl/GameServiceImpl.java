@@ -95,7 +95,7 @@ public class GameServiceImpl implements GameService {
         }
         orderResponse.setScoreList(scoreList);
         orderResponse.setTimeList(timeList);
-        orderResponse.setEvent(GlobalUtils.animationID);
+        orderResponse.setEvent(GlobalUtils.event);
         webResult.setData(orderResponse);
         webResult.setCode("200");
         return webResult;
