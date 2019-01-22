@@ -31,49 +31,82 @@
     </style>
 
     <script>
+        let flag = false;
+
         $(function () {
             let token = Cookies.get('token');
             if (!token) {
                 location.href = "login.html";
             }
 
-            queryGameStatus();
+            queryGameStatus(true);
         });
 
-        function queryGameStatus(){
+        function queryGameStatus(needQuery) {
             $.post(
                 url("game/manager/queryGameStatus"),
                 {
-                    token : Cookies.get('token')
+                    token: Cookies.get('token')
                 },
                 function (result) {
                     if (result.code == "200") {
                         let data = result.data;
-                        if(data.event == -1){
+                        if (data.event == -1) {
                             $("#btn1").show();
                             $("#btn2").hide();
                             $("#btn3").show();
-                        }else{
+                            $("#stt4").hide();
+                        } else {
                             $("#btn1").hide();
                             $("#btn2").show();
                             $("#btn3").hide();
+
+                            setTimeLeft(data.gameStartTime);
                         }
                         $("#stt1").text(`当前游戏编号：${data.gameno}`);
                         $("#stt2").text(`当前游戏状态：${data.eventName}`);
                         $("#stt3").text(`怪兽总血量：${data.health}`);
-                    }else{
+                    } else {
                         location.href = "login.html";
                     }
                 },
                 "json"
             );
+
+            if (needQuery) {
+                setTimeout(() => {
+                    queryGameStatus(true);
+                }, 5000);
+            }
+        }
+
+        function setTimeLeft(gameStartTime) {
+            if (!flag) {
+                flag = true;
+                $("#stt4").show();
+                let nowTime = new Date().getTime();
+                let secsLeft = 40 * 60 - Math.floor((nowTime - gameStartTime) / 1000);
+                _setTimeLeft(secsLeft);
+            }
+        }
+
+        function _setTimeLeft(secsLeft) {
+            let mins = Math.floor(secsLeft / 60);
+            let secs = secsLeft % 60;
+            $("#stt4").text(`剩余游戏时间：${mins}分${secs}秒`);
+            if (secsLeft < 0) {
+                $("#stt4").hide();
+            }
+            setTimeout(() => {
+                _setTimeLeft(secsLeft - 1);
+            }, 1000);
         }
 
         function saveMonsterHealth() {
             $.post(
                 url("game/manager/saveMonsterHealth"),
                 {
-                    token : Cookies.get('token'),
+                    token: Cookies.get('token'),
                     health: $("#monsterHealth").val()
                 },
                 function (result) {
@@ -92,13 +125,13 @@
             );
         }
 
-        function endGame(){
+        function endGame() {
             $.post(
                 url("game/event/stopEvent"),
                 function (result) {
                     if (result.code == "200") {
                         $("#alertSuccess1").fadeIn().fadeOut();
-                        queryGameStatus();
+                        queryGameStatus(false);
                     } else {
                         $("#alertFail1").text(result.msg).fadeIn().fadeOut();
                     }
@@ -107,13 +140,13 @@
             );
         }
 
-        function newGame(){
+        function newGame() {
             $.post(
                 url("game/game/startGame"),
                 function (result) {
                     if (result.code == "200") {
                         $("#alertSuccess1").fadeIn().fadeOut();
-                        queryGameStatus();
+                        queryGameStatus(false);
                     } else {
                         $("#alertFail1").text(result.msg).fadeIn().fadeOut();
                     }
@@ -135,6 +168,9 @@
             </span>
             <span id="stt3">
                 怪兽总血量：
+            </span>
+            <span id="stt4">
+                剩余游戏时间：
             </span>
         </div>
         <div id="buttons">

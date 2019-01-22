@@ -44,6 +44,7 @@ public class GameServiceImpl implements GameService {
         GlobalUtils.mapCache.put("blood",bossDTO.getBlood());
         GlobalUtils.mapCache.put("totalBlood",bossDTO.getBlood());
         GlobalUtils.mapCache.put("gameno",gameDTO.getId());
+        GlobalUtils.mapCache.put("gameStartTime",gameMapper.findNewGame().getStartTime());
         //iDeviceService.startEvent();
     }
 

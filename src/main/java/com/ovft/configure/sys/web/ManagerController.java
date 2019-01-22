@@ -1,5 +1,6 @@
 package com.ovft.configure.sys.web;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -97,6 +98,13 @@ public class ManagerController {
         if(GlobalUtils.mapCache.get("gameno") != null){
             int gameno = (int) GlobalUtils.mapCache.get("gameno");
             map.put("gameno",gameno);
+        }else{
+            map.put("gameno","未知");
+        }
+
+        if(GlobalUtils.mapCache.get("gameStartTime") != null){
+            Timestamp gameStartTime = (Timestamp) GlobalUtils.mapCache.get("gameStartTime");
+            map.put("gameStartTime",gameStartTime.getTime());
         }
 
         result.setCode("200");
