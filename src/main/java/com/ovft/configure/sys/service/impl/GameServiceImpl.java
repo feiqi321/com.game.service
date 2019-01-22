@@ -83,7 +83,7 @@ public class GameServiceImpl implements GameService {
             if (i>=23){
                 break;
             }
-            DeviceDTO temp = list.get(i);
+            DeviceDTO temp = timeDevicelist.get(i);
             Rank rank = new Rank();
             rank.setGameId(temp.getGameId());
             rank.setOpenId(temp.getOpenId());

@@ -67,6 +67,7 @@ public class ManagerServiceImpl implements IManagerService{
             wxConf.setOpenId(resultStr);
             if (temp == null || StringUtils.isEmpty(temp.getOpenId())){
                 dto.setScores(0);
+                dto.setTotalScores(0);
                 dto.setNickName(nickName);
                 dto.setImgUrl(imgUrl);
                 deviceMapper.save(dto);

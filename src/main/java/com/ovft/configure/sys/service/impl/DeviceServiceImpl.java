@@ -184,7 +184,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = 0;//开始
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
-            TimeUnit.MINUTES.sleep(2);
+            TimeUnit.MINUTES.sleep(5);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -192,7 +192,7 @@ public class DeviceServiceImpl implements IDeviceService {
             EventWebSocket.sendInfo("1");
             GlobalUtils.animationID = 2;
             GlobalUtils.musicID = 2;
-            TimeUnit.MINUTES.sleep(2);
+            TimeUnit.MINUTES.sleep(5);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -200,7 +200,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("10");
-            TimeUnit.MINUTES.sleep(1);
+            TimeUnit.MINUTES.sleep(5);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -208,7 +208,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 3;
             GlobalUtils.musicID = 3;
             EventWebSocket.sendInfo("2");
-            TimeUnit.MINUTES.sleep(2);
+            TimeUnit.MINUTES.sleep(5);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -216,7 +216,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("20");
-            TimeUnit.MINUTES.sleep(2);
+            TimeUnit.MINUTES.sleep(5);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -225,7 +225,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.musicID = 4;
             EventWebSocket.sendInfo("3");
             this.notice();
-            TimeUnit.MINUTES.sleep(2);
+            TimeUnit.MINUTES.sleep(5);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -235,7 +235,7 @@ public class DeviceServiceImpl implements IDeviceService {
                 warehouseService.bossDestroy();
                 GlobalUtils.event = 97;//boss到时间未死亡
             }
-            TimeUnit.MINUTES.sleep(2);
+            TimeUnit.MINUTES.sleep(5);
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;

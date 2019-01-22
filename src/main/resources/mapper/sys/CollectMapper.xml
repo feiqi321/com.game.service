@@ -58,7 +58,7 @@
         collect
         SET
         view_status = 1
-        WHERE open_id = #{openId} and game_id =#{gameId}
+        WHERE open_id = #{openId}
     </update>
 
     <select id="findNewNum" parameterType="com.ovft.configure.sys.bean.CollectDTO" resultType="java.lang.Integer">

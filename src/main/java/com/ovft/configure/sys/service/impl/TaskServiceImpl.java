@@ -66,10 +66,10 @@ public class TaskServiceImpl implements TaskService {
         List<CollectDTO> myCollect =collectMapper.listAllOrderByOpenId(collectDTO);
         resultDTO.setMyNum(myCollect.size());
         if (resultDTO.getMyNum()<resultDTO.getFirstNum()){
-            resultDTO.setStatus(1);
+            resultDTO.setStatus(3);//未达到领取条件
         }
         if (resultDTO.getMyNum()<resultDTO.getTotalNum()){
-            resultDTO.setTotalStatus(1);
+            resultDTO.setTotalStatus(3);//未达到领取条件
         }
         return resultDTO;
 

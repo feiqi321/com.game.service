@@ -8,6 +8,7 @@ import com.ovft.configure.utils.GlobalUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     return webResult;
                 }else{//在30cm外
                     EventConfigDTO eventConfigDTO = new EventConfigDTO();
-                    eventConfigDTO.setEvent(2);
+                    eventConfigDTO.setEvent(3);
                     eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
                     result.setDeviceId(collectDTO.getDeviceId());
                     result.setColor(resultColor.getColor());
@@ -192,6 +193,13 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                     deviceDTO.setGameId(collectDTO.getGameId());
                     deviceMapper.addScore(deviceDTO);
                 }else{
+                    if (resultCollect.getHands() == 2) {//已经2次手环在
+                        totalReward = 15;
+                    } else if (resultCollect.getHands() == 1) {//已经1次手环在
+                        totalReward = 5;
+                    } else {//已经0次手环在
+                        totalReward = 0;
+                    }
                     resultCollect.setPosition3(0);
                 }
                 resultCollect.setGameId(collectDTO.getGameId());
@@ -259,8 +267,20 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
     @Override
     public List<CollectDTO> listAllByOpenId(CollectDTO collectDTO){
         List<CollectDTO> list = collectMapper.listAllOrderByOpenId(collectDTO);
+        List<CollectDTO> resultList = new ArrayList<CollectDTO>();
+        String compareStr = "";
+        for (int i=0;i<list.size();i++){
+            CollectDTO temp = list.get(i);
+            String tempStr = temp.getColor1()+","+temp.getColor2()+","+temp.getColor3();
+            if (compareStr.equals(tempStr)){
+
+            }else {
+                compareStr = tempStr;
+                resultList.add(temp);
+            }
+        }
         collectMapper.view(collectDTO);
-        return list;
+        return resultList;
     }
 
     @Override
