@@ -19,6 +19,7 @@
             background-repeat: no-repeat;
             background-size: 100% 100%;
             font-family: "myfont";
+            overflow: hidden;
         }
 
         @font-face {
@@ -33,7 +34,7 @@
             height: 75px;
         }
 
-        .top {
+        #top5 .top {
             display: inline-block;
             margin-left: 193px;
         }
@@ -216,10 +217,55 @@
             top: 842px;
             left: 117px;
         }
+
+        #status > img.fullscreen{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hiddenStatus{
+            display: none;
+        }
+
+        #earthquake{
+            opacity: 0.7;
+        }
+
+        #monsterBg{
+            opacity: 0.6;
+        }
+
+        #monster{
+            position: absolute;
+            top: 254px;
+            right: -49px;
+            width: 499px;
+            height: 371px;
+        }
+
+        #gameoverTop3 {
+            position: absolute;
+            top: 497px;
+            left: 348px;
+            height: 75px;
+        }
+
+        #gameoverTop3 .top {
+            display: inline-block;
+            margin-left: 226px;
+        }
     </style>
 
     <script>
+        let earthquakeTimeout1,earthquakeTimeout2;
+        let lastEvent = null;
+
         $(function () {
+            query();
+        });
+
+        function query(){
             $.post(
                 url("game/game/gameOrder"),
                 function(result){
@@ -237,11 +283,66 @@
                         for (const [i,player] of allPlayers.entries()) {
                             $("#allPlayers").append(`<div class="player${i+1}"><div class="headimgbg"><img class="headimg" src="${player.imgUrl}"></div><div class="score"><img src="imgs/panel.png"><span>${player.scores}</span></div></div>`);
                         }
+
+                        if(event == 0){
+                            if(lastEvent != event){
+                                $("#status > img").addClass("hiddenStatus");
+                            }
+                        }else if(event == 1){
+                            if(lastEvent != event){
+                                $("#status > img").addClass("hiddenStatus");
+                                $("#snow").removeClass("hiddenStatus");
+                            }
+                        }else if(event == 2){
+                            if(lastEvent != event){
+                                earthquake();
+                            }
+                        }else if(event == 3){
+                            if(lastEvent != event){
+                                monster();
+                            }
+                        }else if(event == -1){
+                            if(lastEvent != event){
+                                $("#status > img").addClass("hiddenStatus");
+                                $("#gameover,#gameoverTop3").removeClass("hiddenStatus");
+
+                                let gameoverTop3 = result.data.scoreList.slice(0, 3);
+                                $("#gameoverTop3").empty();
+                                for (const player of gameoverTop3) {
+                                    $("#gameoverTop3").append(`<div class="top headimgbg"><img class="headimg" src="${player.imgUrl}"></div>`);
+                                }
+                            }
+                        }
+
+                        lastEvent = event;
                     }
                 },
                 "json"
             );
-        });
+
+            setTimeout(() => {
+                query();
+            }, 2000);
+        }
+
+        function earthquake(){
+            $("#status > img").addClass("hiddenStatus");
+            $("#earthquake").removeClass("hiddenStatus");
+            earthquakeTimeout1 = setTimeout(() => {
+                $("#earthquake").addClass("hiddenStatus");
+                earthquakeTimeout2 = setTimeout(() => {
+                    earthquake();
+                }, 10000);
+            }, 3000);
+        }
+
+        function monster(){
+            clearTimeout(earthquakeTimeout1);
+            clearTimeout(earthquakeTimeout2);
+
+            $("#status > img").addClass("hiddenStatus");
+            $("#monsterBg,#monsterShadow,#monster").removeClass("hiddenStatus");
+        }
     </script>
 </head>
 
@@ -254,6 +355,17 @@
             <div class="headimgbg"><img class="headimg" src=""></div>
             <div class="score"><img src="imgs/panel.png"><span>5555</span></div>
         </div> -->
+    </div>
+    <div id="status">
+        <img id="snow" class="fullscreen hiddenStatus" src="imgs/snow.gif">
+        <img id="earthquake" class="fullscreen hiddenStatus" src="imgs/earthquake.gif">
+        <img id="monsterBg" class="fullscreen hiddenStatus" src="imgs//monsterBg.gif">
+        <img id="monsterShadow" class="fullscreen hiddenStatus" src="imgs//monsterShadow.png">
+        <img id="monster" class="hiddenStatus" src="imgs//monster.gif">
+        <img id="gameover" class="fullscreen hiddenStatus" src="imgs//gameover.png">
+    </div>
+    <div id="gameoverTop3">
+        <!-- <div class="top"><div class="top headimgbg"><img class="headimg" src=""></div></div> -->
     </div>
 </body>
 

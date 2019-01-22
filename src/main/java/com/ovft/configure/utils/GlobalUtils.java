@@ -13,6 +13,8 @@ public class GlobalUtils {
      * 2：地震
      * 3：怪兽
      * -1：结束
+     * 99：boss死亡
+     * 97：boss到时间未死
      */
     public static int event = -1;
 
