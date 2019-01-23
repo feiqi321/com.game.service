@@ -73,7 +73,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
             }else if (GlobalUtils.event == 3){//怪兽袭击
                 result.setEvent(3);
                 EventConfigDTO eventConfigDTO = new EventConfigDTO();
-                eventConfigDTO.setEvent(2);
+                eventConfigDTO.setEvent(4);
                 eventConfigDTO = eventConfigMapper.selectByEvent(eventConfigDTO);
                 result.setDeviceId(collectDTO.getDeviceId());
                 result.setColor(resultColor.getColor());

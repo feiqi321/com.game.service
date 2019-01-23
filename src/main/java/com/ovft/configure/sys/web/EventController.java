@@ -2,6 +2,7 @@ package com.ovft.configure.sys.web;
 
 import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.EventConfigDTO;
+import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.sys.service.IEventService;
 import com.ovft.configure.utils.GlobalUtils;
@@ -24,6 +25,8 @@ public class EventController {
     private IDeviceService iDeviceService;
     @Autowired
     private IEventService iEventService;
+    @Autowired
+    private GameService gameService;
     /**
      *  世界时间触发
      *
@@ -59,6 +62,7 @@ public class EventController {
         try {
             GlobalUtils.event = -1;
             GlobalUtils.mapCache.remove("gameId");
+            gameService.endGame();
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();

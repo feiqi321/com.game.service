@@ -4,12 +4,12 @@
 <mapper namespace="com.ovft.configure.sys.dao.WarehouseMapper" >
 
     <select id="findAllShop"  resultType="com.ovft.configure.sys.bean.Shop">
-        SELECT id,price,type,destroy_price as destroyPrice,url1,url2,url3
+        SELECT id,price,name,type,destroy_price as destroyPrice,url1,url2,url3
         FROM shop where type=#{type}
     </select>
 
     <select id="findById"  resultType="com.ovft.configure.sys.bean.Shop" parameterType="com.ovft.configure.sys.bean.Shop">
-        SELECT id,price,type,destroy_price as destroyPrice,url1,url2,url3
+        SELECT id,price,name,type,destroy_price as destroyPrice,url1,url2,url3
         FROM shop where id = #{id}
     </select>
 

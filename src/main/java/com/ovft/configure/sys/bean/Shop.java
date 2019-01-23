@@ -11,6 +11,8 @@ public class Shop implements Serializable {
 
     private int price;
 
+    private  String name;
+
     private int destroyPrice;
 
     private String url1;
@@ -20,6 +22,14 @@ public class Shop implements Serializable {
     private String url3;
 
     private int type;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getType() {
         return type;
