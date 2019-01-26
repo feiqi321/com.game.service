@@ -2,10 +2,7 @@ package com.ovft.configure.sys.service.impl;
 
 import com.ovft.configure.http.result.WebResult;
 import com.ovft.configure.sys.bean.*;
-import com.ovft.configure.sys.dao.CollectMapper;
-import com.ovft.configure.sys.dao.DeviceColorMapper;
-import com.ovft.configure.sys.dao.DeviceMapper;
-import com.ovft.configure.sys.dao.RankMapper;
+import com.ovft.configure.sys.dao.*;
 import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.sys.service.WarehouseService;
@@ -40,6 +37,8 @@ public class DeviceServiceImpl implements IDeviceService {
     private WarehouseService warehouseService;
     @Resource
     private RankMapper rankMapper;
+    @Resource
+    private EventTimeMapper eventTimeMapper;
 
     @Override
     public DeviceDTO findByOpenId(DeviceDTO deviceDTO){
@@ -181,10 +180,38 @@ public class DeviceServiceImpl implements IDeviceService {
 
     public String executeAsyncTask(){
         try {
+            List<EventTimeDTO> eventList = eventTimeMapper.selectByEvent();
+            int nomal =0;
+            int snow = 0;
+            int earth = 0;
+            int boss = 0;
+            int snowEarth = 0;
+            int earthBoss = 0;
+            int lastTime = 0;
+            for (int i=0;i<eventList.size();i++){
+                EventTimeDTO eventTimeDTO = eventList.get(i);
+                if (eventTimeDTO.getEvent()==1){
+                    nomal = eventTimeDTO.getEventTime();
+                }else if (eventTimeDTO.getEvent()==2){
+                    snow = eventTimeDTO.getEventTime();
+                }else if (eventTimeDTO.getEvent()==3){
+                    earth = eventTimeDTO.getEventTime();
+                }else if (eventTimeDTO.getEvent()==4){
+                    boss = eventTimeDTO.getEventTime();
+                }else if (eventTimeDTO.getEvent()==5){
+                    snowEarth = eventTimeDTO.getEventTime();
+                }else if (eventTimeDTO.getEvent()==6){
+                    earthBoss = eventTimeDTO.getEventTime();
+                }else if (eventTimeDTO.getEvent()==7){
+                    lastTime = eventTimeDTO.getEventTime();
+                }
+            }
+
+
             GlobalUtils.event = 0;//开始
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
-            TimeUnit.MINUTES.sleep(5);
+            TimeUnit.MINUTES.sleep(nomal);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -192,7 +219,7 @@ public class DeviceServiceImpl implements IDeviceService {
             EventWebSocket.sendInfo("1");
             GlobalUtils.animationID = 2;
             GlobalUtils.musicID = 2;
-            TimeUnit.MINUTES.sleep(5);
+            TimeUnit.MINUTES.sleep(snow);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -200,7 +227,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("10");
-            TimeUnit.MINUTES.sleep(5);
+            TimeUnit.MINUTES.sleep(snowEarth);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -208,7 +235,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 3;
             GlobalUtils.musicID = 3;
             EventWebSocket.sendInfo("2");
-            TimeUnit.MINUTES.sleep(5);
+            TimeUnit.MINUTES.sleep(earth);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -216,7 +243,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("20");
-            TimeUnit.MINUTES.sleep(5);
+            TimeUnit.MINUTES.sleep(earthBoss);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -225,26 +252,29 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.musicID = 4;
             EventWebSocket.sendInfo("3");
             this.notice();
-            TimeUnit.MINUTES.sleep(5);
+            TimeUnit.MINUTES.sleep(boss);
             if (GlobalUtils.event == -1){
                 return null;
             }
             GlobalUtils.event = 0;//恢复
+            EventWebSocket.sendInfo("30");
             if (GlobalUtils.event<=99) {
                 EventWebSocket.sendInfo("97");//boss到时间未死亡
                 warehouseService.bossDestroy();
                 GlobalUtils.event = 97;//boss到时间未死亡
             }
-            TimeUnit.MINUTES.sleep(5);
+            TimeUnit.MINUTES.sleep(lastTime);
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
             //this.comunicateOrder();
             EventWebSocket.sendInfo("100");//游戏结束
-            //gameService.endGame();//将游戏的状态设置为1 ，已结束
+
         } catch (Exception e) {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;
+        }finally {
+            gameService.endGame();//将游戏的状态设置为1 ，已结束
         }
         return null;
     }
@@ -272,7 +302,7 @@ public class DeviceServiceImpl implements IDeviceService {
         int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
 
         try {
-            for (int i=0 ; i<100;i++) {
+            for (int i=0 ; i<10000;i++) {
                 if (GlobalUtils.event != -1 && GlobalUtils.event != 99) {
                     TimeUnit.SECONDS.sleep(2);
                     int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood") == null ? "0" : GlobalUtils.mapCache.get("blood").toString());

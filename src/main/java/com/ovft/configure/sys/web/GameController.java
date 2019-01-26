@@ -6,6 +6,7 @@ import com.ovft.configure.sys.bean.GameDTO;
 import com.ovft.configure.sys.bean.Rank;
 import com.ovft.configure.sys.bean.TaskDTO;
 import com.ovft.configure.sys.service.GameService;
+import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.sys.service.TaskService;
 import com.ovft.configure.utils.GlobalUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +33,8 @@ public class GameController {
     private GameService gameService;
     @Autowired
     private EventController eventController;
+    @Autowired
+    private IDeviceService iDeviceService;
 
     /**
      *  开始一局新的游戏
@@ -50,7 +53,8 @@ public class GameController {
                 return result;
             }
             gameService.startGame();
-            eventController.startEvent();
+            //eventController.startEvent();
+            iDeviceService.startEvent();
             result.setData("操作成功");
             result.setCode("200");
         }catch (Exception e){

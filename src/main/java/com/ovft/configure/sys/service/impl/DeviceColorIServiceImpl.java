@@ -102,6 +102,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         int groupReward=0;
         int totalReward=0;
         int orderNum = 0;
+        int roleId = 0;
         String bigUrl = "";
         DeviceColorDTO deviceColorDTO = new DeviceColorDTO();
         deviceColorDTO.setDeviceId(collectDTO.getDeviceId());
@@ -169,6 +170,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
                 resultCollect.setScores(colorRuleDTO.getScores());
                 groupReward = colorRuleDTO.getScores();
                 bigUrl = colorRuleDTO.getUrl2();
+                roleId = colorRuleDTO.getId();
                 resultCollect.setUrl(colorRuleDTO.getUrl());
                 resultCollect.setUrl2(colorRuleDTO.getUrl2());
                 deviceDTO.setOpenId(collectDTO.getOpenId());
@@ -235,6 +237,7 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         resultQuery.setGameId(collectDTO.getGameId());
         DeviceDTO resultDevice = deviceMapper.selectByOpenId(resultQuery);
         resultDevice.setBigUrl(bigUrl);
+        resultDevice.setId(roleId);
         resultDevice.setSingleReward(singleReward);
         resultDevice.setGroupReward(groupReward);
         resultDevice.setTotalReward(totalReward);
@@ -272,10 +275,10 @@ public class DeviceColorIServiceImpl  implements IDeviceColorService {
         for (int i=0;i<list.size();i++){
             CollectDTO temp = list.get(i);
             String tempStr = temp.getColor1()+","+temp.getColor2()+","+temp.getColor3();
-            if (compareStr.equals(tempStr)){
+            if (compareStr.indexOf(tempStr)>=0){
 
             }else {
-                compareStr = tempStr;
+                compareStr = compareStr+"@"+tempStr;
                 resultList.add(temp);
             }
         }
