@@ -288,7 +288,10 @@
                             if(lastEvent != event){
                                 $("#status > img").addClass("hiddenStatus");
                             }
-                            if(lastEvent == -1){
+                            if(lastEvent == 2){
+                                clearTimeout(earthquakeTimeout1);
+                                clearTimeout(earthquakeTimeout2);
+                            }else if(lastEvent == -1){
                                 $("#gameover,#gameoverTop3").addClass("hiddenStatus");
                                 $("#gameoverTop3").empty();
                             }
