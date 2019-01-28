@@ -17,6 +17,26 @@ public class AttackDTO implements Serializable {
 
     private int percent;
 
+    private int sed;
+
+    private int lasttime;
+
+    public int getSed() {
+        return sed;
+    }
+
+    public void setSed(int sed) {
+        this.sed = sed;
+    }
+
+    public int getLasttime() {
+        return lasttime;
+    }
+
+    public void setLasttime(int lasttime) {
+        this.lasttime = lasttime;
+    }
+
     public int getPercent() {
         return percent;
     }

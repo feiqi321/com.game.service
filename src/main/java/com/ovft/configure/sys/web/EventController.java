@@ -60,8 +60,8 @@ public class EventController {
         logger.info("世界时间终止");
         WebResult result = new WebResult();
         try {
-            GlobalUtils.event = -1;
             GlobalUtils.mapCache.remove("gameId");
+            GlobalUtils.event = -1;
             gameService.endGame();
             result.setCode("200");
         }catch (Exception e){

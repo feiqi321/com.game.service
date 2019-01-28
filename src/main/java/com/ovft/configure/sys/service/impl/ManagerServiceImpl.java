@@ -59,6 +59,7 @@ public class ManagerServiceImpl implements IManagerService{
             wxConf = null;
         }else{
             String resultStr = result.get("openid");
+
             logger.info("resultStr:"+resultStr);
             DeviceDTO dto = new DeviceDTO();
             dto.setOpenId(resultStr);
@@ -89,7 +90,7 @@ public class ManagerServiceImpl implements IManagerService{
     @Override
     public int queryMonsterHealth() {
         return bossMapper.findBoss().getBlood();
-    } 
+    }
 
     @Override
     public void saveMonsterHealth(int health) {

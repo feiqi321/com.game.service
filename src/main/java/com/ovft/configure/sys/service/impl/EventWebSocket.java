@@ -83,7 +83,6 @@ public class EventWebSocket {
     @OnError
     public void onError(Session session, Throwable error) {
         System.out.println("发生错误");
-        GlobalUtils.event = -1;
         error.printStackTrace();
     }
 

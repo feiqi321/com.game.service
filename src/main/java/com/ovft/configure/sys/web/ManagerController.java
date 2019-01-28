@@ -62,7 +62,8 @@ public class ManagerController {
                 result.setMsg("游戏还未开始");
                 return result;
             }
-            WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode(),gameId,wxConf.getNickName(),wxConf.getImgUrl());
+            GlobalUtils.nickCache.put(wxConf.getImgUrl(),wxConf.getNickName());
+            WxConf resultDto = iManagerService.queryOpenId(wxConf.getWxCode(),gameId,"",wxConf.getImgUrl());
             if (resultDto==null){
                 result.setCode("502");
                 result.setMsg("获取微信数据失败");

@@ -24,6 +24,8 @@ public class GlobalUtils {
 
     public static HashMap mapCache = new HashMap();
 
+    public static HashMap nickCache = new HashMap();
+
     public static String getEventName(){
         String eventName = "";
         switch (event) {

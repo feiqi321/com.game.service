@@ -15,8 +15,13 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class DeviceServiceImpl implements IDeviceService {
     private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
+    private ExecutorService executor = Executors.newFixedThreadPool(10);
     @Resource
     private DeviceMapper deviceMapper;
     @Resource
@@ -198,6 +204,7 @@ public class DeviceServiceImpl implements IDeviceService {
                     earth = eventTimeDTO.getEventTime();
                 }else if (eventTimeDTO.getEvent()==4){
                     boss = eventTimeDTO.getEventTime();
+                    GlobalUtils.mapCache.put("bossLastTime",boss);
                 }else if (eventTimeDTO.getEvent()==5){
                     snowEarth = eventTimeDTO.getEventTime();
                 }else if (eventTimeDTO.getEvent()==6){
@@ -211,7 +218,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = 0;//开始
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
-            TimeUnit.MINUTES.sleep(nomal);
+            TimeUnit.SECONDS.sleep(nomal*60);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -219,7 +226,7 @@ public class DeviceServiceImpl implements IDeviceService {
             EventWebSocket.sendInfo("1");
             GlobalUtils.animationID = 2;
             GlobalUtils.musicID = 2;
-            TimeUnit.MINUTES.sleep(snow);
+            TimeUnit.SECONDS.sleep(snow*60);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -227,7 +234,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("10");
-            TimeUnit.MINUTES.sleep(snowEarth);
+            TimeUnit.SECONDS.sleep(snowEarth*60);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -235,7 +242,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 3;
             GlobalUtils.musicID = 3;
             EventWebSocket.sendInfo("2");
-            TimeUnit.MINUTES.sleep(earth);
+            TimeUnit.SECONDS.sleep(earth*60);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -243,16 +250,18 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("20");
-            TimeUnit.MINUTES.sleep(earthBoss);
+            TimeUnit.SECONDS.sleep(earthBoss*60);
             if (GlobalUtils.event == -1){
                 return null;
             }
             GlobalUtils.event = 3;//怪兽袭击
             GlobalUtils.animationID = 4;
             GlobalUtils.musicID = 4;
+
+            GlobalUtils.mapCache.put("bossTime",new Date().getTime());
             EventWebSocket.sendInfo("3");
             this.notice();
-            TimeUnit.MINUTES.sleep(boss);
+            TimeUnit.SECONDS.sleep(boss*60);
             if (GlobalUtils.event == -1){
                 return null;
             }
@@ -263,7 +272,8 @@ public class DeviceServiceImpl implements IDeviceService {
                 warehouseService.bossDestroy();
                 GlobalUtils.event = 97;//boss到时间未死亡
             }
-            TimeUnit.MINUTES.sleep(lastTime);
+            TimeUnit.SECONDS.sleep(lastTime*60);
+            GlobalUtils.mapCache.remove("gameId");
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
@@ -272,9 +282,10 @@ public class DeviceServiceImpl implements IDeviceService {
 
         } catch (Exception e) {
             logger.error(e.getMessage());
+            GlobalUtils.mapCache.remove("gameId");
             GlobalUtils.event = -1;
         }finally {
-            gameService.endGame();//将游戏的状态设置为1 ，已结束
+           gameService.endGame();//将游戏的状态设置为1 ，已结束
         }
         return null;
     }
@@ -297,7 +308,36 @@ public class DeviceServiceImpl implements IDeviceService {
 
     }
 
-    @Async
+    public void notice() throws InterruptedException {
+        int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
+
+        executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+
+                try {
+                    for (int i=0 ; i<10000;i++) {
+                        if (GlobalUtils.event != -1 && GlobalUtils.event != 99) {
+                            TimeUnit.SECONDS.sleep(2);
+                            int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood") == null ? "0" : GlobalUtils.mapCache.get("blood").toString());
+                            if (blood <= 0){
+                                break;
+                            }
+                            BigDecimal percent = new BigDecimal(blood*100).divide(new BigDecimal(total),0,BigDecimal.ROUND_HALF_DOWN);
+
+                            EventWebSocket.sendInfo("98@" + percent.intValue());
+                        }
+                    }
+                }catch (Exception e){
+                    logger.error(e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    /*@Async
     public void notice(){
         int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
 
@@ -318,6 +358,6 @@ public class DeviceServiceImpl implements IDeviceService {
             logger.error(e.getMessage());
             GlobalUtils.event = -1;
         }
-    }
+    }*/
 
 }

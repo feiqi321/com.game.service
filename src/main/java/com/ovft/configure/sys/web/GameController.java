@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,9 +76,15 @@ public class GameController {
     public WebResult findBlood(@RequestBody AttackDTO attackDTO)  {
         logger.info("查询boss的血量");
         WebResult result = new WebResult();
+        long nd = 1000 * 24 * 60 * 60;
+        long nh = 1000 * 60 * 60;
+        long nm = 1000 * 60;
+        long ns = 1000;
         try {
             attackDTO = gameService.findTotalAttack(attackDTO);
-
+            if (attackDTO == null){
+                attackDTO = new AttackDTO();
+            }
             int blood = GlobalUtils.mapCache.get("blood")==null?0:Integer.parseInt(GlobalUtils.mapCache.get("blood").toString());
             int totalBlood = GlobalUtils.mapCache.get("totalBlood")==null?0:Integer.parseInt(GlobalUtils.mapCache.get("totalBlood").toString());
             BigDecimal percent = null;
@@ -86,6 +94,31 @@ public class GameController {
                 percent = new BigDecimal(blood).divide(new BigDecimal(totalBlood),0,BigDecimal.ROUND_HALF_DOWN);
             }
             attackDTO.setPercent(percent.intValue());
+            long timeMi = Long.parseLong(GlobalUtils.mapCache.get("bossTime")==null?"0":GlobalUtils.mapCache.get("bossTime").toString());
+            if (timeMi ==0){
+                attackDTO.setSed(0);
+                attackDTO.setLasttime(0);
+            }else {
+                long now = new Date().getTime();
+                long diff = now - timeMi;
+                long min = diff % nd % nh / nm;
+                // 计算差多少秒//输出结果
+                 long sec = diff % nd % nh % nm / ns;
+
+                int boss = Integer.parseInt(GlobalUtils.mapCache.get("bossLastTime") == null ? "0" : GlobalUtils.mapCache.get("bossLastTime").toString());
+                if (min>=boss){
+                    attackDTO.setSed(0);
+                    attackDTO.setLasttime(0);
+                }else {
+                    if (sec ==0) {
+                        attackDTO.setLasttime((int)(boss - min));
+                        attackDTO.setSed((int) sec);
+                    }else{
+                        attackDTO.setLasttime((int)(boss - min-1));
+                        attackDTO.setSed(60-(int) sec);
+                    }
+                }
+            }
             result.setData(attackDTO);
             result.setCode("200");
         }catch (Exception e){

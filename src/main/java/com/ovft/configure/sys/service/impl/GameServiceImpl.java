@@ -74,7 +74,7 @@ public class GameServiceImpl implements GameService {
             Rank rank = new Rank();
             rank.setGameId(temp.getGameId());
             rank.setOpenId(temp.getOpenId());
-            rank.setNickName(temp.getNickName());
+            rank.setNickName(GlobalUtils.nickCache.get(temp.getImgUrl())==null?"":GlobalUtils.nickCache.get(temp.getImgUrl()).toString());
             rank.setImgUrl(temp.getImgUrl());
             rank.setScores(temp.getTotalScores());
             scoreList.add(rank);
