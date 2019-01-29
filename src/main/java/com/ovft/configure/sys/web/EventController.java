@@ -5,6 +5,7 @@ import com.ovft.configure.sys.bean.EventConfigDTO;
 import com.ovft.configure.sys.service.GameService;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.sys.service.IEventService;
+import com.ovft.configure.sys.service.impl.EventWebSocket;
 import com.ovft.configure.utils.GlobalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +38,13 @@ public class EventController {
         logger.info("世界时间触发");
         WebResult result = new WebResult();
         try {
+            String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
             if (GlobalUtils.event != -1){
                 result.setCode("501");
                 result.setMsg("世界事件已经开始 ");
                 return result;
             }
-            iDeviceService.startEvent();
+            iDeviceService.startEvent(gameId);
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();
@@ -63,6 +65,7 @@ public class EventController {
             GlobalUtils.mapCache.remove("gameId");
             GlobalUtils.event = -1;
             gameService.endGame();
+            EventWebSocket.sendInfo("100");//游戏结束
             result.setCode("200");
         }catch (Exception e){
             e.printStackTrace();

@@ -33,7 +33,7 @@ public class GameServiceImpl implements GameService {
     @Resource
     private DeviceMapper deviceMapper;
 
-    public void startGame(){
+    public String startGame(){
         String gameId = UUID.randomUUID().toString();
         GameDTO gameDTO = new GameDTO();
         gameDTO.setGameId(gameId);
@@ -46,10 +46,10 @@ public class GameServiceImpl implements GameService {
         GlobalUtils.mapCache.put("gameno",gameDTO.getId());
         GlobalUtils.mapCache.put("gameStartTime",gameMapper.findNewGame().getStartTime());
         //iDeviceService.startEvent();
+        return gameId;
     }
 
     public void endGame(){
-        GlobalUtils.mapCache.remove("gameId");
         gameMapper.update();
     }
     @Override

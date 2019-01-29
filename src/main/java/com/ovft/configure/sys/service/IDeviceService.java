@@ -15,7 +15,7 @@ public interface IDeviceService {
 
     public DeviceDTO saveOrUpdate(DeviceDTO deviceDTO);
 
-    public void startEvent();
+    public void startEvent(String gameId);
 
     public int queryEvent();
 
@@ -25,6 +25,5 @@ public interface IDeviceService {
 
     public WebResult collecting(DeviceDTO deviceDTO);
 
-    public void startGameEvent();
 
 }

@@ -167,14 +167,11 @@ public class DeviceServiceImpl implements IDeviceService {
         return webResult;
     }
 
-    @Override
-    public void startGameEvent(){
-        this.startEvent();
-    }
+
     @Override
     @Async
-    public void startEvent(){
-        this.executeAsyncTask();
+    public void startEvent(String gameId){
+        this.executeAsyncTask(gameId);
     }
 
 
@@ -184,7 +181,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
     }
 
-    public String executeAsyncTask(){
+    public String executeAsyncTask(String gameId){
         try {
             List<EventTimeDTO> eventList = eventTimeMapper.selectByEvent();
             int nomal =0;
@@ -219,7 +216,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 1;
             GlobalUtils.musicID = 1;
             TimeUnit.SECONDS.sleep(nomal*60);
-            if (GlobalUtils.event == -1){
+            if (GlobalUtils.event == -1 || GlobalUtils.mapCache.get("gameId")==null || !gameId.equals(GlobalUtils.mapCache.get("gameId"))){
                 return null;
             }
             GlobalUtils.event = 1;//下雪
@@ -227,7 +224,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.animationID = 2;
             GlobalUtils.musicID = 2;
             TimeUnit.SECONDS.sleep(snow*60);
-            if (GlobalUtils.event == -1){
+            if (GlobalUtils.event == -1 || GlobalUtils.mapCache.get("gameId")==null || !gameId.equals(GlobalUtils.mapCache.get("gameId"))){
                 return null;
             }
             GlobalUtils.event = 0;//恢复
@@ -235,7 +232,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("10");
             TimeUnit.SECONDS.sleep(snowEarth*60);
-            if (GlobalUtils.event == -1){
+            if (GlobalUtils.event == -1 || GlobalUtils.mapCache.get("gameId")==null || !gameId.equals(GlobalUtils.mapCache.get("gameId"))){
                 return null;
             }
             GlobalUtils.event = 2;//地震
@@ -243,7 +240,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.musicID = 3;
             EventWebSocket.sendInfo("2");
             TimeUnit.SECONDS.sleep(earth*60);
-            if (GlobalUtils.event == -1){
+            if (GlobalUtils.event == -1 || GlobalUtils.mapCache.get("gameId")==null || !gameId.equals(GlobalUtils.mapCache.get("gameId"))){
                 return null;
             }
             GlobalUtils.event = 0;//恢复
@@ -251,29 +248,31 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.musicID = 1;
             EventWebSocket.sendInfo("20");
             TimeUnit.SECONDS.sleep(earthBoss*60);
-            if (GlobalUtils.event == -1){
+            if (GlobalUtils.event == -1 || GlobalUtils.mapCache.get("gameId")==null || !gameId.equals(GlobalUtils.mapCache.get("gameId"))){
                 return null;
             }
+
             GlobalUtils.event = 3;//怪兽袭击
             GlobalUtils.animationID = 4;
             GlobalUtils.musicID = 4;
 
             GlobalUtils.mapCache.put("bossTime",new Date().getTime());
             EventWebSocket.sendInfo("3");
-            this.notice();
+            this.notice(gameId);
             TimeUnit.SECONDS.sleep(boss*60);
-            if (GlobalUtils.event == -1){
+            if (GlobalUtils.event == -1 || GlobalUtils.mapCache.get("gameId")==null || !gameId.equals(GlobalUtils.mapCache.get("gameId"))){
                 return null;
+            }
+
+            if (GlobalUtils.event<99) {
+                GlobalUtils.event = 97;//boss到时间未死亡
+                EventWebSocket.sendInfo("97");//boss到时间未死亡
+                warehouseService.bossDestroy();
             }
             GlobalUtils.event = 0;//恢复
             EventWebSocket.sendInfo("30");
-            if (GlobalUtils.event<=99) {
-                EventWebSocket.sendInfo("97");//boss到时间未死亡
-                warehouseService.bossDestroy();
-                GlobalUtils.event = 97;//boss到时间未死亡
-            }
             TimeUnit.SECONDS.sleep(lastTime*60);
-            GlobalUtils.mapCache.remove("gameId");
+            //GlobalUtils.mapCache.remove("gameId");
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
@@ -308,7 +307,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
     }
 
-    public void notice() throws InterruptedException {
+    public void notice(String gameId) throws InterruptedException {
         int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
 
         executor.submit(new Runnable() {
@@ -318,8 +317,8 @@ public class DeviceServiceImpl implements IDeviceService {
 
                 try {
                     for (int i=0 ; i<10000;i++) {
-                        if (GlobalUtils.event != -1 && GlobalUtils.event != 99) {
-                            TimeUnit.SECONDS.sleep(2);
+                        TimeUnit.SECONDS.sleep(2);
+                        if (GlobalUtils.event ==3 && GlobalUtils.mapCache.get("gameId")!=null && gameId.equals(GlobalUtils.mapCache.get("gameId"))) {
                             int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood") == null ? "0" : GlobalUtils.mapCache.get("blood").toString());
                             if (blood <= 0){
                                 break;
@@ -327,6 +326,9 @@ public class DeviceServiceImpl implements IDeviceService {
                             BigDecimal percent = new BigDecimal(blood*100).divide(new BigDecimal(total),0,BigDecimal.ROUND_HALF_DOWN);
 
                             EventWebSocket.sendInfo("98@" + percent.intValue());
+
+                        }else{
+                            break;
                         }
                     }
                 }catch (Exception e){
@@ -337,27 +339,5 @@ public class DeviceServiceImpl implements IDeviceService {
 
     }
 
-    /*@Async
-    public void notice(){
-        int total = Integer.parseInt(GlobalUtils.mapCache.get("totalBlood")==null?"0":GlobalUtils.mapCache.get("totalBlood").toString());
-
-        try {
-            for (int i=0 ; i<10000;i++) {
-                if (GlobalUtils.event != -1 && GlobalUtils.event != 99) {
-                    TimeUnit.SECONDS.sleep(2);
-                    int blood = Integer.parseInt(GlobalUtils.mapCache.get("blood") == null ? "0" : GlobalUtils.mapCache.get("blood").toString());
-                    if (blood <= 0){
-                        break;
-                    }
-                    BigDecimal percent = new BigDecimal(blood*100).divide(new BigDecimal(total),0,BigDecimal.ROUND_HALF_DOWN);
-
-                    EventWebSocket.sendInfo("98@" + percent.intValue());
-                }
-            }
-        }catch (Exception e){
-            logger.error(e.getMessage());
-            GlobalUtils.event = -1;
-        }
-    }*/
 
 }

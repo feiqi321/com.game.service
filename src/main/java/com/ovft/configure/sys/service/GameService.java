@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface GameService {
 
-    public void startGame();
+    public String startGame();
 
     public void endGame();
 

@@ -54,9 +54,9 @@ public class GameController {
                 result.setMsg("游戏已经开始");
                 return result;
             }
-            gameService.startGame();
+            gameId =  gameService.startGame();
             //eventController.startEvent();
-            iDeviceService.startEvent();
+            iDeviceService.startEvent(gameId);
             result.setData("操作成功");
             result.setCode("200");
         }catch (Exception e){
@@ -119,6 +119,7 @@ public class GameController {
                     }
                 }
             }
+            attackDTO.setTotalBlood(totalBlood);
             result.setData(attackDTO);
             result.setCode("200");
         }catch (Exception e){

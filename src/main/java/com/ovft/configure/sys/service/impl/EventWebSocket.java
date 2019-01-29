@@ -123,11 +123,9 @@ public class EventWebSocket {
         AttackService attackService = SpringUtils.getBean(AttackServiceImpl.class);
         logger.info("blood:{}",blood);
         if (blood>0 && blood>attackDTO.getAttack()) {
-            logger.info("if:{}",1);
             GlobalUtils.mapCache.put("blood",blood-attackDTO.getAttack());
             attackService.attack(attackDTO);
         }else if (blood>0 && blood<=attackDTO.getAttack()){
-            logger.info("if:{}",2);
             GlobalUtils.mapCache.put("blood",0);
             attackService.attack(attackDTO);
             GlobalUtils.animationID = 5;

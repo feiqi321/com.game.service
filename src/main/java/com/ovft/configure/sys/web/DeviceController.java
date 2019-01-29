@@ -5,6 +5,7 @@ import com.ovft.configure.sys.bean.CollectingDTO;
 import com.ovft.configure.sys.bean.DeviceDTO;
 import com.ovft.configure.sys.service.IDeviceService;
 import com.ovft.configure.utils.GlobalUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,15 @@ public class DeviceController {
         WebResult result = new WebResult();
         try {
             DeviceDTO resultDto = iDeviceService.findByOpenId(deviceDTO);
-            resultDto.setEvent(GlobalUtils.event);
+
+            String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
+            if(StringUtils.isEmpty(gameId)) {
+                resultDto.setEvent(-1);
+            }else if (!gameId.equals(deviceDTO.getGameId())){
+                resultDto.setEvent(-1);
+            }else{
+                resultDto.setEvent(GlobalUtils.event);
+            }
             result.setData(resultDto);
             result.setCode("200");
         }catch (Exception e){

@@ -21,6 +21,16 @@ public class AttackDTO implements Serializable {
 
     private int lasttime;
 
+    private int totalBlood;
+
+    public int getTotalBlood() {
+        return totalBlood;
+    }
+
+    public void setTotalBlood(int totalBlood) {
+        this.totalBlood = totalBlood;
+    }
+
     public int getSed() {
         return sed;
     }
