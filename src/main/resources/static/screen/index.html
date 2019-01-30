@@ -308,6 +308,10 @@
                             if(lastEvent != event){
                                 monster();
                             }
+                        }else if(event == 99 || event == 97){
+                            if(lastEvent != event){
+                                $("#status > img").addClass("hiddenStatus");
+                            }
                         }else if(event == -1){
                             if(lastEvent != event){
                                 $("#status > img").addClass("hiddenStatus");
