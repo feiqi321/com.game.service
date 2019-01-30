@@ -16,4 +16,6 @@ public interface GameMapper {
 
     public GameDTO findNewGame();
 
+    public GameDTO findLastGame();
+
 }

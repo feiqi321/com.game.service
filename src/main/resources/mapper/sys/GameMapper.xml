@@ -7,6 +7,10 @@
         select * from game where status = 0 limit 1;
     </select>
 
+    <select id="findLastGame" resultType="com.ovft.configure.sys.bean.GameDTO">
+        select * from game order by id desc limit 1;
+    </select>
+
 
     <insert id="save" parameterType="com.ovft.configure.sys.bean.GameDTO">
         <selectKey resultType="java.lang.Integer" keyProperty="id"

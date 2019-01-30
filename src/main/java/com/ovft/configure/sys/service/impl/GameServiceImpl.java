@@ -61,7 +61,8 @@ public class GameServiceImpl implements GameService {
     public WebResult listRank(){
         WebResult webResult = new WebResult();
         OrderResponse orderResponse = new OrderResponse();
-        String gameId = GlobalUtils.mapCache.get("lastGameIdgameId")==null?"":GlobalUtils.mapCache.get("lastGameIdgameId").toString();
+        GameDTO gameDTO = gameMapper.findLastGame();
+        String gameId = gameDTO.getGameId();
         DeviceDTO deviceDTO = new DeviceDTO();
         deviceDTO.setGameId(gameId);
         List<DeviceDTO> list = deviceMapper.selectOrder(deviceDTO);
