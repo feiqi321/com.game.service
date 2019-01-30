@@ -39,6 +39,7 @@ public class GameServiceImpl implements GameService {
         gameDTO.setGameId(gameId);
         gameMapper.save(gameDTO);
         GlobalUtils.mapCache.put("gameId",gameId);
+        GlobalUtils.mapCache.put("lastGameIdgameId",gameId);
         BossDTO bossDTO = bossMapper.findBoss();
         logger.info("游戏开始，boss血量初始化{}",bossDTO.getBlood());
         GlobalUtils.mapCache.put("blood",bossDTO.getBlood());
@@ -60,7 +61,7 @@ public class GameServiceImpl implements GameService {
     public WebResult listRank(){
         WebResult webResult = new WebResult();
         OrderResponse orderResponse = new OrderResponse();
-        String gameId = GlobalUtils.mapCache.get("gameId")==null?"":GlobalUtils.mapCache.get("gameId").toString();
+        String gameId = GlobalUtils.mapCache.get("lastGameIdgameId")==null?"":GlobalUtils.mapCache.get("lastGameIdgameId").toString();
         DeviceDTO deviceDTO = new DeviceDTO();
         deviceDTO.setGameId(gameId);
         List<DeviceDTO> list = deviceMapper.selectOrder(deviceDTO);

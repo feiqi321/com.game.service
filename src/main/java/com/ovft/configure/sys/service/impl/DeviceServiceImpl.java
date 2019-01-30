@@ -272,7 +272,7 @@ public class DeviceServiceImpl implements IDeviceService {
             GlobalUtils.event = 0;//恢复
             EventWebSocket.sendInfo("30");
             TimeUnit.SECONDS.sleep(lastTime*60);
-            //GlobalUtils.mapCache.remove("gameId");
+            GlobalUtils.mapCache.remove("gameId");
             GlobalUtils.event = -1;//游戏结束
             GlobalUtils.animationID = 6;
             GlobalUtils.musicID = 6;
